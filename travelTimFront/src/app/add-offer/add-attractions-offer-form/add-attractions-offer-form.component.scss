@@ -1,0 +1,120 @@
+.section-container {
+  display: block;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.section-container h1 {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+}
+
+.text-btn {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  display: inline-block;
+  position: relative;
+}
+
+.text-btn:hover {
+  cursor: pointer;
+}
+
+.text-btn:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #7c795d;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.text-btn:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+#business-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#add-business {
+  text-decoration: underline;
+  color: #7c795d;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.small-width {
+  min-width: 20%;
+}
+
+.medium-width {
+  min-width: 41%;
+}
+
+.large-width {
+  min-width: 75%;
+}
+
+#optional-field {
+  display: inline-block;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+.ticket-container {
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  padding: 0 10px;
+  margin: 10px 0;
+}
+
+.ticket-container mat-form-field {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.delete-ticket-button {
+  display: flex;
+  margin-left: auto;
+  color: #034953;
+}
+
+.delete-ticket-button mat-icon {
+  margin: auto 0;
+  transform: scale(1.2);
+}
+
+.delete-ticket-button mat-icon:hover {
+  cursor: pointer;
+  color: #FF0000;
+}
+
+.invalid-ticket-input {
+  color: #FF0000;
+}
+
+.invalid-ticket-input:focus {
+  color: #000000;
+}
+

@@ -1,0 +1,71 @@
+<div class="card-body" style="overflow: hidden !important; position: relative; padding: 0 !important;">
+  <div class="section-title">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <h2>Add Business</h2>
+  </div>
+
+  <form style="margin-top: 30px" name="addBusinessForm" [formGroup]="addBusinessForm">
+
+    <!--Name-->
+    <div>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Name <span style="color: red;">*</span></mat-label>
+        <input formControlName="name" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="addBusinessForm.get('name')?.invalid">{{getFormNameErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <!--City-->
+      <mat-form-field  appearance="outline" style="width: 30%; margin-right: 2%">
+        <mat-label>City <span style="color: red;">*</span></mat-label>
+        <mat-select formControlName="city">
+          <div *ngFor="let city of cities">
+            <mat-option value="{{city}}"> {{city}} </mat-option>
+          </div>
+        </mat-select>
+        <mat-error *ngIf="addBusinessForm.get('city')?.invalid">{{getFormCityErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <!--CUI-->
+      <mat-form-field appearance="outline" style="width: 68%">
+        <mat-label>CUI <span style="color: red;">*</span></mat-label>
+        <input formControlName="cui" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="addBusinessForm.get('cui')?.invalid">{{getFormCuiErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!--Address-->
+    <div>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Address <span style="color: red;">*</span></mat-label>
+        <input formControlName="address" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="addBusinessForm.get('address')?.invalid">{{getFormAddressErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!--Image-->
+    <div id="img-input-container">
+      <label for="business-img-input" style="margin: 0;">
+        <mat-icon style="vertical-align: middle" inline=true>image</mat-icon>
+        &nbsp;Import Image
+      </label>
+      <h4 style="margin: auto 5px">
+        <strong >Selected: </strong>
+        {{imagePath}}
+      </h4>
+      <input type="file" id="business-img-input" (change)="selectImage($event)">
+    </div>
+
+    <!--Submit Button-->
+    <div class="center-button">
+      <button mat-raised-button id="submitButton" [disabled]="!addBusinessForm.valid" data-dismiss="modal"
+              (click)="addBusiness(addBusinessForm)">Submit</button>
+    </div>
+  </form>
+</div>
+
+
+

@@ -1,0 +1,40 @@
+#tickets-container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+}
+
+.ticket {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  align-items: flex-end;
+}
+
+.ticket h3 {
+  width: 20%;
+  font-size: 1.2em;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.ticket .ticket-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dot-line {
+  flex-grow: 1;
+  min-width: 10%;
+  border: none;
+  border-bottom: 2px dashed #7c795d;
+  color: #ffffff;
+  background-color: #ffffff;
+  margin: 0 20px 7px 20px;
+}

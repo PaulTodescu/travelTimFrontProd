@@ -1,0 +1,42 @@
+<div class="card-body">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+  <div id="images-section">
+    <div id="image-container">
+      <img id="selected-image" src="{{selectedImage}}" alt="..." (click)="showImageModal(selectedImage)">
+    </div>
+    <p id="fullscreen-img" (click)="showImageModal(selectedImage)">fullscreen</p>
+    <div id="carousel-background">
+      <carousel [height]="150">
+        <div *ngFor="let image of images" class="carousel-cell">
+          <img src="{{image}}" alt="..." (click)="setImage(image)">
+        </div>
+      </carousel>
+    </div>
+    <ng-image-fullscreen-view
+      [images]="imageObjects"
+      [imageIndex]="selectedImageIndex"
+      [show]="showImageModalFlag"
+      (close)="closeImageModal()">
+    </ng-image-fullscreen-view>
+  </div>
+  <div id="wrapper">
+    <div *ngIf="data.description !== null" class="section">
+      <h1 class="title">Description</h1>
+      <p id="text"> {{data.description}}
+      </p>
+    </div>
+    <div *ngIf="data.utilities.length !== 0" class="section">
+      <h1 class="title">Services</h1>
+      <div id="utilities-container">
+        <div class="utility" *ngFor="let utility of data.utilities">
+          <h3>{{utility.name}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

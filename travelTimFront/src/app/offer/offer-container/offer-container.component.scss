@@ -1,0 +1,256 @@
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 80%;
+  margin: 50px auto;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+}
+
+#offer-title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+  color: #7c795d;
+  align-self: center;
+  margin-top: 15px;
+}
+
+#offer-container {
+  width: 100%;
+  margin-top: 15px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+}
+
+#top-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+#left-container {
+  min-width: 60%;
+  flex: 1 1 0px;
+  margin-right: 20px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#images-section {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 7px;
+}
+
+#fullscreen-img {
+  text-decoration: underline;
+  width: fit-content;
+  cursor: pointer;
+  color: #7c795d;
+  font-family: Bahnschrift, serif;
+  margin: 10px 0 3px 0;
+}
+
+#carousel-background {
+  padding: 0 15px;
+  background-color: #f7f7f7;
+  border-radius: 7px
+}
+
+#image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+#selected-image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 7px;
+}
+
+#selected-image:hover {
+  cursor: pointer;
+}
+
+.carousel {
+  z-index: 0;
+}
+
+.carousel > .carousel-cell > img {
+  border: 1px solid red;
+}
+
+ng-image-fullscreen-view {
+  position: absolute;
+  z-index: 1;
+}
+
+#right-container {
+  flex: 1 1 0px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 7px;
+}
+
+.provider-details {
+  text-align: center;
+}
+
+.provider-details h1 {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  display: inline-block;
+  position: relative;
+}
+
+.provider-details h1:hover {
+  cursor: pointer;
+}
+
+.provider-details h1:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #7c795d;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.provider-details h1:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.provider-details .provider-name {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.provider-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#offer-details {
+  padding: 20px 0 20px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#offer-details h3 {
+  width: fit-content;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+#offer-details #rating:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#offer-details #schedule:hover {
+  text-decoration: underline;
+  cursor: pointer
+}
+
+#map {
+  padding: 0 10px 10px 10px;
+}
+
+#contact-details {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  white-space: normal;
+  word-break: break-word;
+  margin-top: 20px;
+  padding: 30px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border-radius: 7px;
+}
+
+#contact-details h3 {
+  font-family: Bahnschrift, serif;
+  margin: auto 20px auto 0;
+  color: #7c795d;
+}
+
+#contact-details h3 .mat-icon {
+  margin-right: 10px;
+}
+
+
+.section-title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+  color: #7c795d;
+}
+
+.mat-icon {
+  vertical-align: middle;
+  transform: scale(1.2);
+  color: #7c795d;
+}
+
+#lodging-offers {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 7px;
+}
+
+#lodging-offers:empty {
+  display: none;
+}
+
+.currency-txt {
+  display: inline-block;
+  margin-right: 10px;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  font-weight: bold;
+}
+
+.currency-field {
+  width: 60px;
+  padding: 0;
+  margin: 0;
+}
+
+.section {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 7px;
+}
+
+.section:empty {
+  display: none;
+}
+
+.section #offer-description {
+  font-family: 'Trocchi', sans-serif;
+  font-size: 18px;
+  line-height: 32px;
+}
+
+

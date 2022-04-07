@@ -1,0 +1,76 @@
+#container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  width: 80%;
+  margin: 50px auto;
+  overflow: hidden;
+  padding: 20px 0 20px 20px;
+  background-color: #f7f7f7;
+
+}
+
+#dashboard-container {
+  justify-content: flex-start;
+  display: block;
+  width: 25%;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+}
+
+#content-container {
+  width: 70%;
+  margin: 0 auto;
+  height: auto;
+  justify-content: flex-end;
+}
+
+.separator{
+  width: 90%;
+  height: 1px;
+  background-color: #ededed;
+  margin: 0 auto;
+}
+
+h2 {
+  font-family: Bahnschrift, serif;
+  margin: 15px auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+h2:hover {
+  cursor: pointer;
+  transform: translateX(3px);
+  transition: all 0.2s ease;
+}
+
+.selectedOption {
+  color: #999999;
+}
+
+.mat-icon {
+  vertical-align: middle;
+  transform: scale(1.2);
+  margin-right: 5px
+}
+
+.icon-text {
+  width: 90%;
+  margin: 0 auto;
+}
+
+
+.account-name {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.6em;
+  text-align: center;
+  background-color: #949494;
+  color: #ffffff;
+  margin: 10px auto;
+  padding: 10px 0;
+  border-radius: 5px;
+  word-wrap: break-word;
+}

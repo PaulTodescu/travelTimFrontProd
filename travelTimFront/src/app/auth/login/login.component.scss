@@ -1,0 +1,20 @@
+.full-width {
+  width: 100%;
+}
+.center-button {
+  text-align: center;
+}
+
+.submitButton {
+  background-color: #034953 !important;
+  color: white !important;
+  font-size: 1.1em;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #034953 !important;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+  color: black !important;
+}

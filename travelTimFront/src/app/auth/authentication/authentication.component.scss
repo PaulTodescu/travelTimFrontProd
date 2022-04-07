@@ -1,0 +1,45 @@
+#tab{
+  background-color: white;
+}
+.center {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+.logo-png{
+  float: left;
+  width:70px;
+  height: 50px;
+}
+
+.logo-title-png{
+  font-size: 35px;
+  font-family: "Times New Roman", sans-serif;
+  float: right;
+  color: black;
+  text-decoration: none;
+  padding: 13px 0;
+}
+.title-image{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn {
+  width: 45%;
+  color: white;
+  margin: 0 3px;
+}

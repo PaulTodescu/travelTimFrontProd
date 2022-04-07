@@ -1,0 +1,20 @@
+<div class="account-management-right-container">
+  <h1>Profile Image</h1>
+  <div class="separator"></div>
+  <img [src]="profileImagePath" alt="profile-img">
+  <label for="profile-img-input" >
+    <mat-icon inline=true>add_a_photo</mat-icon><br>
+    <span class="inner"><span style="font-size: 1.1em">Change</span><br> (min. 200 x 200) </span>
+  </label>
+  <input type="file" id="profile-img-input" (change)="uploadFile($event)">
+  <h1 style="margin-top: 30px">Account information</h1>
+  <div class="separator" style="margin-bottom: 30px"></div>
+  <app-user-information></app-user-information>
+  <h1 style="margin-top: 30px">My Businesses</h1>
+  <div class="separator" style="margin-bottom: 30px"></div>
+  <app-user-businesses></app-user-businesses>
+  <div class="separator" style="margin-top: 30px"></div>
+  <button mat-raised-button id="delete-account-button" name="deleteAccountButton" (click)="openDeleteAccountConfirmationDialog()">
+    Delete my account
+  </button>
+</div>

@@ -1,0 +1,173 @@
+#offers-container {
+  display: block;
+  width: 80%;
+  margin: 50px auto;
+  overflow: hidden;
+  padding: 20px;
+  background-color: #f7f7f7;
+}
+
+.offer-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.img-container {
+  max-width: 300px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: fill;
+  border-radius: 7px;
+}
+
+.offer-info {
+  margin: 10px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-info h1 {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+  display: inline-block;
+  position: relative;
+}
+
+.offer-info h1:hover {
+  cursor: pointer;
+}
+
+.offer-info h1:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.offer-info h1:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.offer-info h4 {
+  margin-top: 10px;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+.offer-info h4 span {
+  font-size: 1.3em;
+}
+
+.favourite-btn {
+  transform: scale(1.4);
+  margin-left: auto;
+  margin-bottom: 10px;
+}
+
+.right-side {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.right-side .favourite-btn {
+  margin-left: auto;
+}
+
+.right-side h2 {
+  margin-top: auto;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+.favourite-btn:hover {
+  cursor: pointer;
+}
+
+.mat-icon {
+  vertical-align: middle;
+  transform: scale(1.2);
+}
+
+#filter-options {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.option-txt{
+  display: block;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  font-weight: bold;
+  margin: 0;
+}
+
+.filter-field{
+  width: 100px;
+  display: block;
+}
+
+.nrItems-field {
+  width: 40px;
+  display: block;
+  float: right;
+  padding: 0;
+  margin: 0;
+}
+
+.alert-heading {
+  margin: 15px;
+}
+
+#search-container {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 450px;
+  height: 50px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  font-size: 1.2em;
+}
+
+#search-container .mat-icon {
+  cursor: pointer;
+}
+
+#search-bar {
+  border: none;
+  width: 100%;
+  height: 100%;
+  padding: 0 5px;
+  font-weight: 500;
+}
+
+#search-bar:focus {
+  outline: none;
+  color: #000000;
+}
+
+#search-bar:focus::placeholder {
+  color: transparent;
+}

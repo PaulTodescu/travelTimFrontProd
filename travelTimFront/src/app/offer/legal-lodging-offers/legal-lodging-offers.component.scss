@@ -1,0 +1,71 @@
+.offer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 7px;
+  padding: 10px 10px;
+  margin-bottom: 20px;
+  overflow: auto;
+}
+
+.offer-details {
+  display: flex;
+  flex-direction: row;
+  flex: 2 1 0;
+  flex-wrap: wrap;
+}
+
+.offer-details h4 {
+  margin: auto 20px auto 0;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  white-space: pre;
+}
+
+.offer-details h4 span {
+  font-weight: bold;
+  font-size: 1.2em
+}
+
+.offer-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 0 1 100px;
+}
+
+.offer-actions h2 {
+  margin: auto 20px auto 0;
+  font-family: Bahnschrift, serif;
+  white-space: nowrap;
+  color: #7c795d;
+}
+
+.details-btn {
+  background-color: #696969;
+  color: white;
+  float: right;
+  font-size: 1.1em;
+  margin-right: 10px;
+}
+
+.details-btn .mat-icon {
+  color: #ffffff;
+  margin-left: 10px;
+}
+
+.reserve-btn {
+  background-color: #034953;
+  color: white;
+  float: right;
+  font-size: 1.1em;
+}
+
+.reserve-btn .mat-icon {
+  color: #ffffff;
+  margin-left: 10px;
+}

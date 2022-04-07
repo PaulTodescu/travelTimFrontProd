@@ -1,0 +1,155 @@
+<app-navbar></app-navbar>
+<app-offer-recommendations></app-offer-recommendations>
+
+
+<div id="offers-container" [ngSwitch]="category">
+
+  <div *ngIf="showFilterOptions === true" id="filter-options">
+    <div style="justify-content: flex-start;">
+      <h4 class="option-txt">Sort by: </h4>
+      <mat-form-field class="filter-field" appearance="legacy">
+        <mat-select [value]="sortingMethod" (selectionChange)="sortOffers($event.value)">
+          <mat-option style="color: black;" value="latest"> Latest </mat-option>
+          <mat-option style="color: black;" value="oldest"> Oldest </mat-option>
+          <mat-option *ngIf="category === 'lodging'" style="color: black;" value="priceAsc"> Price Asc. </mat-option>
+          <mat-option *ngIf="category === 'lodging'" style="color: black;" value="priceDesc"> Price Desc. </mat-option>
+          <mat-option style="color: black;" value="nameAsc"> Name Asc. </mat-option>
+          <mat-option style="color: black;" value="nameDesc"> Name Desc. </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div id="search-container">
+      <input type="text" placeholder="Search" id="search-bar" autocomplete="off"
+             #searchInput (keyup)="getFilteredOffers(searchInput.value)">
+      <mat-icon>search</mat-icon>
+    </div>
+
+    <div style="margin-left: auto;">
+      <h4 class="option-txt">Items per page: </h4>
+      <mat-form-field appearance="legacy" class="nrItems-field">
+        <mat-select [value]="nrItemsOnPage" (selectionChange)="changeNrItemsOnPage($event.value)">
+          <mat-option style="color: black;" [value]="10"> 10 </mat-option>
+          <mat-option style="color: black;" [value]="25"> 25 </mat-option>
+          <mat-option style="color: black;" [value]="50"> 50 </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'lodging'">
+    <div *ngIf="lodgingOffers.length !== 0">
+      <div *ngFor="let offer of lodgingOffers | paginate: { id: 'lodgingOffersPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: lodgingOffers.length }">
+          <div class="offer-container">
+            <div class="img-container">
+              <img [src]="offer.image" alt="...">
+            </div>
+            <div class="offer-info">
+              <div *ngIf="offer.business !== undefined; then showLegalPersonOffer else showPhysicalPersonOffer"></div>
+              <ng-template #showLegalPersonOffer>
+                <h1 (click)="goToOfferPage({id: offer.id, category: 'lodging', type: 'legal'})">{{offer.business?.name}}</h1>
+                <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.business?.address}}, {{offer.business?.city}}</h4>
+                <div *ngIf="offer.nrLodgingOffers !== 1; then showPluralOffers else showSingularOffer"></div>
+                <ng-template #showPluralOffers>
+                  <h4><mat-icon style="margin-right: 10px"> local_offer</mat-icon><span><b>{{offer.nrLodgingOffers}}</b></span> available offers</h4>
+                </ng-template>
+                <ng-template #showSingularOffer>
+                  <h4><mat-icon style="margin-right: 10px"> local_offer</mat-icon><span><b>{{offer.nrLodgingOffers}}</b></span> available offer</h4>
+                </ng-template>
+              </ng-template>
+              <ng-template #showPhysicalPersonOffer>
+                <h1 (click)="goToOfferPage({id: offer.id, category: 'lodging', type: 'physical'})">{{offer.title}}</h1>
+                <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer?.address}}, {{offer?.city}}</h4>
+              </ng-template>
+            </div>
+            <div class="right-side">
+              <mat-icon class="favourite-btn">favorite_border</mat-icon>
+              <h2>Price <span *ngIf="offer.business !== undefined">starting from </span>: {{offer.price}} RON
+                <span style="font-size: 0.6em">(/night)</span></h2>
+            </div>
+          </div>
+      </div>
+      <pagination-controls
+        id="lodgingOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+      </pagination-controls>
+    </div>
+  </div>
+  <div *ngSwitchCase="'food'">
+    <div *ngIf="foodOffers.length !== 0">
+      <div *ngFor="let offer of foodOffers | paginate: { id: 'foodOffersPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: foodOffers.length }">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="offer.image" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'food'})">{{offer.business?.name}}</h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.business?.address}}, {{offer.business?.city}}</h4>
+          </div>
+          <mat-icon class="favourite-btn">favorite_border</mat-icon>
+        </div>
+      </div>
+      <pagination-controls
+        id="foodOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+      </pagination-controls>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'attractions'">
+    <div *ngIf="attractionOffers.length !== 0">
+      <div *ngFor="let offer of attractionOffers | paginate: { id: 'attractionOffersPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: attractionOffers.length }">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="offer.image" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'attractions'})">{{offer.title}}</h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+          </div>
+          <mat-icon class="favourite-btn">favorite_border</mat-icon>
+        </div>
+      </div>
+      <pagination-controls
+        id="attractionOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+      </pagination-controls>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'activities'">
+    <div *ngIf="activityOffers.length !== 0">
+      <div *ngFor="let offer of activityOffers | paginate: { id: 'activityOffersPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: activityOffers.length }">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="offer.image" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'activities'})">{{offer.title}}</h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+          </div>
+          <mat-icon class="favourite-btn">favorite_border</mat-icon>
+        </div>
+      </div>
+      <pagination-controls
+        id="activityOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+      </pagination-controls>
+    </div>
+  </div>
+
+  <div *ngIf="showNoOffersMessage === true" class="offer-container" role="alert">
+    <h4 class="alert-heading">NO OFFERS FOUND!</h4>
+  </div>
+</div>
+
+<mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
+

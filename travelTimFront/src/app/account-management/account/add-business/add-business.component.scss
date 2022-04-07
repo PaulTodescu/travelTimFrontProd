@@ -1,0 +1,79 @@
+.close-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  background-color: #f7f7f7;
+  margin: 10px;
+}
+
+.section-title{
+  background-color: #034953;
+  border-radius: 7px;
+}
+
+h2 {
+  font-size: 26px;
+  color: white;
+  font-family: Bahnschrift, serif;
+  text-decoration: none;
+  text-align: center;
+  word-wrap: break-word;
+  padding: 15px 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.center-button {
+  text-align: center;
+  margin-top: 25px;
+}
+
+#submitButton {
+  background-color: #034953;
+  color: white;
+  font-size: 1.1em;
+  vertical-align: bottom;
+}
+
+button[disabled]{
+  cursor: not-allowed;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #034953 !important;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+  color: black !important;
+}
+
+#img-input-container {
+  display: flex;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+}
+
+input#business-img-input {
+  display: none;
+}
+
+label {
+  background-color: #fcfcfc;
+  font-size: 14px;
+  color: black;
+  padding: 15px 10px;
+  float: left;
+  border-right: 1px solid #e6e6e6;
+  border-radius: 5px 0 0 5px;
+}
+
+label:hover {
+  cursor: pointer;
+  background-color: #fafafa;
+}
+
+

@@ -1,0 +1,31 @@
+<form name="loginForm" [formGroup]="loginForm">
+
+  <!--Email-->
+  <div>
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput type="email" autocomplete="email"/>
+    </mat-form-field>
+  </div>
+
+  <!--Password-->
+  <div>
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Password</mat-label>
+      <input formControlName="password" matInput [type]=" hidePassword ? 'password' : 'text'" />
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide Password'" [attr.aria-pressed]="hidePassword">
+        <mat-icon>
+          {{hidePassword ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <h3 style="color: red; font-family: Bahnschrift, serif;" [hidden] = '!wrongCredentialsError'> Invalid Email Address or Password </h3>
+
+
+  <div class="center-button">
+    <button class="submitButton" mat-raised-button (click)="login(loginForm)">Login</button>
+  </div>
+</form>
+

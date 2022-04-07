@@ -1,0 +1,58 @@
+<div class="card" style="width: 80%">
+  <div class="card-body">
+    <form name="editUserForm" [formGroup]="UserDetailsForm">
+      <div>
+        <!--First Name-->
+        <mat-form-field appearance="outline" style="margin-right: 2%; width: 49%">
+          <mat-label>First Name</mat-label>
+          <input formControlName="firstName" matInput type="text" autocomplete="off"/>
+          <mat-error *ngIf="UserDetailsForm.get('firstName')?.invalid">{{getFormFirstNameErrorMessage()}}</mat-error>
+        </mat-form-field>
+
+        <!--Last Name-->
+        <mat-form-field appearance="outline" style="width: 49%">
+          <mat-label>Last Name</mat-label>
+          <input formControlName="lastName" matInput type="text" autocomplete="off"/>
+          <mat-error *ngIf="UserDetailsForm.get('lastName')?.invalid">{{getFormLastNameErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Gender-->
+      <div>
+        <mat-form-field appearance="outline" style="width: 49%">
+          <mat-label>Gender</mat-label>
+          <mat-select  formControlName="gender">
+            <mat-option value="Male">Male</mat-option>
+            <mat-option value="Female">Female</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--Email-->
+      <div>
+        <mat-form-field class="full-width" appearance="outline" disabled="true">
+          <mat-label>Email</mat-label>
+          <input formControlName="email" matInput type="text"/>
+        </mat-form-field>
+      </div>
+
+      <!--Phone-->
+      <div>
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input formControlName="phoneNumber" matInput type="text" autocomplete="off"/>
+          <mat-error *ngIf="UserDetailsForm.get('phoneNumber')?.invalid">{{getFormPhoneNumberErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="isFormEditable === true; then showSaveButton else showEditButton"></div>
+      <ng-template #showSaveButton>
+        <button mat-raised-button id="save-button" [disabled]="!UserDetailsForm.valid" (click)="onSaveProfile(UserDetailsForm)">Save</button>
+        <button mat-raised-button id="cancel-button" (click)="onCancelProfile()">Cancel</button>
+      </ng-template>
+      <ng-template #showEditButton>
+        <button mat-raised-button (click)="onChangeProfile()" id="edit-button">Edit</button>
+      </ng-template>
+    </form>
+  </div>
+</div>

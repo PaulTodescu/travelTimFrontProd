@@ -1,0 +1,15 @@
+#recommendations-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  width: 80%;
+  margin: 50px auto;
+  overflow: hidden;
+  padding: 20px;
+  background-color: #f7f7f7;
+}
+
+h1 {
+  margin: 10px auto;
+}

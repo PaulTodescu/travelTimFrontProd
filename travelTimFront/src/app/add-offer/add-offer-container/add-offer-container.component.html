@@ -1,0 +1,58 @@
+<app-navbar></app-navbar>
+<div id="container">
+  <div class="header">
+    <h1 class="title"><b>Add Offer</b></h1>
+  </div>
+  <div class="section-container">
+    <h1>Category</h1>
+    <app-add-offer-categories-section (selectedCategoryEvent)="getSelectedCategory($event)"></app-add-offer-categories-section>
+  </div>
+
+  <div *ngIf="selectedCategory === 'lodging'" @fadeIn>
+    <app-add-lodging-form
+      (lodgingOfferTypeEvent)="getLodgingOfferType($event)"
+      (legalPersonLodgingFormEvent)="getLegalPersonLodgingFormValue($event)"
+      (legalPersonLodgingFormValidityEvent)="checkLegalPersonLodgingFormValidity($event)"
+      (physicalPersonLodgingFormEvent)="getPhysicalPersonLodgingFormValue($event)"
+      (physicalPersonLodgingFormValidityEvent)="checkPhysicalPersonLodgingFormValidity($event)">
+    </app-add-lodging-form>
+  </div>
+  <div *ngIf="selectedCategory === 'food'" @fadeIn>
+    <app-add-food-offer-form
+    (foodOfferFormEvent)="getFoodOfferFormValue($event)"
+    (foodOfferFormValidityEvent)="checkFoodOfferFormValidity($event)">
+    </app-add-food-offer-form>
+  </div>
+  <div *ngIf="selectedCategory === 'attractions'" @fadeIn>
+    <app-add-attractions-offer-form
+      (attractionsOfferFormEvent)="getAttractionOfferFormValue($event)"
+      (attractionsOfferFormValidityEvent)="checkAttractionsFormValidity($event)">
+    </app-add-attractions-offer-form>
+  </div>
+  <div *ngIf="selectedCategory === 'activities'" @fadeIn>
+    <app-add-activities-offer-form
+      (activityOfferFormEvent)="getActivityOfferFormValue($event)"
+      (activityOfferFormValidityEvent)="checkActivityFormValidity($event)">
+    </app-add-activities-offer-form>
+  </div>
+  <div *ngIf="selectedCategory !== undefined" @fadeIn>
+    <div class="section-container">
+      <h1>Images</h1>
+      <app-add-offer-images-section (imagesEvent)="getImages($event)"></app-add-offer-images-section>
+    </div>
+    <div class="section-container">
+      <h1>Contact</h1>
+      <app-add-offer-contact-section
+        (phoneNumberEvent)="getPhoneNumber($event)"
+        (phoneNumberValidityEvent)="checkPhoneNumberValidity($event)"></app-add-offer-contact-section>
+    </div>
+    <div class="btn-container">
+      <div class="right-button" style="margin-right: 10px">
+        <button mat-raised-button class="submit-button">Preview</button>
+      </div>
+      <div class="right-button">
+        <button mat-raised-button class="submit-button" (click)="addOffer()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

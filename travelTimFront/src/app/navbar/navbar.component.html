@@ -1,0 +1,60 @@
+<header>
+  <div class="content">
+    <ul class="nav-left">
+        <li class="nav-item" >
+            <a class="nav-link active" mat-button (click)="goToHomePage()">Home</a>
+        </li>
+    </ul>
+    <ul class="nav-left">
+      <li class="nav-item" >
+        <a class="nav-link active" mat-button (click)="goToOffers('lodging')">Lodging</a>
+      </li>
+    </ul>
+    <ul class="nav-left">
+      <li class="nav-item" >
+        <a class="nav-link active" mat-button (click)="goToOffers('food')">Food & Beverage</a>
+      </li>
+    </ul>
+    <ul class="nav-left">
+      <li class="nav-item" >
+        <a class="nav-link active" mat-button (click)="goToOffers('attractions')">Tourist Attractions</a>
+      </li>
+    </ul>
+    <ul class="nav-left">
+    <li class="nav-item" >
+      <a class="nav-link active" mat-button (click)="goToOffers('activities')">Recreational Activities</a>
+    </li>
+    </ul>
+    <ul class="nav-right">
+      <li class="nav-item">
+        <button class="add-offer-btn" mat-raised-button (click)="goToAddOffer()">Add Offer</button>
+      </li>
+    </ul>
+    <ul class="nav-right">
+        <li class="nav-item">
+          <div *ngIf="username !== undefined; then showUsername else showLogin"></div>
+          <ng-template #showUsername>
+            <img [src]="profileImage" alt="profile-img">
+            <a class="nav-link active" [matMenuTriggerFor]="appMenu" mat-button>
+              {{username}}
+              <mat-icon inline=true>arrow_drop_down</mat-icon>
+            </a>
+            <mat-menu #appMenu="matMenu">
+              <ng-template matMenuContent>
+                <button mat-menu-item (click)="goToMyAccountDashboard()">
+                  <mat-icon>account_box</mat-icon>
+                  My Account</button>
+                <button mat-menu-item (click)="logout()" style="color: red;">
+                  <mat-icon>exit_to_app</mat-icon>
+                  Log out</button>
+              </ng-template>
+            </mat-menu>
+          </ng-template>
+          <ng-template #showLogin>
+            <a class="nav-link active" mat-button (click)="goToAuthenticationPage()">My Account</a>
+          </ng-template>
+        </li>
+    </ul>
+  </div>
+</header>
+<div class="separator"></div>

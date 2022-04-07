@@ -1,0 +1,44 @@
+<div class="businesses-container">
+  <div>
+    <button mat-raised-button id="add-button" (click)="openAddBusinessModal()">
+    New <mat-icon>add</mat-icon></button>
+  <button mat-raised-button id="export-button" *ngIf="businesses?.length !== 0" (click)="downloadBusinessesCsv()">
+    Export<mat-icon>arrow_downward</mat-icon></button>
+  </div>
+  <div *ngIf="businesses?.length !== 0; then showBusinesses else showNoBusinessesMessage"></div>
+  <ng-template #showBusinesses>
+    <div class="business-row-header">
+      <div style="flex: 1 1 0; overflow: auto; display: flex;
+      flex-direction: row;">
+        <h3 class="data-column">Name</h3>
+        <h3 class="data-column">City</h3>
+      </div>
+      <div style="flex: 1 1 10%">
+        <h3 class="data-column">Actions</h3>
+      </div>
+    </div>
+    <div class="business-row" *ngFor="let business of businesses">
+      <div style="flex: 1 1 0; overflow: auto; display: flex;
+      flex-direction: row;">
+        <h3 class="data-column">{{business?.name}}</h3>
+        <h3 class="data-column">{{business?.city}}</h3>
+      </div>
+      <div style="flex: 1 1 10%">
+        <button mat-raised-button id="details-button" (click)="openBusinessDetailsModal(business.id)">
+          Details <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-raised-button id="edit-button" (click)="openEditBusinessModal(business.id)">
+          Edit<mat-icon>edit</mat-icon>
+        </button>
+        <button mat-raised-button id="delete-button" (click)="openDeleteBusinessDialog(business.id, business.name)">
+          Delete<mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #showNoBusinessesMessage>
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">NO BUSINESSES FOUND!</h4>
+    </div>
+  </ng-template>
+</div>

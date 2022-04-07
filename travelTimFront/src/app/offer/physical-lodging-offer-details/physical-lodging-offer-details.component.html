@@ -1,0 +1,19 @@
+<div class="offer">
+  <div class="offer-details">
+    <h4>Rooms: <span>{{offer?.nrRooms}}</span></h4>
+    <h4>Bathrooms: <span>{{offer?.nrBathrooms}}</span></h4>
+    <h4>Single Beds: <span>{{offer?.nrSingleBeds}}</span></h4>
+    <h4>Double Beds: <span>{{offer?.nrDoubleBeds}}</span></h4>
+    <h4>Floor: <span>{{offer?.floor}}</span></h4>
+  </div>
+  <div class="offer-actions">
+    <h2>{{offer?.price}} {{offer?.currency}}</h2>
+    <button mat-raised-button class="reserve-btn">Reserve<mat-icon>loyalty</mat-icon></button>
+  </div>
+</div>
+
+<div id="utilities-container">
+  <div *ngFor="let utility of offer?.utilities" class="utility">
+    <h3>{{utility.name}}</h3>
+  </div>
+</div>

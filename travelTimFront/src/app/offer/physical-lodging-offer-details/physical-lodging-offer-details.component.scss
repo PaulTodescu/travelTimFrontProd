@@ -1,0 +1,85 @@
+.offer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 7px;
+  padding: 10px 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.offer-details {
+  display: flex;
+  flex-direction: row;
+  flex: 2 1 100px;
+  flex-wrap: wrap;
+}
+
+.offer-details h4 {
+  margin: auto 30px auto 0;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  white-space: pre;
+}
+
+.offer-details h4 span {
+  font-weight: bold;
+  font-size: 1.1em
+}
+
+.offer-actions {
+  display: flex;
+  flex-direction: row;
+  flex: 0 1 0;
+  align-items: center;
+}
+
+.offer-actions h2 {
+  margin: auto 20px auto 0;
+  font-family: Bahnschrift, serif;
+  white-space: nowrap;
+  color: #7c795d;
+}
+
+.reserve-btn {
+  background-color: #034953;
+  color: white;
+  float: right;
+  font-size: 1.1em;
+}
+
+.reserve-btn .mat-icon {
+  color: #ffffff;
+  margin-left: 10px;
+}
+
+#utilities-container {
+  color: #7c795d;
+  font-family: Bahnschrift, serif;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #f7f7f7;
+  border-radius: 7px;
+  padding: 5px 0;
+}
+
+#utilities-container:empty {
+  display: none;
+}
+
+.utility {
+  border-radius: 7px;
+  background-color: #ffffff;
+  margin: 5px 0 5px 10px;
+  padding: 5px 15px;
+}
+
+.utility h3 {
+  font-size: 1.2em;
+  margin: auto;
+}

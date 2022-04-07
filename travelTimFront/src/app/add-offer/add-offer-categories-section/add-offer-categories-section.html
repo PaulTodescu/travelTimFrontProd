@@ -1,0 +1,47 @@
+<div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4">
+
+  <div class="col">
+    <div class="img-container">
+      <img src="../../../assets/img/lodging-category.png" alt="...">
+      <h2 class="img-text"
+          [ngClass]="{'selectedCategory': selectedCategory === 'lodging'}"
+          (click)="switchCategory('lodging')">
+        Lodging
+      </h2>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="img-container" >
+      <img src="../../../assets/img/food-category.png" alt="...">
+      <h2 class="img-text"
+          [ngClass]="{'selectedCategory': selectedCategory === 'food'}"
+          (click)="switchCategory('food')">
+        Food
+      </h2>
+    </div>
+
+  </div>
+  <div class="col">
+    <div class="img-container" >
+      <img src="../../../assets/img/attractions-category.png" alt="...">
+      <h2 class="img-text"
+          [ngClass]="{'selectedCategory': selectedCategory === 'attractions'}"
+          (click)="switchCategory('attractions')">
+        Attraction
+      </h2>
+    </div>
+
+  </div>
+  <div class="col">
+    <div class="img-container" >
+      <img src="../../../assets/img/recreational-category.png" alt="...">
+      <h2 class="img-text"
+          [ngClass]="{'selectedCategory': selectedCategory === 'activities'}"
+          (click)="switchCategory('activities')">
+        Activity
+      </h2>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,24 @@
+<div class="center">
+  <div class="row align-items-center h-100">
+    <div class="col-md-5 col-sm-10 mx-auto">
+      <div id="tab" class="card justify-content-center">
+        <div class="title-image">
+<!--          <img src="assets/img/logo.png" alt="logo" class ="logo-png">-->
+          <p class="logo-title-png">TravelTim</p>
+        </div>
+        <div style="margin: 0 auto; text-align: center; width: 100%;">
+          <button class="btn" [style.background]="flag? '#034953': '#a3acad'" type="button" (click)="switchBetweenLoginRegister('login')" >Login</button>
+          <button class="btn" [style.background]="!flag? '#034953': '#a3acad'" type="button" (click)="switchBetweenLoginRegister('register')" >Register</button>
+        </div>
+        <div class="card-body">
+          <div *ngIf="flag">
+            <app-login></app-login>
+          </div>
+          <div *ngIf="!flag">
+            <app-register></app-register>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

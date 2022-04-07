@@ -1,0 +1,107 @@
+<div class="section-container">
+  <h1>Details</h1>
+  <div *ngIf="showBusinessInput === false; then showAddBusinessInput else showHideBusinessInput"></div>
+  <form name="AddActivityOfferForm" [formGroup]="AddAttractionOfferForm">
+
+    <ng-template #showAddBusinessInput>
+      <h2 class="text-btn" (click)="toggleBusinessInput()">Have an organization?</h2>
+    </ng-template>
+
+    <ng-template #showHideBusinessInput>
+      <h2 class="text-btn" (click)="toggleBusinessInput()">Remove organization</h2>
+      <div id="business-container" *ngIf="showBusinessInput === true">
+        <mat-form-field appearance="fill" class="medium-width">
+          <mat-label> Business </mat-label>
+          <div *ngIf="userBusinesses?.length !== 0; then showBusinesses else showNoBusinessMessage"></div>
+          <ng-template #showBusinesses>
+            <mat-select formControlName="business" (selectionChange)="sendFormData()">
+              <div *ngFor="let business of userBusinesses">
+                <mat-option [value]="business"> {{business?.name}} </mat-option>
+              </div>
+            </mat-select>
+          </ng-template>
+          <ng-template #showNoBusinessMessage>
+            <mat-select>
+              <mat-option> no businesses found </mat-option>
+            </mat-select>
+          </ng-template>
+        </mat-form-field>
+        <p id="add-business" (click)="openAddBusinessModal()"> add business </p>
+      </div>
+    </ng-template>
+
+    <!--Title-->
+    <div>
+      <mat-form-field appearance="fill" class="medium-width">
+        <mat-label> Title <span style="color: red;"> *</span></mat-label>
+        <input formControlName="title" matInput type="text" autocomplete="off" (change)="sendFormData()"/>
+        <mat-error *ngIf="AddAttractionOfferForm.controls['title'].invalid">{{getFormTitleErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <!--Address-->
+      <mat-form-field appearance="fill" class="medium-width" style="margin-right: 1%">
+        <mat-label> Address <span style="color: red;"> *</span></mat-label>
+        <input formControlName="address" matInput type="text" autocomplete="off" (change)="sendFormData()"/>
+        <mat-error *ngIf="AddAttractionOfferForm.controls['address'].invalid">{{getFormAddressErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <!--City-->
+      <mat-form-field  appearance="fill" class="small-width">
+        <mat-label>City <span style="color: red;">*</span></mat-label>
+        <mat-select formControlName="city" (selectionChange)="sendFormData()">
+          <div *ngFor="let city of cities">
+            <mat-option [value]="city"> {{city}} </mat-option>
+          </div>
+        </mat-select>
+        <mat-error *ngIf="AddAttractionOfferForm.controls['city'].invalid">you must select a value</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!--Description-->
+    <div>
+      <mat-form-field appearance="fill" class="large-width">
+        <mat-label> Description <span style="color: red;"> *</span></mat-label>
+        <textarea #input maxlength="1000" formControlName="description" matInput [rows]="4" pInputTextarea
+                  [autoResize]="true" (change)="sendFormData()"></textarea>
+        <mat-hint align="end">{{input.value?.length || 0}}/1000</mat-hint>
+        <mat-error *ngIf="AddAttractionOfferForm.controls['description'].invalid">{{getFormDescriptionErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+<div class="section-container">
+  <h1>Pricing</h1>
+  <h2 class="text-btn" style="margin-right: 10px" (click)="addTicket()">
+    Add ticket
+    <mat-icon>add</mat-icon>
+  </h2>
+  <h4 id="optional-field">(optional)</h4>
+
+  <div *ngIf="getTickets().length !== 0">
+    <div class="ticket-container" *ngFor="let ticket of getTickets(); let i = index" >
+
+      <!--Name-->
+      <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 55%">
+        <mat-label> Ticket Name <span style="color: red;"> *</span></mat-label>
+        <input #menuItemNameInput matInput type="text" autocomplete="off"
+               (change)="changeTicketName(menuItemNameInput.value, i)"/>
+      </mat-form-field>
+
+      <!--Price-->
+      <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 20%">
+        <mat-label> Price  <span style="font-size: 0.8em">(RON)</span> <span style="color: red;"> *</span></mat-label>
+        <input #menuItemPriceInput matInput type="number" autocomplete="off"
+               (change)="changeTicketPrice(menuItemPriceInput.value, i)"
+               [ngClass]="{'invalid-ticket-input': getTickets()[i].price.toString() === 'NaN'}"/>
+      </mat-form-field>
+
+      <div class="delete-ticket-button">
+        <mat-icon (click)="deleteTicket(i)">delete</mat-icon>
+      </div>
+
+    </div>
+  </div>
+</div>

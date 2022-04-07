@@ -1,0 +1,15 @@
+.small-width {
+  min-width: 30%;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+  color: black !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  background-color:  #034953 !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  background-color:  #034953 !important;
+}

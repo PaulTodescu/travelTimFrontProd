@@ -1,0 +1,270 @@
+<div class="section-container">
+  <h1>Details</h1>
+  <h3 id="choose-person-type">Choose <span style="color: red">*</span> </h3>
+  <div id="person-type-container">
+    <button class="person-type-button" style="margin-right: 5px"
+            (click)="switchPersonType('legal')"
+            [ngClass]="{'selectedPersonType': selectedPersonType === 'legal'}">
+      Legal Person
+    </button>
+    <button class="person-type-button"
+            (click)="switchPersonType('physical')"
+            [ngClass]="{'selectedPersonType': selectedPersonType === 'physical'}">
+      Physical Person
+    </button>
+  </div>
+  <div *ngIf="selectedPersonType !== undefined">
+    <div *ngIf="selectedPersonType === 'legal'; then showLegalPersonForm else showPhysicalPersonForm"></div>
+      <ng-template #showLegalPersonForm>
+
+        <!--Business-->
+        <form name="AddLegalPersonLodgingOfferForm" [formGroup]="AddLegalPersonLodgingOfferForm">
+          <div id="business-container">
+            <mat-form-field appearance="fill" class="small-width">
+              <mat-label> Business <span style="color: red;">*</span></mat-label>
+              <div *ngIf="userBusinesses?.length !== 0; then showBusinesses else showNoBusinessMessage"></div>
+              <ng-template #showBusinesses>
+                <mat-select formControlName="business" (selectionChange)="sendFormData()">
+                  <div *ngFor="let business of userBusinesses">
+                    <mat-option [value]="business"> {{business?.name}} </mat-option>
+                  </div>
+                </mat-select>
+              </ng-template>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['business'].invalid">you must select a value</mat-error>
+              <ng-template #showNoBusinessMessage>
+                <mat-select formControlName="business">
+                  <mat-option> no businesses found </mat-option>
+                </mat-select>
+              </ng-template>
+            </mat-form-field>
+            <p id="add-business" (click)="openAddBusinessModal()"> add business </p>
+          </div>
+
+          <div>
+            <!--Number Rooms-->
+            <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
+              <mat-label>Nr. Rooms <span style="color: red;"> *</span></mat-label>
+              <mat-select formControlName="nrRooms" (selectionChange)="sendFormData()">
+                <div *ngFor='let index of counter(10) ;let i = index'>
+                  <mat-option [value]="i+1"> {{i+1}} </mat-option>
+                </div>
+              </mat-select>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['nrRooms'].invalid">you must select a value</mat-error>
+            </mat-form-field>
+
+            <!--Number Bathrooms-->
+            <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
+              <mat-label>Nr. Bathrooms <span style="color: red;"> *</span></mat-label>
+              <mat-select formControlName="nrBathrooms" (selectionChange)="sendFormData()">
+                <div *ngFor='let index of counter(10) ;let i = index'>
+                  <mat-option [value]="i+1"> {{i+1}} </mat-option>
+                </div>
+              </mat-select>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['nrBathrooms'].invalid">you must select a value</mat-error>
+            </mat-form-field>
+
+            <!--Number Single Beds-->
+            <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
+              <mat-label>Nr. Single Beds <span style="color: red;"> *</span></mat-label>
+              <mat-select formControlName="nrSingleBeds" (selectionChange)="sendFormData()">
+                <div *ngFor='let index of counter(21) ;let i = index'>
+                  <mat-option [value]="i"> {{i}} </mat-option>
+                </div>
+              </mat-select>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['nrSingleBeds'].invalid">you must select a value</mat-error>
+            </mat-form-field>
+
+            <!--Number Double Beds-->
+            <mat-form-field appearance="fill" class="small-width">
+              <mat-label>Nr. Double Beds <span style="color: red;"> *</span></mat-label>
+              <mat-select formControlName="nrDoubleBeds" (selectionChange)="sendFormData()">
+                <div *ngFor='let index of counter(21) ;let i = index'>
+                  <mat-option [value]="i"> {{i}} </mat-option>
+                </div>
+              </mat-select>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['nrDoubleBeds'].invalid">you must select a value</mat-error>
+            </mat-form-field>
+
+          </div>
+          <div>
+            <!--Floor-->
+            <mat-form-field appearance="fill" class="small-width">
+              <mat-label> Floor <span style="color: red;"> *</span></mat-label>
+              <mat-select formControlName="floor" (selectionChange)="sendFormData()">
+                <div *ngFor='let index of counter(101) ;let i = index'>
+                  <mat-option [value]="i"> {{i}} </mat-option>
+                </div>
+              </mat-select>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['floor'].invalid">you must select a value</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <!--Price-->
+            <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
+              <mat-label> Price <span style="font-size: 0.8em">(/night)</span> <span style="color: red;"> *</span></mat-label>
+              <input formControlName="price" matInput type="number" autocomplete="off" (change)="sendFormData()"/>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['price'].invalid">you must enter a value</mat-error>
+            </mat-form-field>
+
+            <!--Currency-->
+            <mat-form-field  appearance="fill" class="small-width">
+              <mat-label>Currency<span style="color: red;"> *</span></mat-label>
+              <mat-select formControlName="currency" (selectionChange)="sendFormData()">
+                <mat-option value="RON">RON</mat-option>
+                <mat-option value="EUR">EUR</mat-option>
+              </mat-select>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['currency'].invalid">you must select a value</mat-error>
+            </mat-form-field>
+
+          </div>
+
+          <!--Description-->
+          <div>
+            <mat-form-field appearance="fill" class="large-width">
+              <mat-label> Description </mat-label>
+              <textarea #input maxlength="1000" formControlName="description" matInput [rows]="4" pInputTextarea
+                        [autoResize]="true" (change)="sendFormData()"></textarea>
+              <mat-hint align="end">{{input.value?.length || 0}}/1000</mat-hint>
+              <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['description'].invalid">enter at least 10 characters</mat-error>
+            </mat-form-field>
+          </div>
+
+        </form>
+      </ng-template>
+
+    <ng-template #showPhysicalPersonForm>
+      <form name="AddPhysicalPersonLodgingOfferForm" [formGroup]="AddPhysicalPersonLodgingOfferForm">
+
+        <div style="margin-top: 30px;">
+        <!--Title-->
+        <mat-form-field appearance="fill" class="medium-width">
+          <mat-label> Title <span style="color: red;"> *</span></mat-label>
+          <input formControlName="title" matInput type="text" autocomplete="off" (change)="sendFormData()"/>
+          <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['title'].invalid">{{getTitleFormErrorMessage()}}</mat-error>
+        </mat-form-field>
+        </div>
+
+        <div>
+          <!--Address-->
+          <mat-form-field appearance="fill" class="medium-width" style="margin-right: 1%">
+            <mat-label> Address <span style="color: red;"> *</span></mat-label>
+            <input formControlName="address" matInput type="text" autocomplete="off" (change)="sendFormData()"/>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['address'].invalid">{{getAddressFormErrorMessage()}}</mat-error>
+          </mat-form-field>
+
+          <!--City-->
+          <mat-form-field  appearance="fill" class="small-width">
+            <mat-label>City <span style="color: red;">*</span></mat-label>
+            <mat-select formControlName="city" (selectionChange)="sendFormData()">
+              <div *ngFor="let city of cities">
+                <mat-option [value]="city"> {{city}} </mat-option>
+              </div>
+            </mat-select>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['city'].invalid">you must select a value</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <!--Number Rooms-->
+          <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
+            <mat-label>Nr. Rooms <span style="color: red;"> *</span></mat-label>
+            <mat-select formControlName="nrRooms" (selectionChange)="sendFormData()">
+              <div *ngFor='let index of counter(10) ;let i = index'>
+                <mat-option [value]="i+1"> {{i+1}} </mat-option>
+              </div>
+            </mat-select>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['nrRooms'].invalid">you must select a value</mat-error>
+          </mat-form-field>
+
+          <!--Number Bathrooms-->
+          <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
+            <mat-label>Nr. Bathrooms <span style="color: red;"> *</span></mat-label>
+            <mat-select formControlName="nrBathrooms" (selectionChange)="sendFormData()">
+              <div *ngFor='let index of counter(10) ;let i = index'>
+                <mat-option [value]="i+1"> {{i+1}} </mat-option>
+              </div>
+            </mat-select>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['nrBathrooms'].invalid">you must select a value</mat-error>
+          </mat-form-field>
+
+          <!--Number Single Beds-->
+          <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
+            <mat-label>Nr. Single Beds <span style="color: red;"> *</span></mat-label>
+            <mat-select formControlName="nrSingleBeds" (selectionChange)="sendFormData()">
+              <div *ngFor='let index of counter(21) ;let i = index'>
+                <mat-option [value]="i"> {{i}} </mat-option>
+              </div>
+            </mat-select>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['nrSingleBeds'].invalid">you must select a value</mat-error>
+          </mat-form-field>
+
+          <!--Number Double Beds-->
+          <mat-form-field appearance="fill" class="small-width">
+            <mat-label>Nr. Double Beds <span style="color: red;"> *</span></mat-label>
+            <mat-select formControlName="nrDoubleBeds" (selectionChange)="sendFormData()">
+              <div *ngFor='let index of counter(21) ;let i = index'>
+                <mat-option [value]="i"> {{i}} </mat-option>
+              </div>
+            </mat-select>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['nrDoubleBeds'].invalid">you must select a value</mat-error>
+          </mat-form-field>
+
+        </div>
+        <div>
+          <!--Floor-->
+          <mat-form-field appearance="fill" class="small-width">
+            <mat-label> Floor <span style="color: red;"> *</span></mat-label>
+            <mat-select formControlName="floor" (selectionChange)="sendFormData()">
+              <div *ngFor='let index of counter(101) ;let i = index'>
+                <mat-option [value]="i"> {{i}} </mat-option>
+              </div>
+            </mat-select>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['floor'].invalid">you must select a value</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <!--Price-->
+          <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
+            <mat-label> Price <span style="font-size: 0.8em">(/night)</span> <span style="color: red;"> *</span></mat-label>
+            <input formControlName="price" matInput type="number" autocomplete="off" (change)="sendFormData()"/>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['price'].invalid">you must enter a value</mat-error>
+          </mat-form-field>
+
+          <!--Currency-->
+          <mat-form-field  appearance="fill" class="small-width">
+            <mat-label>Currency<span style="color: red;"> *</span></mat-label>
+            <mat-select formControlName="currency" (selectionChange)="sendFormData()">
+              <mat-option value="RON">RON</mat-option>
+              <mat-option value="EUR">EUR</mat-option>
+            </mat-select>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['currency'].invalid">you must select a value</mat-error>
+          </mat-form-field>
+
+        </div>
+
+        <!--Description-->
+        <div>
+          <mat-form-field appearance="fill" class="large-width">
+            <mat-label> Description </mat-label>
+            <textarea #input maxlength="1000" formControlName="description" matInput [rows]="4" pInputTextarea
+                      [autoResize]="true" (change)="sendFormData()"></textarea>
+            <mat-hint align="end">{{input.value?.length || 0}}/1000</mat-hint>
+            <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['description'].invalid">enter at least 10 characters</mat-error>
+          </mat-form-field>
+        </div>
+
+      </form>
+    </ng-template>
+
+    <h2 id="lodging-services" (click)="openUtilityInputModal()">Add Services<mat-icon>add</mat-icon></h2>
+
+    <div id="utilities-container">
+      <div class="utility" *ngFor="let utility of utilities; let i=index">
+        <h3>{{utility.name}} <mat-icon (click)="deleteUtility(i)">close</mat-icon></h3>
+      </div>
+    </div>
+
+  </div>
+</div>

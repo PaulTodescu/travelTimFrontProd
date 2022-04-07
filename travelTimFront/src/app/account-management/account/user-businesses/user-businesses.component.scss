@@ -1,0 +1,88 @@
+.businesses-container {
+  width: 100%;
+}
+
+.business-row-header {
+  display: flex;
+  flex-direction: row;
+  background-color: #949494;
+  color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  padding: 10px 30px;
+  margin: 10px 0;
+}
+
+.business-row {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  clear: both;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  padding: 10px 30px;
+  margin: 20px 0;
+}
+
+.data-column {
+  flex: 1 1 0;
+  float: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+  margin: 0;
+}
+
+.alert-info{
+  margin: 30px 0 !important;
+  background-color: #f7f7f7 !important;
+  border: none !important;
+  color: #525252 !important;
+}
+
+.alert-heading {
+  margin: 15px 0;
+}
+
+#add-button {
+  background-color: #034953;
+  color: white;
+  font-size: 1.1em;
+}
+
+#export-button {
+  background-color: #034953;
+  color: white;
+  float: right;
+  font-size: 1.1em;
+}
+
+#details-button {
+  background-color: #696969;
+  color: white;
+  float: left;
+  margin: 5px 8px 5px 0;
+  font-size: 1.1em;
+  overflow: hidden;
+}
+
+#edit-button {
+  background-color: #0275d8;
+  color: white;
+  float: left;
+  margin: 5px 8px 5px 0;
+}
+
+#delete-button {
+  background-color: #c73c3c;
+  color: white;
+  float: left;
+  margin: 5px 0 5px 0;
+  font-size: 1.1em;
+}
+
+mat-icon {
+  vertical-align: middle;
+}
+

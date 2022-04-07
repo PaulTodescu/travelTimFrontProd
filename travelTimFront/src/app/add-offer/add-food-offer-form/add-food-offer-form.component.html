@@ -1,0 +1,92 @@
+<div class="section-container">
+  <h1>Details</h1>
+  <form name="AddFoodOfferForm" [formGroup]="AddFoodOfferForm">
+  <!--  Business-->
+    <div id="business-container">
+      <mat-form-field appearance="fill" class="small-width">
+        <mat-label> Business <span style="color: red;">*</span></mat-label>
+        <div *ngIf="userBusinesses?.length !== 0; then showBusinesses else showNoBusinessMessage"></div>
+        <ng-template #showBusinesses>
+          <mat-select formControlName="business" (selectionChange)="sendFormData()">
+            <div *ngFor="let business of userBusinesses">
+              <mat-option [value]="business"> {{business?.name}} </mat-option>
+            </div>
+          </mat-select>
+        </ng-template>
+        <mat-error *ngIf="AddFoodOfferForm.controls['business'].invalid">you must select a value</mat-error>
+        <ng-template #showNoBusinessMessage>
+          <mat-select>
+            <mat-option> no businesses found </mat-option>
+          </mat-select>
+        </ng-template>
+      </mat-form-field>
+      <p id="add-business" (click)="openAddBusinessModal()"> add business </p>
+    </div>
+
+  <!--  Description-->
+    <div>
+      <mat-form-field appearance="fill" class="large-width">
+        <mat-label> Description <span style="color: red;"> *</span></mat-label>
+        <textarea #input maxlength="1000" formControlName="description" matInput [rows]="4"
+                  (change)="sendFormData()" pInputTextarea [autoResize]="true"></textarea>
+        <mat-hint align="end">{{input.value?.length || 0}}/1000</mat-hint>
+        <mat-error *ngIf="AddFoodOfferForm.controls['description'].invalid">{{getFormDescriptionErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+<div class="section-container">
+  <h1>Menu</h1>
+  <h2 id="add-food-category" (click)="openFoodCategoryInputModal()">Add Category
+    <mat-icon>add</mat-icon>
+  </h2>
+  <h4 id="optional-field">(optional)</h4>
+  <div class="food-menu" *ngFor="let category of menuCategories">
+    <div class="category-header">
+      <h2>{{category}}</h2>
+      <div class="action-buttons">
+        <button mat-raised-button class="add-menu-item-button" (click)="addMenuItem(category)">Add item
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-raised-button class="delete-menu-category-button" (click)="openDeleteConfirmationDialog(category)">Delete
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="getItemsForMenuCategory(category).length !== 0">
+      <div class="category-items"
+           *ngFor="let menuItem of getItemsForMenuCategory(category); let i = index" >
+
+          <!--Name-->
+          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 35%">
+            <mat-label> Item Name <span style="color: red;"> *</span></mat-label>
+            <input #menuItemNameInput matInput type="text" autocomplete="off"
+                   (change)="changeMenuItemName(menuItemNameInput.value, i, category)"/>
+          </mat-form-field>
+
+          <!--Weight-->
+          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 20%">
+            <mat-label> Quantity <span style="font-size: 0.8em">(grams)</span> </mat-label>
+            <input #menuItemWeightInput matInput type="number" autocomplete="off"
+                   (change)="changeMenuItemWeight(menuItemWeightInput.value, i, category)"
+                   [ngClass]="{'invalid-menu-input': getItemsForMenuCategory(category)[i].weight <= 0}"/>
+          </mat-form-field>
+
+          <!--Price-->
+          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 20%">
+            <mat-label> Price  <span style="font-size: 0.8em">(RON)</span> <span style="color: red;"> *</span></mat-label>
+            <input #menuItemPriceInput matInput type="number" autocomplete="off"
+                   (change)="changeMenuItemPrice(menuItemPriceInput.value, i, category)"
+                   [ngClass]="{'invalid-menu-input': getItemsForMenuCategory(category)[i].price <= 0}"/>
+          </mat-form-field>
+
+        <div class="delete-menu-item-button">
+            <mat-icon (click)="deleteMenuItem(category, i)">delete</mat-icon>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

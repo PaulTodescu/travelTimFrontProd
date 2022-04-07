@@ -1,0 +1,45 @@
+img {
+  width: 100%;
+  height: 150px;
+  object-fit: fill;
+  margin: 0;
+  border-radius: 7px;
+}
+
+.col {
+  margin: 10px 0 !important;
+}
+
+.img-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 7px;
+}
+
+.img-text {
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%,-50%);
+  font-family: "Trebuchet MS", sans-serif;
+  color: #ffffff;
+  background-color: #949494;
+  border: 2px solid #ffffff;
+  border-radius: 7px;
+  padding: 5px;
+  transition: opacity .2s, visibility .2s;
+  cursor: pointer;
+  word-wrap: break-word;
+}
+
+.img-container:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.selectedCategory{
+  background-color: #034953;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+}

@@ -1,0 +1,66 @@
+<form name="registerForm" [formGroup]="registerForm">
+
+  <div>
+    <!--First Name-->
+    <mat-form-field appearance="outline" style="margin-right: 2%; width: 49%">
+      <mat-label>First Name <span style="color: red;"> *</span></mat-label>
+      <input formControlName="firstName" matInput type="text" autocomplete="off"/>
+      <mat-error *ngIf="registerForm.get('firstName')?.invalid">{{getFormFirstNameErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <!--Last Name-->
+    <mat-form-field appearance="outline" style="width: 49%">
+      <mat-label>Last Name <span style="color: red;"> *</span></mat-label>
+      <input formControlName="lastName" matInput type="text" autocomplete="off"/>
+      <mat-error *ngIf="registerForm.get('lastName')?.invalid">{{getFormLastNameErrorMessage()}}</mat-error>
+    </mat-form-field>
+  </div>
+
+  <!--Gender-->
+  <div>
+    <mat-form-field appearance="outline" style="width: 49%">
+      <mat-label>Gender <span style="color: red;"> *</span></mat-label>
+      <mat-select  formControlName="gender">
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+      <mat-error *ngIf="registerForm.get('gender')?.invalid">{{getFormGenderErrorMessage()}}</mat-error>
+    </mat-form-field>
+  </div>
+
+  <!--Email-->
+  <div>
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Email <span style="color: red;"> *</span></mat-label>
+      <input formControlName="email" matInput type="text" autocomplete="off"/>
+      <mat-error *ngIf="registerForm.get('email')?.invalid">{{getFormEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+  </div>
+
+  <!--Password-->
+  <div>
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Password <span style="color: red;"> *</span></mat-label>
+      <input formControlName="password" matInput [type]=" hidePassword ? 'password' : 'text'" autocomplete="off"/>
+      <mat-error *ngIf="registerForm.get('password')?.invalid">{{getFormPasswordErrorMessage()}}</mat-error>
+      <button  mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide Password'" [attr.aria-pressed]="hidePassword">
+        <mat-icon>
+          {{hidePassword ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <!--Confirm Password-->
+  <div>
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Confirm Password <span style="color: red;"> *</span></mat-label>
+      <input formControlName="confirmPassword" matInput type='password' autocomplete="off"/>
+      <mat-error *ngIf="registerForm.get('confirmPassword')?.invalid">{{getFormConfirmPasswordErrorMessage()}}</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="center-button">
+    <button mat-raised-button class="submitButton" [disabled]="!registerForm.valid" (click)="register(registerForm)">Register</button>
+  </div>
+</form>
