@@ -37,7 +37,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   public getRoute(originLocation: string, selectedTravelMode: string): void{
-    // alert("directions api called with value: " + originLocation)
     let travelMode: string = '';
     if (selectedTravelMode === "DRIVING"){
       travelMode = google.maps.TravelMode.DRIVING;

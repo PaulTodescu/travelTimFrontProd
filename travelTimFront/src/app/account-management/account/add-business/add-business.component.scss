@@ -53,6 +53,9 @@ button[disabled]{
 
 #img-input-container {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 }
@@ -66,7 +69,6 @@ label {
   font-size: 14px;
   color: black;
   padding: 15px 10px;
-  float: left;
   border-right: 1px solid #e6e6e6;
   border-radius: 5px 0 0 5px;
 }
@@ -75,5 +77,23 @@ label:hover {
   cursor: pointer;
   background-color: #fafafa;
 }
+
+#selected-img {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1
+}
+
+#selected-img-names {
+  color: #034953;
+  margin-left: auto;
+  margin-right: 10px
+}
+
+#selected-img-names:hover {
+  cursor: pointer;
+}
+
+
 
 

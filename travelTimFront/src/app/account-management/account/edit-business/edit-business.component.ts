@@ -18,9 +18,8 @@ export class EditBusinessComponent implements OnInit {
   businessToEdit: Business | undefined;
   cities: string[] | undefined;
 
-  imagePath: string | undefined;
-  originalImagePath: string | undefined;
-  image: File | undefined;
+  imageFiles: File[] = [];
+  imageNames: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,14 +68,41 @@ export class EditBusinessComponent implements OnInit {
     })
   }
 
-  public editBusiness(editBusinessForm: FormGroup): void {
-    if (this.businessToEdit !== undefined) {
-      this.businessService.editBusiness(editBusinessForm.value, this.businessToEdit.id).subscribe(
+  private getInitialImages(businessId: any) {
+    this.imageService.getBusinessImagesNames(businessId).subscribe(
+      (response: string[]) => {
+        this.imageNames = response;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    )
+  }
+
+  public selectImages(event: any): void {
+    if (event.target.files.length > 0 && event.target.files[0]) {
+      this.imageNames = [];
+      this.imageFiles = [];
+      let numberImages = event.target.files.length;
+      for (let i = 0; i < numberImages; i++) {
+        this.imageNames.push(event.target.files[i].name);
+        this.imageFiles.push(event.target.files[i]);
+      }
+    }
+  }
+
+  public getSelectedImages(): string {
+    let result: string = '';
+    for (let image of this.imageNames) {
+      result = result + image + '\n';
+    }
+    return result;
+  }
+
+  public uploadImages(images: File[], businessId: number): void {
+    if (images.length > 0) {
+      this.imageService.uploadBusinessImages(images, businessId).subscribe(
         () => {
-          if (this.imagePath !== this.originalImagePath){
-            this.uploadImage(this.image, this.data.businessId);
-          }
-          this.onSuccess();
         },
         (error: HttpErrorResponse) => {
           alert(error.message);
@@ -85,36 +111,18 @@ export class EditBusinessComponent implements OnInit {
     }
   }
 
-  private getOriginalImagePath(businessId: any) {
-    this.imageService.getBusinessImagePath(businessId).subscribe(
-      (response: string) => {
-        this.imagePath = response;
-        this.originalImagePath = response;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error);
-      }
-    )
-  }
-
-  public selectImage(event: Event): void {
-    this.imagePath = this.originalImagePath;
-    this.image = undefined;
-    const element = event.currentTarget as HTMLInputElement;
-    let fileList: FileList | null = element.files;
-    if (fileList) {
-      this.imagePath = fileList[0].name;
-      this.image = fileList[0];
+  public editBusiness(editBusinessForm: FormGroup): void {
+    if (this.businessToEdit !== undefined) {
+      this.businessService.editBusiness(editBusinessForm.value, this.businessToEdit.id).subscribe(
+        () => {
+          this.uploadImages(this.imageFiles, this.data.businessId);
+          this.onSuccess();
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
     }
-  }
-
-  public uploadImage(image: File | undefined, businessId: number): void {
-    this.imageService.uploadBusinessImage(image, businessId).subscribe(
-      () => {},
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    )
   }
 
   public onSuccess(){
@@ -163,7 +171,7 @@ export class EditBusinessComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBusinessToEdit(this.data.businessId);
-    this.getOriginalImagePath(this.data.businessId);
+    this.getInitialImages(this.data.businessId);
     this.getCities();
   }
 

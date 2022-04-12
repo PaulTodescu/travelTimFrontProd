@@ -26,29 +26,33 @@ export class ImageService {
     return this.http.get<any>(`${this.apiUrl}/image/user/${userId}`, {responseType: 'text' as 'json'});
   }
 
-  public uploadBusinessImage(image: File | undefined, businessId: number): Observable<void>{
+  public uploadBusinessImages(images: File[], businessId: number): Observable<void>{
     const formData = new FormData();
-    // @ts-ignore
-    formData.append("image", image);
+    for (let i=0; i<images?.length; i++){
+      formData.append("images", images[i]);
+    }
     return this.http.post<void>(`${this.apiUrl}/image/business/${businessId}`, formData);
   }
 
-  public getBusinessImage(businessId: number): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/image/business/${businessId}`, {responseType: 'text' as 'json'});
+  public getBusinessFrontImage(businessId: number): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/image/business/${businessId}/front`, {responseType: 'text' as 'json'});
+  }
+
+  public getBusinessImages(businessId: number): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/image/business/${businessId}/all`);
+  }
+
+  public getBusinessImagesNames(businessId: number): Observable<string[]>{
+    return this.http.get<string[]>(`${this.apiUrl}/image/business/${businessId}/all/names`);
   }
 
   public uploadOfferImages(offerId: number, offerType: string, images: File[]): Observable<void>{
     const formData = new FormData();
-    // @ts-ignore
     formData.append("offerType", offerType);
     for (let i=0; i<images?.length; i++){
       formData.append("images", images[i]);
     }
     return this.http.post<void>(`${this.apiUrl}/image/offer/${offerId}`, formData);
-  }
-
-  public getBusinessImagePath(businessId: number){
-    return this.http.get<any>(`${this.apiUrl}/image/business/${businessId}/name`, {responseType: 'text' as 'json'});
   }
 
   public getOfferImages(offerId: number, offerType: string): Observable<any>{

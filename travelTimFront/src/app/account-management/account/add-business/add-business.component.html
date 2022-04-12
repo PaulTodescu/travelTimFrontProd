@@ -50,13 +50,41 @@
     <div id="img-input-container">
       <label for="business-img-input" style="margin: 0;">
         <mat-icon style="vertical-align: middle" inline=true>image</mat-icon>
-        &nbsp;Import Image
+        &nbsp;Import Images
       </label>
-      <h4 style="margin: auto 5px">
-        <strong >Selected: </strong>
-        {{imagePath}}
-      </h4>
-      <input type="file" id="business-img-input" (change)="selectImage($event)">
+
+      <div id="selected-img">
+        <h4 style="margin: auto 5px">
+          <strong >Selected: </strong>
+        </h4>
+        <div *ngIf="images.length === 0; then showNoSelectedImages else showNrImagesSelected"></div>
+        <ng-template #showNoSelectedImages>
+          <h4 style="margin: auto 5px">
+            default
+          </h4>
+        </ng-template>
+        <ng-template #showNrImagesSelected>
+          <div *ngIf="images.length === 1; then showSingularSelectedImage else showMultipleImagesSelected"></div>
+          <ng-template #showSingularSelectedImage>
+            <h4 style="margin: auto 5px">
+              {{imageFiles[0].name}}
+            </h4>
+          </ng-template>
+          <ng-template #showMultipleImagesSelected>
+            <div style="display: flex; flex-direction: row; flex-grow: 1;">
+              <h4 style="margin: auto 5px">
+                {{images.length}} images
+              </h4>
+              <mat-icon id="selected-img-names"
+              matTooltip="{{getSelectedImages()}}"
+              matTooltipPosition="above">
+                remove_red_eye
+              </mat-icon>
+            </div>
+          </ng-template>
+        </ng-template>
+        <input multiple type="file" id="business-img-input" (change)="selectImages($event)">
+      </div>
     </div>
 
     <!--Submit Button-->

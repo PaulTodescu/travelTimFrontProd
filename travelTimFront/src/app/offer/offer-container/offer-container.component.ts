@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {MapComponent} from "../../map/map.component";
 import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOffer";
@@ -23,7 +23,7 @@ import {ActivityOfferDetails} from "../../entities/activityOfferDetails";
   templateUrl: './offer-container.component.html',
   styleUrls: ['./offer-container.component.scss']
 })
-export class OfferContainerComponent implements OnInit, AfterViewInit {
+export class OfferContainerComponent implements OnInit {
 
   @ViewChild(MapComponent) mapComponent: any;
   offerId: number | undefined
@@ -104,10 +104,11 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
         this.getLegalPersonLodgingOffersDetails(response.business.id);
         this.offerAddress = response.business.address;
         this.offerCity = response.business.city;
-        this.setMarker(response.business.address + ' ' + response.business.city);
+        this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.offerProviderName = response.business.name;
         this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
+        this.getOfferImages(response.business.id);
         if (response.business?.id !== undefined) {
           this.getProviderImage(response.business.id);
         }
@@ -134,7 +135,7 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
         this.offerTitle = response.title;
         this.offerAddress = response.address;
         this.offerCity = response.city;
-        this.setMarker(response.address + ', ' + response.city);
+        this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.offerProviderName = response.user?.firstName + ', ' + response.user?.lastName;
         if (response.user !== undefined) {
@@ -154,7 +155,7 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
         this.hasOfferBusiness = true;
         this.offerAddress = response.business.address;
         this.offerCity = response.business.city;
-        this.setMarker(response.business.address + ' ' + response.business.city);
+        this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.offerProviderName = response.business.name;
         this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
@@ -182,7 +183,7 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
         this.offerTitle = response.title;
         this.offerAddress = response.address;
         this.offerCity = response.city;
-        this.setMarker(response.address + ' ' + response.city);
+        this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
         this.tickets = response.tickets;
@@ -204,7 +205,7 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
         this.offerTitle = response.title;
         this.offerAddress = response.address;
         this.offerCity = response.city;
-        this.setMarker(response.address + ' ' + response.city);
+        this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
         this.tickets = response.tickets;
@@ -214,7 +215,7 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
 
   public getProviderImage(id: number) {
     if (this.hasOfferBusiness){
-      this.imageService.getBusinessImage(id).subscribe(
+      this.imageService.getBusinessFrontImage(id).subscribe(
         (response: string) => {
           this.offerProviderImage = response;
         },
@@ -235,7 +236,11 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setImage(image: string) {
+  public setLocationMarkerOnMap(): void {
+   //this.setMarker(this.offerAddress + ' ' + this.offerCity);
+  }
+
+  public setImage(image: string): void {
     this.selectedImage = image;
   }
 
@@ -244,15 +249,27 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
   }
 
 
-  public getOfferImages(offerId: number){
-    if (this.offerCategory !== undefined && offerId !== undefined) {
-      this.imageService.getOfferImages(offerId, this.offerCategory).subscribe(
-        (response: string[]) => {
-          this.images = response;
-          this.mapImageObjects();
-          this.selectedImage = response[0];
-        }
-      )
+  public getOfferImages(id: number){
+    if (this.offerCategory !== undefined) {
+      if (this.offerCategory === 'lodging' && this.offerType === 'legal') {
+        this.imageService.getBusinessImages(id).subscribe(
+          (response: string[]) => {
+            this.images = response;
+            this.mapImageObjects();
+            this.selectedImage = response[0];
+          }, (error: HttpErrorResponse) => {
+            alert(error.message);
+          }
+        )
+      } else {
+        this.imageService.getOfferImages(id, this.offerCategory).subscribe(
+          (response: string[]) => {
+            this.images = response;
+            this.mapImageObjects();
+            this.selectedImage = response[0];
+          }
+        )
+      }
     }
   }
 
@@ -282,12 +299,8 @@ export class OfferContainerComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   ngOnInit(): void {
     this.getOffer();
-  }
-
-  ngAfterViewInit(): void {
   }
 
 }

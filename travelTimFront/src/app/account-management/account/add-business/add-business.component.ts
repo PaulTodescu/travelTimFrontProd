@@ -16,8 +16,8 @@ export class AddBusinessComponent implements OnInit {
 
   cities: string[] | undefined;
 
-  imagePath: string = 'Default';
-  image: File | undefined;
+  images : string[] = [];
+  imageFiles: File[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,7 +47,7 @@ export class AddBusinessComponent implements OnInit {
   public addBusiness(businessForm: FormGroup): void{
     this.businessService.addBusiness(businessForm.value).subscribe(
       (businessId: number) => {
-        this.uploadImage(this.image, businessId);
+        this.uploadImages(this.imageFiles, businessId);
         this.onSuccess("Business added successfully");
       },
       (error: HttpErrorResponse) => {
@@ -56,19 +56,32 @@ export class AddBusinessComponent implements OnInit {
     )
   }
 
-  public selectImage(event: Event): void {
-    this.imagePath = 'Default';
-    this.image = undefined;
-    const element = event.currentTarget as HTMLInputElement;
-    let fileList: FileList | null = element.files;
-    if (fileList) {
-      this.imagePath = fileList[0].name;
-      this.image = fileList[0];
+  public selectImages(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      this.images = [];
+      this.imageFiles = [];
+      let numberImages = event.target.files.length;
+      for (let i = 0; i < numberImages; i++) {
+        let reader = new FileReader();
+        reader.onload = (event:any) => {
+          this.images.push(event.target.result);
+        }
+        reader.readAsDataURL(event.target.files[i]);
+        this.imageFiles.push(event.target.files[i]);
+      }
     }
   }
 
-  public uploadImage(image: File | undefined, businessId: number): void {
-    this.imageService.uploadBusinessImage(image, businessId).subscribe(
+  public getSelectedImages(): string {
+    let result: string = '';
+    for (let image of this.imageFiles){
+      result = result + image.name + '\n';
+    }
+    return result;
+  }
+
+  public uploadImages(images: File[], businessId: number): void {
+    this.imageService.uploadBusinessImages(images, businessId).subscribe(
       () => {},
       (error: HttpErrorResponse) => {
         alert(error.message);

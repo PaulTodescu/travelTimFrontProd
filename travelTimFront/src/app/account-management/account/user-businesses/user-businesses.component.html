@@ -8,8 +8,7 @@
   <div *ngIf="businesses?.length !== 0; then showBusinesses else showNoBusinessesMessage"></div>
   <ng-template #showBusinesses>
     <div class="business-row-header">
-      <div style="flex: 1 1 0; overflow: auto; display: flex;
-      flex-direction: row;">
+      <div style="flex: 1 1 0; overflow: auto; display: flex; flex-direction: row;">
         <h3 class="data-column">Name</h3>
         <h3 class="data-column">City</h3>
       </div>

@@ -66,6 +66,7 @@ import { LegalLodgingOffersComponent } from './offer/legal-lodging-offers/legal-
 import { FoodOfferMenuComponent } from './offer/food-offer-menu/food-offer-menu.component';
 import { OfferTicketsComponent } from './offer/offer-tickets/offer-tickets.component';
 import { PhysicalLodgingOfferDetailsComponent } from './offer/physical-lodging-offer-details/physical-lodging-offer-details.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -139,7 +140,8 @@ import { PhysicalLodgingOfferDetailsComponent } from './offer/physical-lodging-o
       NgxPaginationModule,
       IvyCarouselModule,
       NgImageFullscreenViewModule,
-      MatProgressSpinnerModule
+      MatProgressSpinnerModule,
+      MatTooltipModule
     ],
   providers: [AuthInterceptorProvider,  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService],
