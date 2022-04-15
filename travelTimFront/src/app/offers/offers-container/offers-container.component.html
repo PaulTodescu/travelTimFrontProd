@@ -3,7 +3,6 @@
 
 
 <div id="offers-container" [ngSwitch]="category">
-
   <div *ngIf="showFilterOptions === true" id="filter-options">
     <div style="justify-content: flex-start;">
       <h4 class="option-txt">Sort by: </h4>
@@ -67,7 +66,7 @@
             </div>
             <div class="right-side">
               <mat-icon class="favourite-btn">favorite_border</mat-icon>
-              <h2>Price <span *ngIf="offer.business !== undefined">starting from </span>: {{offer.price}} RON
+              <h2>Price<span *ngIf="offer.business !== undefined">starting from</span>: {{offer.price}} RON
                 <span style="font-size: 0.6em">(/night)</span></h2>
             </div>
           </div>

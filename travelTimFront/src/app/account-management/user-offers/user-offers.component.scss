@@ -1,3 +1,23 @@
+#filter-btn {
+  margin-left: auto;
+  align-self: flex-end;
+  margin-bottom: 0;
+  font-size: 1.1em;
+  font-weight: bolder;
+  cursor: pointer;
+  color: #7c795d;
+  font-family: Bahnschrift, serif;
+}
+
+#filter-btn:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#filter-btn .mat-icon {
+  vertical-align: middle;
+  margin-left: 5px;
+}
 
 .separator{
   width: 100%;
@@ -14,24 +34,177 @@ h1 {
   width: 100%;
   display: flex;
   flex-direction: row;
-  text-align: center;
+  justify-content: center;
   margin-top: 30px;
 }
 
-p {
-  width: 20%;
-  white-space: nowrap;
+#offer-types p {
+  text-align: center;
+  flex: 1 1 0;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
   overflow: hidden;
   text-overflow: ellipsis;
-  justify-content: flex-start;
-  font-family: 'Trocchi', sans-serif;
-  font-size: 1.3em;
+  font-size: 1.2em;
   cursor: pointer;
-  margin: 10px 0;
-
+  margin: 0 5px;
+  align-self: center;
 }
 
 .selectedOption {
   text-decoration: underline;
   color: #999999;
 }
+
+.offers-container {
+  display: block;
+  margin: 20px auto;
+  overflow: hidden;
+  padding: 20px;
+  background-color: #f7f7f7;
+}
+
+.offer-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+  overflow: auto;
+}
+
+.top-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 15px;
+  background-color: #f7f7f7;
+  border-radius: 7px;
+  overflow: auto;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 180px;
+  min-width: 100px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: fill;
+  border-radius: 7px;
+}
+
+img:hover {
+  cursor: pointer;
+}
+
+.offer-info {
+  margin: 20px 10px 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-title{
+  font-size: 1.3em;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  word-break: break-word;
+  margin: 5px 0;
+}
+
+.offer-address{
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  margin: 5px 0;
+}
+
+.offer-business{
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  margin: 5px 0;
+}
+
+
+.offer-details{
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+.bold-nr{
+  font-size: 1.3em;
+  font-weight: bolder;
+  margin-left: 5px;
+}
+
+.offer-info h4 span {
+  font-size: 1.3em;
+}
+
+.bottom-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bottom-container h2 {
+  margin-left: auto;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+.mat-icon {
+  vertical-align: text-bottom;
+  transform: scale(1.2);
+}
+
+.alert-heading {
+  margin: 15px;
+}
+
+.delete-btn {
+  margin-left: auto;
+  align-self: flex-start;
+  color: #7c795d;
+  transform: scale(1.2);
+}
+
+.delete-btn:hover {
+  cursor: pointer;
+  color: #c73c3c;
+}
+
+.edit-btn {
+  background-color: #0275d8;
+  color: white;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  font-size: 1.1em;
+}
+
+.edit-btn .mat-icon {
+  margin-left: 5px;
+  vertical-align: middle !important;
+}
+
+
+.disable-btn {
+  background-color: #034953;
+  color: white;
+  margin-bottom: 5px;
+  font-size: 1.1em;
+}
+
+.disable-btn .mat-icon {
+  margin-left: 5px;
+  vertical-align: middle !important;
+}
+
+

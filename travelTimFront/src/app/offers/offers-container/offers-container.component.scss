@@ -10,16 +10,17 @@
 .offer-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   padding: 30px;
   background-color: #ffffff;
   border: 1px solid #e6e6e6;
   box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
   margin-bottom: 25px;
+  overflow: auto;
 }
 
 .img-container {
   max-width: 300px;
+  min-width: 100px;
 }
 
 img {
@@ -68,6 +69,7 @@ img {
   margin-top: 10px;
   font-family: Bahnschrift, serif;
   color: #7c795d;
+  white-space: nowrap;
 }
 
 .offer-info h4 span {
@@ -93,6 +95,7 @@ img {
 .right-side h2 {
   margin-top: auto;
   font-family: Bahnschrift, serif;
+  white-space: nowrap;
   color: #7c795d;
 }
 

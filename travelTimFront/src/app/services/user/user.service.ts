@@ -7,6 +7,11 @@ import {AuthenticationResponse} from "../../entities/AuthenticationResponse";
 import {UserDTO} from "../../entities/userDTO";
 import { JwtHelperService } from "@auth0/angular-jwt"
 import {Business} from "../../entities/business";
+import {LodgingOfferDTO} from "../../entities/lodgingOfferDTO";
+import {LodgingOfferBaseDetailsDTO} from "../../entities/LodgingOfferBaseDetailsDTO";
+import {FoodOfferBaseDetailsDTO} from "../../entities/FoodOfferBaseDetailsDTO";
+import {AttractionOfferBaseDetailsDTO} from "../../entities/attractionOfferBaseDetailsDTO";
+import {ActivityOfferBaseDetailsDTO} from "../../entities/activityOfferBaseDetailsDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -64,5 +69,21 @@ export class UserService {
 
   public getBusinessesForCurrentUser(): Observable<Business[]>{
     return this.http.get<Business[]>(`${this.apiUrl}/user/businesses`);
+  }
+
+  public getLodgingOffers(): Observable<LodgingOfferBaseDetailsDTO[]>{
+    return this.http.get<LodgingOfferBaseDetailsDTO[]>(`${this.apiUrl}/user/offers/lodging`);
+  }
+
+  public getFoodOffers(): Observable<FoodOfferBaseDetailsDTO[]>{
+    return this.http.get<FoodOfferBaseDetailsDTO[]>(`${this.apiUrl}/user/offers/food`);
+  }
+
+  public getAttractionOffers(): Observable<AttractionOfferBaseDetailsDTO[]>{
+    return this.http.get<AttractionOfferBaseDetailsDTO[]>(`${this.apiUrl}/user/offers/attraction`);
+  }
+
+  public getActivityOffers(): Observable<ActivityOfferBaseDetailsDTO[]>{
+    return this.http.get<ActivityOfferBaseDetailsDTO[]>(`${this.apiUrl}/user/offers/activity`);
   }
 }

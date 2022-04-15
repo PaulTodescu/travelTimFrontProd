@@ -16,7 +16,6 @@
 .business-row {
   display: flex;
   flex-direction: row;
-  overflow: hidden;
   clear: both;
   background-color: #ffffff;
   border: 1px solid #e6e6e6;
@@ -26,8 +25,7 @@
 }
 
 .data-column {
-  flex: 1 1 0;
-  float: left;
+  flex: 1 0 0;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 10px;
@@ -59,27 +57,40 @@
 }
 
 #details-button {
+  align-self: flex-start;
   background-color: #696969;
   color: white;
-  float: left;
   margin: 5px 8px 5px 0;
   font-size: 1.1em;
-  overflow: hidden;
 }
 
+#details-button .mat-icon {
+  margin-left: 5px;
+}
+
+
 #edit-button {
+  align-self: flex-start;
   background-color: #0275d8;
   color: white;
   float: left;
-  margin: 5px 8px 5px 0;
+  margin: 5px 10px 5px 0;
+}
+
+#edit-button .mat-icon {
+  margin-left: 5px;
 }
 
 #delete-button {
+  align-self: flex-start;
   background-color: #c73c3c;
   color: white;
-  float: left;
-  margin: 5px 0 5px 0;
+  margin: 5px 0;
   font-size: 1.1em;
+}
+
+#delete-button .mat-icon {
+  margin-left: 5px;
 }
 
 mat-icon {
