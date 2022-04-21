@@ -12,7 +12,7 @@
     </div>
     <div class="separator"></div>
     <div class="icon-text">
-      <h2 [ngClass]="{'selectedOption': selectedOption === 'account'}" (click)="switchSelectedOption('account')">
+      <h2 [ngClass]="{'selectedOption': selectedOption === 'my-account'}" (click)="switchSelectedOption('my-account')">
         <mat-icon>account_box</mat-icon>
         My Account
       </h2>
@@ -55,7 +55,7 @@
   </div>
 
   <div id="content-container">
-    <div *ngIf="selectedOption === 'account'">
+    <div *ngIf="selectedOption === 'my-account'">
       <app-account-container></app-account-container>
     </div>
     <div *ngIf="selectedOption === 'reservations'">

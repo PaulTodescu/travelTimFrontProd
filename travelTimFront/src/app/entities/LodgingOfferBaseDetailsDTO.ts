@@ -1,7 +1,9 @@
+import {BusinessDTO} from "./businessDTO";
+
 export interface LodgingOfferBaseDetailsDTO {
   id: number;
   title: string | undefined;
-  businessName: string | undefined;
+  business: BusinessDTO | undefined;
   address: string;
   city: string;
   nrRooms: number;

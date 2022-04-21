@@ -1,28 +1,30 @@
 <div class="account-management-right-container">
   <div style="display: flex; flex-direction: row">
     <h1>My Offers</h1>
-    <p id="filter-btn">filter<mat-icon>filter_list</mat-icon></p>
+    <p id="filter-btn" (click)="openFilterOptionsModal()">filter<mat-icon>filter_list</mat-icon>
+      <app-filter-options></app-filter-options>
+    </p>
   </div>
   <div class="separator"></div>
   <div id="offer-types">
-    <p [ngClass]="{'selectedOption': category === 'lodging'}"
+    <p [ngClass]="{'selectedOption': selectedCategory === 'lodging'}"
        (click)="switchSelectedCategory('lodging')">
       lodging
     </p>
-    <p [ngClass]="{'selectedOption': category === 'food & beverage'}"
+    <p [ngClass]="{'selectedOption': selectedCategory === 'food & beverage'}"
        (click)="switchSelectedCategory('food & beverage')">
       food & beverage
     </p>
-    <p [ngClass]="{'selectedOption': category === 'attractions'}"
+    <p [ngClass]="{'selectedOption': selectedCategory === 'attractions'}"
        (click)="switchSelectedCategory('attractions')">
       attractions
     </p>
-    <p [ngClass]="{'selectedOption': category === 'activities'}"
+    <p [ngClass]="{'selectedOption': selectedCategory === 'activities'}"
        (click)="switchSelectedCategory('activities')">
       activities
     </p>
   </div>
-  <div class="offers-container" *ngIf="showOffers" [ngSwitch]="category">
+  <div class="offers-container" *ngIf="showOffers" [ngSwitch]="selectedCategory">
     <div *ngSwitchCase="'lodging'">
       <div *ngIf="lodgingOffers.length !== 0">
         <div *ngFor="let offer of lodgingOffers | paginate: { id: 'lodgingOffersPageId',
@@ -35,10 +37,14 @@
                 <img [src]="offer.image" alt="..." (click)="goToLodgingOfferPage(offer)">
               </div>
               <div class="offer-info">
-                <div *ngIf="offer.businessName !== undefined; then showLegalPersonOffer else showPhysicalPersonOffer"></div>
+                <div *ngIf="offer.business !== undefined; then showLegalPersonOffer else showPhysicalPersonOffer"></div>
                 <ng-template #showLegalPersonOffer>
-                  <h4 class="offer-title"><mat-icon style="margin-right: 10px">business</mat-icon>{{offer?.businessName}}</h4>
-                  <h4 class="offer-address"><mat-icon style="margin-right: 10px">location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+                  <h4 class="offer-title"><mat-icon style="margin-right: 10px">business</mat-icon>
+                    {{offer?.business?.name}}
+                  </h4>
+                  <h4 class="offer-address"><mat-icon style="margin-right: 10px">location_on</mat-icon>
+                    {{offer.business?.address}}, {{offer.business?.city}}
+                  </h4>
 
                 </ng-template>
                 <ng-template #showPhysicalPersonOffer>
@@ -72,7 +78,7 @@
           id="lodgingOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="showNoOffersMessage === true" class="offer-container" role="alert">
+      <div *ngIf="lodgingOffers.length === 0" class="offer-container" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
@@ -111,7 +117,7 @@
           id="foodOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="showNoOffersMessage === true" class="offer-container" role="alert">
+      <div *ngIf="foodOffers.length === 0" class="offer-container" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
@@ -149,7 +155,7 @@
           id="attractionOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="showNoOffersMessage === true" class="offer-container" role="alert">
+      <div *ngIf="attractionOffers.length === 0" class="offer-container" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
@@ -187,7 +193,7 @@
           id="activityOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="showNoOffersMessage === true" class="offer-container" role="alert">
+      <div *ngIf="activityOffers.length === 0" class="offer-container" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>

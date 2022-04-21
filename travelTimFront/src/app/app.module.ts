@@ -12,7 +12,7 @@ import {IvyCarouselModule} from 'angular-responsive-carousel';
 import { MatButtonModule } from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
@@ -67,6 +67,7 @@ import { FoodOfferMenuComponent } from './offer/food-offer-menu/food-offer-menu.
 import { OfferTicketsComponent } from './offer/offer-tickets/offer-tickets.component';
 import { PhysicalLodgingOfferDetailsComponent } from './offer/physical-lodging-offer-details/physical-lodging-offer-details.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { FilterOptionsComponent } from './account-management/user-offers/filter-options/filter-options.component';
 
 
 @NgModule({
@@ -106,6 +107,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     FoodOfferMenuComponent,
     OfferTicketsComponent,
     PhysicalLodgingOfferDetailsComponent,
+    FilterOptionsComponent,
   ],
     imports: [
       BrowserModule,
@@ -143,8 +145,14 @@ import {MatTooltipModule} from '@angular/material/tooltip';
       MatProgressSpinnerModule,
       MatTooltipModule
     ],
-  providers: [AuthInterceptorProvider,  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService],
+  providers:
+    [
+      AuthInterceptorProvider,
+      { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+      { provide: MAT_DIALOG_DATA, useValue: {} },
+      { provide: MatDialogRef, useValue: {} },
+      JwtHelperService
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOffer";
+import {LodgingOfferPriceDTO} from "../../entities/lodgingOfferPriceDTO";
 
 @Component({
   selector: 'app-physical-lodging-offer-details',
@@ -9,6 +10,7 @@ import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOf
 export class PhysicalLodgingOfferDetailsComponent implements OnInit {
 
   @Input() offer: PhysicalPersonLodgingOffer | undefined;
+  @Input() offerPrice: LodgingOfferPriceDTO | undefined;
 
   constructor() { }
 

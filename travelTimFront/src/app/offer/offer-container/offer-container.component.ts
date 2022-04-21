@@ -17,6 +17,7 @@ import {ActivityService} from "../../services/activity/activity.service";
 import {AttractionOfferDetails} from "../../entities/attractionOfferDetails";
 import {Ticket} from "../../entities/ticket";
 import {ActivityOfferDetails} from "../../entities/activityOfferDetails";
+import {LodgingOfferPriceDTO} from "../../entities/lodgingOfferPriceDTO";
 
 @Component({
   selector: 'app-offer-container',
@@ -48,6 +49,8 @@ export class OfferContainerComponent implements OnInit {
 
   legalPersonLodgingOffers: LegalPersonLodgingOfferDetailsDTO[] | undefined;
   physicalPersonLodgingOffer: PhysicalPersonLodgingOffer | undefined;
+  physicalPersonLodgingOfferPrice: LodgingOfferPriceDTO | undefined;
+
   foodOfferMenu: FoodMenuCategory[] | undefined;
 
   tickets: Ticket[] | undefined;
@@ -129,7 +132,7 @@ export class OfferContainerComponent implements OnInit {
   }
 
   public getPhysicalPersonLodgingOffer(offerId: number): void {
-    this.lodgingService.getPhysicalLodgingOfferById(offerId, this.selectedCurrency).subscribe(
+    this.lodgingService.getPhysicalLodgingOfferById(offerId).subscribe(
       (response: PhysicalPersonLodgingOffer) => {
         this.physicalPersonLodgingOffer = response;
         this.offerTitle = response.title;
@@ -137,13 +140,24 @@ export class OfferContainerComponent implements OnInit {
         this.offerCity = response.city;
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
-        this.offerProviderName = response.user?.firstName + ', ' + response.user?.lastName;
+        this.getLodgingOfferPrice(offerId);
         if (response.user !== undefined) {
+          this.offerProviderName = response.user.firstName + ' ' + response.user.lastName;
           this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
           this.getProviderImage(response.user?.id);
         }
       },
       (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public getLodgingOfferPrice(offerId: number): void {
+    this.lodgingService.getLodgingOfferPrice(offerId, this.selectedCurrency).subscribe(
+      (response: LodgingOfferPriceDTO) => {
+        this.physicalPersonLodgingOfferPrice = response;
+      }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
     )
@@ -177,7 +191,7 @@ export class OfferContainerComponent implements OnInit {
           this.offerProviderName = response.business.name;
           this.getProviderImage(response.business.id);
         } else {
-          this.offerProviderName = response.user?.firstName + ', ' + response.user?.lastName;
+          this.offerProviderName = response.user?.firstName + ' ' + response.user?.lastName;
           this.getProviderImage(response.user.id);
         }
         this.offerTitle = response.title;
@@ -199,7 +213,7 @@ export class OfferContainerComponent implements OnInit {
           this.offerProviderName = response.business.name;
           this.getProviderImage(response.business.id);
         } else {
-          this.offerProviderName = response.user?.firstName + ', ' + response.user?.lastName;
+          this.offerProviderName = response.user?.firstName + ' ' + response.user?.lastName;
           this.getProviderImage(response.user.id);
         }
         this.offerTitle = response.title;
@@ -286,6 +300,7 @@ export class OfferContainerComponent implements OnInit {
   public setMarker(address: string): void {
     this.mapComponent.setMarker(address);
   }
+
   public changeCurrency(currency: string): void {
     this.selectedCurrency = currency;
     if (this.offerCategory === 'lodging' && this.offerId !== undefined){
@@ -294,7 +309,7 @@ export class OfferContainerComponent implements OnInit {
           this.getLegalPersonLodgingOffersDetails(this.businessId);
         }
       } else if (this.offerType === 'physical') {
-        this.getPhysicalPersonLodgingOffer(this.offerId);
+        this.getLodgingOfferPrice(this.offerId);
       }
     }
   }

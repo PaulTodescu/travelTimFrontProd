@@ -1,0 +1,37 @@
+.option-txt{
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  font-weight: bold;
+  margin: 0;
+}
+
+.filter-field{
+  width: 100px;
+  display: block;
+}
+
+.filter-btn {
+  background-color: #034953;
+  color: white;
+  margin: 0 10px 5px auto;
+}
+
+.filter-btn .mat-icon {
+  margin-left: 5px;
+  vertical-align: middle !important;
+}
+
+.mat-label {
+  color: #7c795d;
+}
+
+.checkbox {
+  margin: 0 10px;
+  color: #7c795d;
+}
+
+.fields-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap
+}

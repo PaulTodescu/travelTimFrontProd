@@ -1,0 +1,91 @@
+<div style="display: flex; flex-direction: column">
+  <div *ngIf="showOfferTypeFilterOption()"
+    style="display: flex; flex-direction: row; align-items: center; margin-bottom: 10px">
+    <h3 style="font-family: Bahnschrift, serif; color: #7c795d;
+    font-weight: bold; margin: 0 5px 0 0;">Offered by business: </h3>
+    <mat-checkbox [checked]="data.offeredByBusiness"
+                  (change)="checkIfOfferedByBusinessCheckBox($event)"
+                  class="checkbox">
+      yes
+    </mat-checkbox>
+    <mat-checkbox [checked]="data.offeredByPerson"
+                  (change)="checkIfOfferedByPersonCheckBox($event)"
+                  class="checkbox">
+      no
+    </mat-checkbox>
+  </div>
+
+  <div *ngIf="data.offeredByBusiness || showBusinessFilterOption()" class="fields-row">
+    <mat-form-field appearance="standard" style="margin-right: 10px;"
+                    [ngStyle]="data.offerCategory !== 'lodging'? {'flex-grow': 1} : {'flex-grow': 0}">
+      <mat-label><i>Business</i></mat-label>
+      <mat-select>
+        <mat-option style="color: black;" value=""> business 1 </mat-option>
+        <mat-option style="color: black;" value=""> business 2 </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="fields-row">
+    <mat-form-field appearance="standard" style="margin-right: 10px;"
+                    [ngStyle]="data.offerCategory !== 'lodging'? {'flex-grow': 1} : {'flex-grow': 0}">
+      <mat-label><i>Sort By</i></mat-label>
+      <mat-select [value]="data.sortMethod" (selectionChange)="setSelectedSortMethod($event.value)">
+        <mat-option style="color: black;" value="latest"> Latest </mat-option>
+        <mat-option style="color: black;" value="oldest"> Oldest </mat-option>
+        <mat-option *ngIf="data.offerCategory === 'lodging'" style="color: black;" value="priceAsc"> Price Asc. </mat-option>
+        <mat-option *ngIf="data.offerCategory === 'lodging'" style="color: black;" value="priceDesc"> Price Desc. </mat-option>
+        <mat-option style="color: black;" value="nameAsc"> Name Asc. </mat-option>
+        <mat-option style="color: black;" value="nameDesc"> Name Desc. </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="showCurrencyFilterOption()" appearance="standard"
+                    style="margin-right: 10px;">
+      <mat-label><i>Currency</i></mat-label>
+      <mat-select [value]="data.currency" (selectionChange)="setCurrency($event.value)">
+        <mat-option style="color: black;" value="RON"> RON </mat-option>
+        <mat-option style="color: black;" value="EUR"> EUR </mat-option>
+        <mat-option style="color: black;" value="USD"> USD </mat-option>
+        <mat-option style="color: black;" value="GBP"> GBP </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="showLodgingFilterOptions()" class="fields-row">
+    <!--Number Rooms-->
+    <mat-form-field appearance="standard" style="margin-right: 10px;">
+      <mat-label><i>Nr. Rooms</i></mat-label>
+      <mat-select [value]="data.nrRooms" (selectionChange)="setNrRooms($event.value)">
+        <div *ngFor='let index of counter(10) ;let i = index'>
+          <mat-option [value]="i+1"> {{i+1}} </mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Number Single Beds-->
+    <mat-form-field appearance="standard" style="margin-right: 10px;">
+      <mat-label><i>Nr. Single Beds</i></mat-label>
+      <mat-select [value]="data.nrSingleBeds" (selectionChange)="setNrSingleBeds($event.value)">
+        <div *ngFor='let index of counter(21) ;let i = index'>
+          <mat-option [value]="i"> {{i}} </mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+
+    <!--Number Double Beds-->
+    <mat-form-field appearance="standard">
+      <mat-label><i>Nr. Double Beds</i></mat-label>
+      <mat-select [value]="data.nrDoubleBeds" (selectionChange)="setNrDoubleBeds($event.value)">
+        <div *ngFor='let index of counter(21) ;let i = index'>
+          <mat-option [value]="i"> {{i}} </mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
+  <button mat-raised-button class="filter-btn" (click)="sendFilterOptions()">
+    Filter
+  </button>
+</div>

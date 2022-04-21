@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user/user.service";
 import {UserDTO} from "../../entities/userDTO";
+import {relative} from "@angular/compiler-cli/src/ngtsc/file_system";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,15 +12,32 @@ import {UserDTO} from "../../entities/userDTO";
 })
 export class DashboardComponent implements OnInit {
 
-  selectedOption: string = 'account';
+  selectedOption: string | undefined;
   loggedInUser: UserDTO | undefined;
 
   constructor(
     private router: Router,
-    private userService: UserService) { }
+    private userService: UserService,
+    private activatedRout: ActivatedRoute) {
+    this.activatedRout.queryParams.subscribe(
+      data => {
+        this.selectedOption = data.section;
+      });
+  }
 
-  public switchSelectedOption(option: string): void {
-    this.selectedOption = option;
+  public switchSelectedOption(selectedOption: string): void {
+    let queryParams: Params;
+    if (selectedOption === 'offers'){
+      queryParams = {
+        section: 'offers',
+        category: 'lodging' // default category
+      }
+    } else {
+      queryParams = {
+        section: selectedOption
+      }
+    }
+    this.router.navigate([], {queryParams});
   }
 
   public getCurrentUser(): void{

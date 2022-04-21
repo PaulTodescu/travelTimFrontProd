@@ -63,8 +63,10 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/authenticate');
   }
 
-  public goToMyAccountDashboard(): void {
-    this.router.navigateByUrl('/account');
+  public goToAccountDashboard(): void {
+    this.router.navigate(['account'], {
+      queryParams: {'section': 'my-account'},
+    });
   }
 
   public logout(): void{

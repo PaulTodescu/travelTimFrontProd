@@ -76,14 +76,16 @@
               <h4 class="currency-txt">Currency: </h4>
               <mat-form-field appearance="legacy" class="currency-field">
                 <mat-select [value]="selectedCurrency" (selectionChange)="changeCurrency($event.value)">
-                  <mat-option style="color: black;" value="RON"> RON </mat-option>
-                  <mat-option style="color: black;" value="EUR"> EUR </mat-option>
+                  <mat-option *ngFor="let currency of currencies" style="color: black;" [value]="currency">
+                    {{currency}}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
           </div>
           <app-physical-lodging-offer-details
-            [offer]="physicalPersonLodgingOffer"></app-physical-lodging-offer-details>
+            [offer]="physicalPersonLodgingOffer"
+            [offerPrice]="physicalPersonLodgingOfferPrice"></app-physical-lodging-offer-details>
         </ng-template>
       </div>
     </div>

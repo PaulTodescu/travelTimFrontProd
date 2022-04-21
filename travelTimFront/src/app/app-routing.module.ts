@@ -6,7 +6,7 @@ import {DashboardComponent} from "./account-management/dashboard/dashboard.compo
 import {AddOfferContainerComponent} from "./add-offer/add-offer-container/add-offer-container.component";
 import {OffersContainerComponent} from "./offers/offers-container/offers-container.component";
 import {OfferContainerComponent} from "./offer/offer-container/offer-container.component";
-import {UserOffersComponent} from "./account-management/user-offers/user-offers.component";
+import {FilterOptionsComponent} from "./account-management/user-offers/filter-options/filter-options.component";
 
 const routes: Routes = [
   {
@@ -37,7 +37,6 @@ const routes: Routes = [
   {
     path: 'offer',
     component: OfferContainerComponent
-
   }
 ];
 

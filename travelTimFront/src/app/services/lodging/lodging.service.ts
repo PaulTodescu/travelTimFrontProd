@@ -5,6 +5,7 @@ import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOf
 import {LegalPersonLodgingOffer} from "../../entities/legalPersonLodgingOffer";
 import {LodgingUtility} from "../../entities/lodgingUtility";
 import {LegalPersonLodgingOfferBaseDetailsDTO} from "../../entities/legalPersonLodgingOfferBaseDetailsDTO";
+import {LodgingOfferPriceDTO} from "../../entities/lodgingOfferPriceDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -27,13 +28,17 @@ export class LodgingService {
     return this.http.put<void>(`${this.apiUrl}/lodging/${lodgingOfferId}/utilities`, lodgingOfferServices);
   }
 
-  public getPhysicalLodgingOfferById(offerId: number, currency: string): Observable<PhysicalPersonLodgingOffer>{
-    let params: HttpParams = new HttpParams().set('currency', currency);
-    return this.http.get<PhysicalPersonLodgingOffer>(`${this.apiUrl}/lodging/physical/${offerId}`, {params: params});
+  public getPhysicalLodgingOfferById(offerId: number): Observable<PhysicalPersonLodgingOffer>{
+    return this.http.get<PhysicalPersonLodgingOffer>(`${this.apiUrl}/lodging/physical/${offerId}`);
   }
 
   public getLegalLodgingOfferById(offerId: number): Observable<LegalPersonLodgingOfferBaseDetailsDTO>{
     return this.http.get<LegalPersonLodgingOfferBaseDetailsDTO>(`${this.apiUrl}/lodging/legal/${offerId}`);
+  }
+
+  public getLodgingOfferPrice(offerId: number, currency: string): Observable<LodgingOfferPriceDTO>{
+    let params: HttpParams = new HttpParams().set('currency', currency);
+    return this.http.get<LodgingOfferPriceDTO>(`${this.apiUrl}/lodging/${offerId}/price`, {params: params});
   }
 
 }
