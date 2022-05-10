@@ -3,6 +3,7 @@ import {UserService} from "../services/user/user.service";
 import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ImageService} from "../services/image/image.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +18,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private userService: UserService,
     private imageService: ImageService,
-    private router: Router) { }
+    private router: Router,
+    private sanitizer: DomSanitizer) { }
 
   public goToOffers(categoryName: string): void {
     this.router.navigate(['offers'], {
@@ -47,6 +49,10 @@ export class NavbarComponent implements OnInit {
     )
   }
 
+  public getSanitizerUrl(url : string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+
   public goToAddOffer(): void {
     if (this.userService.checkIfUserIsLoggedIn()){
       this.router.navigateByUrl('offer/add');
@@ -71,7 +77,9 @@ export class NavbarComponent implements OnInit {
 
   public logout(): void{
     localStorage.removeItem('token');
-    if (this.router.url === '/account' || this.router.url === '/offer/add'){
+    if (
+      this.router.url.includes('/account') ||
+      this.router.url === '/offer/add'){
       this.router.navigateByUrl('/home');
     } else {
       window.location.reload();

@@ -1,5 +1,5 @@
 #tickets-container {
-  width: 70%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   padding-left: 15px;
@@ -17,6 +17,7 @@
   width: 20%;
   font-size: 1.2em;
   font-family: Bahnschrift, serif;
+  white-space: nowrap;
   color: #7c795d;
   font-weight: bold;
   text-align: center;
@@ -37,4 +38,11 @@
   color: #ffffff;
   background-color: #ffffff;
   margin: 0 20px 7px 20px;
+}
+
+#no-tickets-message {
+  text-align: center;
+  color: #7c795d;
+  font-family: "Trebuchet MS", sans-serif;
+  margin: 5px;
 }

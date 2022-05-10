@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
+import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -40,9 +41,9 @@ import { ReviewsComponent } from './account-management/reviews/reviews.component
 import { UserInformationComponent } from './account-management/account/user-information/user-information.component';
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { UserBusinessesComponent } from './account-management/account/user-businesses/user-businesses.component';
-import { AddBusinessComponent } from './account-management/account/add-business/add-business.component';
-import { BusinessDetailsComponent } from './account-management/account/business-details/business-details.component';
-import { EditBusinessComponent } from './account-management/account/edit-business/edit-business.component';
+import { AddBusinessComponent } from './business/add-business/add-business.component';
+import { BusinessDetailsComponent } from './business/business-details/business-details.component';
+import { EditBusinessComponent } from './business/edit-business/edit-business.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddOfferContainerComponent } from './add-offer/add-offer-container/add-offer-container.component';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
@@ -68,6 +69,18 @@ import { OfferTicketsComponent } from './offer/offer-tickets/offer-tickets.compo
 import { PhysicalLodgingOfferDetailsComponent } from './offer/physical-lodging-offer-details/physical-lodging-offer-details.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { FilterOptionsComponent } from './account-management/user-offers/filter-options/filter-options.component';
+import { FoodOfferBusinessImagesComponent } from './offer/food-offer-business-images/food-offer-business-images.component';
+import { EditLodgingOfferFormComponent } from './edit-offer/edit-lodging-offer/edit-lodging-offer-form.component';
+import { EditFoodOfferComponent } from './edit-offer/edit-food-offer/edit-food-offer.component';
+import { EditAttractionOfferComponent } from './edit-offer/edit-attraction-offer/edit-attraction-offer.component';
+import { EditActivityOfferComponent } from './edit-offer/edit-activity-offer/edit-activity-offer.component';
+import { EditOfferImagesComponent } from './edit-offer/edit-offer-images/edit-offer-images.component';
+import { EditOfferContactComponent } from './edit-offer/edit-offer-contact/edit-offer-contact.component';
+import { AddBusinessScheduleComponent } from './business/add-business-schedule/add-business-schedule.component';
+import { BusinessScheduleComponent } from './business/business-schedule/business-schedule.component';
+import { EditBusinessScheduleComponent } from './business/edit-business-schedule/edit-business-schedule.component';
+import {BusinessOffersComponent} from "./business/business-offers/business-offers.component";
+import { UserProviderOffersComponent } from './user-provider-offers/user-provider-offers.component';
 
 
 @NgModule({
@@ -108,6 +121,18 @@ import { FilterOptionsComponent } from './account-management/user-offers/filter-
     OfferTicketsComponent,
     PhysicalLodgingOfferDetailsComponent,
     FilterOptionsComponent,
+    FoodOfferBusinessImagesComponent,
+    EditLodgingOfferFormComponent,
+    EditFoodOfferComponent,
+    EditAttractionOfferComponent,
+    EditActivityOfferComponent,
+    EditOfferImagesComponent,
+    EditOfferContactComponent,
+    AddBusinessScheduleComponent,
+    BusinessScheduleComponent,
+    EditBusinessScheduleComponent,
+    BusinessOffersComponent,
+    UserProviderOffersComponent,
   ],
     imports: [
       BrowserModule,
@@ -128,6 +153,7 @@ import { FilterOptionsComponent } from './account-management/user-offers/filter-
       MatDatepickerModule,
       MatNativeDateModule,
       MatGridListModule,
+      MatTableModule,
       HttpClientModule,
       MatDialogModule,
       MatIconModule,

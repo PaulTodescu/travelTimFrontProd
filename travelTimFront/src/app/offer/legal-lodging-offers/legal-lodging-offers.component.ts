@@ -31,6 +31,13 @@ export class LegalLodgingOffersComponent implements OnInit {
     });
   }
 
+  public getFormattedOfferPrice(price: number | undefined): number {
+    if (price !== undefined) {
+      return parseFloat(price.toFixed(2));
+    }
+    return NaN;
+  }
+
   ngOnInit(): void {
   }
 

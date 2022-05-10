@@ -19,8 +19,9 @@
 }
 
 .img-container {
-  max-width: 300px;
+  max-width: 225px;
   min-width: 100px;
+  min-height: 150px;
 }
 
 img {
@@ -37,6 +38,7 @@ img {
 }
 
 .offer-info h1 {
+  width: fit-content;
   font-family: "Trebuchet MS", sans-serif;
   font-size: 1.8em;
   display: inline-block;
@@ -72,7 +74,7 @@ img {
   white-space: nowrap;
 }
 
-.offer-info h4 span {
+.offer-info h4 #nr-offers {
   font-size: 1.3em;
 }
 
@@ -80,6 +82,7 @@ img {
   transform: scale(1.4);
   margin-left: auto;
   margin-bottom: 10px;
+  color: #7c795d;
 }
 
 .right-side {
@@ -110,29 +113,31 @@ img {
 
 #filter-options {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 10px;
 }
 
 .option-txt{
-  display: block;
+  display: inline;
   font-family: Bahnschrift, serif;
   color: #7c795d;
   font-weight: bold;
-  margin: 0;
+  white-space: nowrap;
+  margin: auto 10px 0 0;
 }
 
-.filter-field{
+.sort-field{
   width: 100px;
-  display: block;
+}
+
+.currency-field {
+  width: 60px;
 }
 
 .nrItems-field {
   width: 40px;
-  display: block;
-  float: right;
-  padding: 0;
-  margin: 0;
 }
 
 .alert-heading {
@@ -140,11 +145,8 @@ img {
 }
 
 #search-container {
-  margin-left: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 450px;
   height: 50px;
   padding: 0 10px;
   border-radius: 10px;
@@ -152,10 +154,6 @@ img {
   font-family: Bahnschrift, serif;
   color: #7c795d;
   font-size: 1.2em;
-}
-
-#search-container .mat-icon {
-  cursor: pointer;
 }
 
 #search-bar {

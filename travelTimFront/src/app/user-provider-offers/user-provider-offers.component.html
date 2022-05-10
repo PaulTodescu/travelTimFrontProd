@@ -1,0 +1,134 @@
+<app-navbar></app-navbar>
+<div id="container">
+  <div id="user-container">
+    <div id="user-details">
+      <img id="user-img"
+           [src]="getSanitizerUrl(profileImage)"
+           alt="profile-img">
+      <div id="user-fields">
+        <h1 class="field">
+          {{user?.firstName}} {{user?.lastName}}
+        </h1>
+      </div>
+    </div>
+    <div id="user-contact">
+      <h3 class="field">
+        <mat-icon style="margin-right: 10px">email</mat-icon>
+        {{user?.email}}
+      </h3>
+      <h3 class="field" *ngIf="user?.phoneNumber">
+        <mat-icon style="margin-right: 10px">phone</mat-icon>
+        {{user?.phoneNumber}}
+      </h3>
+    </div>
+  </div>
+  <div id="offer-types">
+    <p [ngClass]="{'selected-option': selectedOfferCategory === 'lodging'}"
+       (click)="switchSelectedOfferCategory('lodging')">
+      lodging ({{lodgingOffers.length}})
+    </p>
+    <p [ngClass]="{'selected-option': selectedOfferCategory === 'attractions'}"
+       (click)="switchSelectedOfferCategory('attractions')">
+      attractions ({{attractionOffers.length}})
+    </p>
+    <p [ngClass]="{'selected-option': selectedOfferCategory === 'activities'}"
+       (click)="switchSelectedOfferCategory('activities')">
+      activities ({{activityOffers.length}})
+    </p>
+  </div>
+  <div class="offers-container" [ngSwitch]="selectedOfferCategory">
+    <div *ngSwitchCase="'lodging'" @fadeIn>
+      <div *ngIf="lodgingOffers.length !== 0">
+        <div *ngFor="let offer of lodgingOffers | paginate: { id: 'lodgingOffersPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: lodgingOffers.length }">
+          <div class="offer-container">
+            <div class="img-container">
+              <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToLodgingOfferPage(offer)">
+            </div>
+            <div class="offer-info">
+              <div class="offer-details">
+                <mat-icon>title</mat-icon>
+                <h2 class="offer-title" (click)="goToLodgingOfferPage(offer)">{{offer.title}}</h2>
+              </div>
+              <div class="offer-details">
+                <mat-icon>info</mat-icon>
+                <h4><span class="bold-nr">{{offer.nrRooms}}</span> room<span *ngIf="offer.nrRooms > 1">s</span>,</h4>
+                <h4><span class="bold-nr">{{offer.nrSingleBeds}}</span> single bed<span *ngIf="offer.nrSingleBeds > 1">s</span>,</h4>
+                <h4><span class="bold-nr">{{offer.nrDoubleBeds}}</span> double bed<span *ngIf="offer.nrDoubleBeds > 1">s</span></h4>
+                <h2 style="margin-left: auto"><mat-icon>loyalty</mat-icon>{{offer.price}} {{offer.currency}} <span style="font-size: 0.7em">(/night)</span></h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <pagination-controls
+          id="lodgingOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+        </pagination-controls>
+      </div>
+      <div *ngIf="lodgingOffers.length === 0" class="offer-container" role="alert">
+        <h4 class="alert-heading">NO OFFERS FOUND!</h4>
+      </div>
+    </div>
+    <div *ngSwitchCase="'attractions'" @fadeIn>
+      <div *ngIf="attractionOffers.length !== 0">
+        <div *ngFor="let offer of attractionOffers | paginate: { id: 'attractionOffersPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: attractionOffers.length }">
+          <div class="offer-container">
+            <div class="img-container">
+              <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToAttractionOfferPage(offer)">
+            </div>
+            <div class="offer-info">
+              <div class="offer-details">
+                <mat-icon>title</mat-icon>
+                <h2 class="offer-title" (click)="goToAttractionOfferPage(offer)">{{offer.title}}</h2>
+              </div>
+              <div class="offer-details">
+                <mat-icon>loyalty</mat-icon>
+                <h3 class="see-offer-tickets" (click)="seeTickets(offer?.tickets)">See Tickets</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <pagination-controls
+          id="attractionOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+        </pagination-controls>
+      </div>
+      <div *ngIf="attractionOffers.length === 0" class="offer-container" role="alert">
+        <h4 class="alert-heading">NO OFFERS FOUND!</h4>
+      </div>
+    </div>
+    <div *ngSwitchCase="'activities'" @fadeIn>
+      <div *ngIf="activityOffers.length !== 0">
+        <div *ngFor="let offer of activityOffers | paginate: { id: 'activityOffersPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: attractionOffers.length }">
+          <div class="offer-container">
+            <div class="img-container">
+              <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToActivityOfferPage(offer)">
+            </div>
+            <div class="offer-info">
+              <div class="offer-details">
+                <mat-icon>title</mat-icon>
+                <h2 class="offer-title" (click)="goToActivityOfferPage(offer)">{{offer.title}}</h2>
+              </div>
+              <div class="offer-details">
+                <mat-icon>loyalty</mat-icon>
+                <h3 class="see-offer-tickets" (click)="seeTickets(offer?.tickets)">See Tickets</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <pagination-controls
+          id="activityOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+        </pagination-controls>
+      </div>
+      <div *ngIf="activityOffers.length === 0" class="offer-container" role="alert">
+        <h4 class="alert-heading">NO OFFERS FOUND!</h4>
+      </div>
+    </div>
+  </div>
+</div>

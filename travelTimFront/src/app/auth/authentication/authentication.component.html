@@ -7,8 +7,10 @@
           <p class="logo-title-png">TravelTim</p>
         </div>
         <div style="margin: 0 auto; text-align: center; width: 100%;">
-          <button class="btn" [style.background]="flag? '#034953': '#a3acad'" type="button" (click)="switchBetweenLoginRegister('login')" >Login</button>
-          <button class="btn" [style.background]="!flag? '#034953': '#a3acad'" type="button" (click)="switchBetweenLoginRegister('register')" >Register</button>
+          <button class="btn" [style.background]="flag? '#034953': '#a3acad'" type="button"
+                  (click)="switchBetweenLoginRegister('login')" >Login</button>
+          <button class="btn" [style.background]="!flag? '#034953': '#a3acad'" type="button"
+                  (click)="switchBetweenLoginRegister('register')" >Register</button>
         </div>
         <div class="card-body">
           <div *ngIf="flag">

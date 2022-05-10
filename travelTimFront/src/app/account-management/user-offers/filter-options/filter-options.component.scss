@@ -10,15 +10,15 @@
   display: block;
 }
 
+.reset-btn {
+  background-color: #7c795d;
+  margin-right: 5px;
+  color: white;
+}
+
 .filter-btn {
   background-color: #034953;
   color: white;
-  margin: 0 10px 5px auto;
-}
-
-.filter-btn .mat-icon {
-  margin-left: 5px;
-  vertical-align: middle !important;
 }
 
 .mat-label {

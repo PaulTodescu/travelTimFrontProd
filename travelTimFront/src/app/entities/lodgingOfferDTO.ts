@@ -7,7 +7,12 @@ export interface LodgingOfferDTO {
   title: string | undefined;
   address: string | undefined;
   city: string | undefined;
+  nrRooms: number;
+  nrSingleBeds: number;
+  nrDoubleBeds: number;
+  floor: number;
   createdAt: string;
   price: number;
+  currency: string;
   image: string;
 }

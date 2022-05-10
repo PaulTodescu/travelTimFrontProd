@@ -18,6 +18,10 @@
   margin-top: 15px;
 }
 
+#offer-title:empty {
+  display: none;
+}
+
 #offer-container {
   width: 100%;
   margin-top: 15px;
@@ -86,17 +90,13 @@
   z-index: 0;
 }
 
-.carousel > .carousel-cell > img {
-  border: 1px solid red;
-}
-
 ng-image-fullscreen-view {
   position: absolute;
   z-index: 1;
 }
 
 #right-container {
-  flex: 1 1 0px;
+  flex: 1 1 0;
   padding: 10px;
   background-color: #ffffff;
   border-radius: 7px;
@@ -107,6 +107,7 @@ ng-image-fullscreen-view {
 }
 
 .provider-details h1 {
+  width: fit-content;
   font-family: Bahnschrift, serif;
   color: #7c795d;
   display: inline-block;
@@ -173,12 +174,9 @@ ng-image-fullscreen-view {
   padding: 0 10px 10px 10px;
 }
 
-#contact-details {
+#contact-socials {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  white-space: normal;
-  word-break: break-word;
+  flex-direction: column;
   margin-top: 20px;
   padding: 30px;
   margin-bottom: 20px;
@@ -186,16 +184,74 @@ ng-image-fullscreen-view {
   border-radius: 7px;
 }
 
-#contact-details h3 {
-  font-family: Bahnschrift, serif;
-  margin: auto 20px auto 0;
-  color: #7c795d;
+#contact {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
-#contact-details h3 .mat-icon {
+#contact h3 {
+  font-family: Bahnschrift, serif;
+  margin: 5px 30px 5px 0;
+  color: #7c795d;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#contact h3 .mat-icon {
   margin-right: 10px;
 }
 
+#socials {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#socials:empty {
+  display: none;
+}
+
+.social {
+  display: flex;
+  flex-direction: row;
+  margin: 5px 30px 5px 0;
+  align-items: center;
+}
+
+.social i {
+  color: #7c795d;
+  margin-right: 10px;
+}
+
+.social a {
+  font-family: Bahnschrift, serif;
+  font-size: 1.1em;
+  text-decoration: underline;
+  color: #7c795d;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.social a:link {
+  color: #7c795d;
+}
+
+.social a:visited {
+  color: #7c795d;
+}
+
+.social a:hover {
+  color: #7c795d;
+  cursor: pointer;
+}
+
+.social a:active {
+  color: #7c795d;
+}
 
 .section-title {
   font-family: "Trebuchet MS", sans-serif;

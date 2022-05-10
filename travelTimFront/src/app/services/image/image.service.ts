@@ -60,4 +60,9 @@ export class ImageService {
     return this.http.get<any>(`${this.apiUrl}/image/offer/${offerId}`, {params: params});
   }
 
+  public getOfferImagesNames(offerId: number, offerType: string): Observable<string[]>{
+    let params = new HttpParams().set('offerType', offerType);
+    return this.http.get<string[]>(`${this.apiUrl}/image/offer/${offerId}/names`, {params: params});
+  }
+
 }

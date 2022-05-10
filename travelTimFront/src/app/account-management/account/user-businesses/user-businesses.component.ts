@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {AddBusinessComponent} from "../add-business/add-business.component";
+import {AddBusinessComponent} from "../../../business/add-business/add-business.component";
 import {UserService} from "../../../services/user/user.service";
 import {Business} from "../../../entities/business";
 import {HttpErrorResponse} from "@angular/common/http";
 import Swal from "sweetalert2";
 import {BusinessService} from "../../../services/business/business.service";
-import {BusinessDetailsComponent} from "../business-details/business-details.component";
-import {EditBusinessComponent} from "../edit-business/edit-business.component";
+import {BusinessDetailsComponent} from "../../../business/business-details/business-details.component";
+import {EditBusinessComponent} from "../../../business/edit-business/edit-business.component";
 import { ngxCsv } from 'ngx-csv/ngx-csv';
 
 @Component({
@@ -47,17 +47,16 @@ export class UserBusinessesComponent implements OnInit {
     });
   }
 
-  openBusinessDetailsModal(businessId: number) {
+  public openBusinessDetailsModal(businessId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.autoFocus = false;
     dialogConfig.panelClass = 'dialog-class' // in styles.css
-    dialogConfig.disableClose = true;
     dialogConfig.data = {businessId: businessId};
     this.dialog.open(BusinessDetailsComponent, dialogConfig);
   }
 
-  openEditBusinessModal(businessId: number) {
+  public openEditBusinessModal(businessId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.autoFocus = false;
@@ -70,7 +69,7 @@ export class UserBusinessesComponent implements OnInit {
     });
   }
 
-  openDeleteBusinessDialog(businessId: number, businessName: string) {
+  public openDeleteBusinessDialog(businessId: number, businessName: string) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You are about to delete business: ' + businessName,
@@ -87,7 +86,7 @@ export class UserBusinessesComponent implements OnInit {
     })
   }
 
-  deleteBusiness(businessId: number): void {
+  public deleteBusiness(businessId: number): void {
     this.businessService.deleteBusiness(businessId).subscribe(
       () => {
         this.onDeleteBusinessSuccess();
@@ -109,7 +108,6 @@ export class UserBusinessesComponent implements OnInit {
       showConfirmButton: false,
       timer: 2200,
     }).then(function(){})
-
   }
 
   public onDeleteBusinessFail(): void {
@@ -132,17 +130,25 @@ export class UserBusinessesComponent implements OnInit {
       title: '',
       useBom: true,
       noDownload: false,
-      headers: ["Name", "City", "Cui", "Address"]
+      headers: ["Name", "Address", "City", "Email", "Phone Number"]
     };
 
     if (this.businesses !== undefined) {
       let csvData = [];
       for (let i = 0; i < this.businesses.length; i++) {
+        let business: Business = this.businesses[i];
+        if (!business.email){
+          business.email = 'Not Provided';
+        }
+        if (!business.phoneNumber){
+          business.phoneNumber = 'Not Provided';
+        }
         let entry = {
-          "Name": this.businesses[i].name,
-          "City": this.businesses[i].city,
-          "Cui": this.businesses[i].cui,
-          "Address": this.businesses[i].address
+          "Name": business.name,
+          "Address": business.address,
+          "City": business.city,
+          "Email": business.email,
+          "Phone Number": business.phoneNumber
         };
         csvData.push(entry);
       }

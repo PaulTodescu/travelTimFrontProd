@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpErrorResponse} from "@angular/common/http";
-import {ActivatedRoute, NavigationStart, Params, Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {UserService} from "../../services/user/user.service";
 import {LodgingOfferBaseDetailsDTO} from "../../entities/LodgingOfferBaseDetailsDTO";
 import {FoodOfferBaseDetailsDTO} from "../../entities/FoodOfferBaseDetailsDTO";
@@ -8,24 +8,44 @@ import {AttractionOfferBaseDetailsDTO} from "../../entities/attractionOfferBaseD
 import {ActivityOfferBaseDetailsDTO} from "../../entities/activityOfferBaseDetailsDTO";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {FilterOptionsComponent} from "./filter-options/filter-options.component";
-import {of} from "rxjs";
+import {CurrencyService} from "../../services/currency/currency.service";
+import Swal from "sweetalert2";
+import {LodgingService} from "../../services/lodging/lodging.service";
+import {FoodService} from "../../services/food/food.service";
+import {AttractionService} from "../../services/attraction/attraction.service";
+import {ActivityService} from "../../services/activity/activity.service";
+import {DomSanitizer} from "@angular/platform-browser";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-user-offers',
   templateUrl: './user-offers.component.html',
-  styleUrls: ['./user-offers.component.scss']
+  styleUrls: ['./user-offers.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      state('*', style({'opacity': 1})),
+      transition('void => *', [
+        style({'opacity': 0}),
+        animate('300ms linear')
+      ])
+    ])
+  ]
 })
 export class UserOffersComponent implements OnInit {
 
   selectedCategory: string | undefined;
 
   lodgingOffers: LodgingOfferBaseDetailsDTO[] = [];
-  lodgingOffersCopy: LodgingOfferBaseDetailsDTO[] = [];
   filteredLodgingOffers: LodgingOfferBaseDetailsDTO[] = [];
 
   foodOffers: FoodOfferBaseDetailsDTO[] = [];
+  filteredFoodOffers: FoodOfferBaseDetailsDTO[] = [];
+
   attractionOffers: AttractionOfferBaseDetailsDTO[] = [];
+  filteredAttractionOffers: AttractionOfferBaseDetailsDTO[] = [];
+
   activityOffers: ActivityOfferBaseDetailsDTO[] = [];
+  filteredActivityOffers: ActivityOfferBaseDetailsDTO[] = [];
 
   page: number = 1;
   nrItemsOnPage: number = 5;
@@ -35,9 +55,10 @@ export class UserOffersComponent implements OnInit {
   // filter options
   offeredByBusiness: boolean = false;
   offeredByPerson: boolean = false;
-  selectedBusinessId: number | undefined;
+  selectedBusiness: string | undefined;
   sortMethod: string = 'latest';
-  currency: string = 'RON';
+  originalCurrency: string = 'RON';
+  currency: string = this.originalCurrency;
   nrRooms: number | undefined;
   nrSingleBeds: number | undefined;
   nrDoubleBeds: number | undefined;
@@ -45,7 +66,13 @@ export class UserOffersComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
+    private currencyService: CurrencyService,
     private dialog: MatDialog,
+    private lodgingService: LodgingService,
+    private foodService: FoodService,
+    private attractionService: AttractionService,
+    private activityService: ActivityService,
+    private sanitizer: DomSanitizer,
     private activatedRout: ActivatedRoute) {
     this.activatedRout.queryParams.subscribe(
       data => {
@@ -66,7 +93,7 @@ export class UserOffersComponent implements OnInit {
       this.userService.getLodgingOffers().subscribe(
         (response: LodgingOfferBaseDetailsDTO[]) => {
           this.lodgingOffers = response;
-          this.lodgingOffersCopy = response;
+          this.filteredLodgingOffers = response;
           this.showOffers = true;
           this.showLoadingSpinner = false;
           },
@@ -78,6 +105,7 @@ export class UserOffersComponent implements OnInit {
       this.userService.getFoodOffers().subscribe(
         (response: FoodOfferBaseDetailsDTO[]) => {
           this.foodOffers = response;
+          this.filteredFoodOffers = response;
           this.showOffers = true;
           this.showLoadingSpinner = false;
         }, (error: HttpErrorResponse) => {
@@ -88,6 +116,7 @@ export class UserOffersComponent implements OnInit {
       this.userService.getAttractionOffers().subscribe(
         (response: AttractionOfferBaseDetailsDTO[]) => {
           this.attractionOffers = response;
+          this.filteredAttractionOffers = response;
           this.showOffers = true;
           this.showLoadingSpinner = false;
         }, (error: HttpErrorResponse) => {
@@ -98,6 +127,7 @@ export class UserOffersComponent implements OnInit {
       this.userService.getActivityOffers().subscribe(
         (response: ActivityOfferBaseDetailsDTO[]) => {
           this.activityOffers = response;
+          this.filteredActivityOffers = response;
           this.showOffers = true;
           this.showLoadingSpinner = false;
         }, (error: HttpErrorResponse) => {
@@ -127,34 +157,77 @@ export class UserOffersComponent implements OnInit {
     });
   }
 
-  public goToFoodOfferPage(offer: FoodOfferBaseDetailsDTO): void {
-    let queryParams = {
-      id: offer.id,
-      category: 'food'
+  public goToEditLodgingOfferPage(offer: LodgingOfferBaseDetailsDTO): void {
+    let queryParams: Params;
+    if (offer.business !== undefined){
+      queryParams = {
+        id: offer.id,
+        type: 'legal'
+      }
+    } else {
+      queryParams = {
+        id: offer.id,
+        type: 'physical'
+      }
     }
-    this.router.navigate(['offer'], {
+    this.router.navigate(['offer/lodging/edit'], {
       queryParams: queryParams
+    });
+  }
+
+  public goToFoodOfferPage(offer: FoodOfferBaseDetailsDTO): void {
+    this.router.navigate(['offer'], {
+      queryParams: {
+        id: offer.id,
+        category: 'food'
+      }
+    });
+  }
+
+  public goToEditFoodOfferPage(offer: FoodOfferBaseDetailsDTO): void{
+    this.router.navigate(['offer/food/edit'], {
+      queryParams: {
+        id: offer.id
+      }
     });
   }
 
   public goToAttractionOfferPage(offer: AttractionOfferBaseDetailsDTO): void {
-    let queryParams = {
-      id: offer.id,
-      category: 'attractions'
-    }
     this.router.navigate(['offer'], {
-      queryParams: queryParams
+      queryParams: {
+        id: offer.id,
+        category: 'attractions'
+      }
+    });
+  }
+
+  public goToEditAttractionOfferPage(offer: AttractionOfferBaseDetailsDTO): void {
+    this.router.navigate(['offer/attraction/edit'], {
+      queryParams: {
+        id: offer.id,
+      }
     });
   }
 
   public goToActivityOfferPage(offer: ActivityOfferBaseDetailsDTO): void {
-    let queryParams = {
-      id: offer.id,
-      category: 'activities'
-    }
     this.router.navigate(['offer'], {
-      queryParams: queryParams
+      queryParams: {
+        id: offer.id,
+        category: 'activities'
+      }
     });
+  }
+
+  public goToEditActivityOfferPage(offer: ActivityOfferBaseDetailsDTO): void {
+    this.router.navigate(['offer/activity/edit'], {
+      queryParams: {
+        id: offer.id,
+      }
+    });
+  }
+
+  public getSanitizerUrl(url : string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   public openFilterOptionsModal(): void {
@@ -165,7 +238,8 @@ export class UserOffersComponent implements OnInit {
       offerCategory: this.selectedCategory,
       offeredByBusiness: this.offeredByBusiness,
       offeredByPerson: this.offeredByPerson,
-      selectedBusinessId: this.selectedBusinessId,
+      businesses: this.getBusinessesForOffers(),
+      selectedBusiness: this.selectedBusiness,
       sortMethod: this.sortMethod,
       currency: this.currency,
       nrRooms: this.nrRooms,
@@ -174,37 +248,133 @@ export class UserOffersComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(FilterOptionsComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(res => {
-      this.offeredByBusiness = res.offeredByBusiness;
-      this.offeredByPerson = res.offeredByPerson;
-      this.selectedBusinessId = res.selectedBusinessId;
-      this.sortMethod = res.sortMethod;
-      this.currency = res.currency;
-      this.nrRooms = res.nrRooms;
-      this.nrSingleBeds = res.nrSingleBeds;
-      this.nrDoubleBeds = res.nrDoubleBeds;
-      if (this.selectedCategory === 'lodging'){
-        this.filteredLodgingOffers = this.lodgingOffersCopy;
-        this.filterByLodgingOptions();
+      if (res !== undefined) {
+        this.offeredByBusiness = res.offeredByBusiness;
+        this.offeredByPerson = res.offeredByPerson;
+        this.selectedBusiness = res.selectedBusiness;
+        this.sortMethod = res.sortMethod;
+        this.currency = res.currency;
+        if (this.currency !== this.originalCurrency) {
+          this.setConvertedLodgingOfferPrices(this.originalCurrency, this.currency);
+          this.originalCurrency = this.currency;
+        }
+        this.nrRooms = res.nrRooms;
+        this.nrSingleBeds = res.nrSingleBeds;
+        this.nrDoubleBeds = res.nrDoubleBeds;
+        if (this.selectedCategory === 'lodging') {
+          this.filteredLodgingOffers = this.lodgingOffers;
+          this.filterByLodgingOptions();
+          this.filterLodgingOffersByBusiness(this.selectedBusiness);
+        } else if (this.selectedCategory === 'food & beverage') {
+          this.filteredFoodOffers = this.foodOffers;
+          this.filterFoodOffersByBusiness(this.selectedBusiness);
+        } else if (this.selectedCategory === 'attractions') {
+          this.filteredAttractionOffers = this.attractionOffers;
+          this.filterAttractionOffersByBusiness(this.selectedBusiness);
+        } else if (this.selectedCategory === 'activities') {
+          this.filteredActivityOffers = this.activityOffers;
+          this.filterActivityOffersByBusiness(this.selectedBusiness);
+        }
+        this.sortOffers();
       }
-      this.sortOffers();
     })
   }
 
-  public getBusinessesForOffers(): string[] {
-    if (this.selectedCategory === 'lodging'){
+  public setConvertedLodgingOfferPrices(fromCode: string, toCode: string): void {
+    this.currencyService.getCurrencyConversionRate(fromCode, toCode).subscribe(
+      (response: number) => {
+        for (let offer of this.filteredLodgingOffers){
+          offer.price = offer.price * response;
+          offer.currency = toCode;
+        }
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
 
-    } else if (this.selectedCategory === 'food & beverage') {
-      return this.foodOffers.map(offer => offer.business.name);
-    } else if (this.selectedCategory === 'attractions') {
-    } else if (this.selectedCategory === 'activities') {
+  public getFormattedOfferPrice(price: number): number {
+    if (price % 1 < 0.1 || price % 1 > 0.9){
+      return Math.round(price);
     }
-    return [];
+    return parseFloat(price.toFixed(2));
+  }
+
+  public getBusinessesForOffers(): string[] { // extract business names from offers
+    let businessNames: string[] = [];
+    if (this.selectedCategory === 'lodging'){
+      for (let offer of this.lodgingOffers){
+        if (offer.business !== undefined){
+          businessNames.push(offer.business.name);
+        }
+      }
+    } else if (this.selectedCategory === 'food & beverage') {
+      for (let offer of this.foodOffers){
+        businessNames.push(offer.business.name);
+      }
+    } else if (this.selectedCategory === 'attractions') {
+      for (let offer of this.attractionOffers){
+        if (offer.business !== null){
+          businessNames.push(offer.business.name);
+        }
+      }
+    } else if (this.selectedCategory === 'activities') {
+      for (let offer of this.activityOffers){
+        if (offer.business !== null){
+          businessNames.push(offer.business.name);
+        }
+      }
+    }
+    return businessNames.filter((offer, index) =>
+      businessNames.indexOf(offer) === index)
+  }
+
+  public filterLodgingOffersByBusiness(businessName: string | undefined): void{
+    if (this.offeredByBusiness) {
+      if (businessName !== undefined){
+        this.filteredLodgingOffers = this.filteredLodgingOffers.filter(offer => offer.business?.name === businessName);
+      } else {
+        this.filteredLodgingOffers = this.filteredLodgingOffers.filter(offer => offer.business !== undefined);
+      }
+    } else if (this.offeredByPerson){
+      this.filteredLodgingOffers = this.filteredLodgingOffers.filter(offer => offer.business === undefined);
+    }
+  }
+
+  public filterFoodOffersByBusiness(businessName: string | undefined): void{
+    if (businessName !== undefined){
+      this.filteredFoodOffers = this.filteredFoodOffers.filter(offer => offer.business.name === businessName);
+    }
+  }
+
+  public filterAttractionOffersByBusiness(businessName: string | undefined): void{
+    if (this.offeredByBusiness) {
+      if (businessName !== undefined){
+        this.filteredAttractionOffers = this.filteredAttractionOffers.filter(offer => offer.business?.name === businessName);
+      } else {
+        this.filteredAttractionOffers = this.filteredAttractionOffers.filter(offer => offer.business !== null);
+      }
+    } else if (this.offeredByPerson){
+      this.filteredAttractionOffers = this.filteredAttractionOffers.filter(offer => offer.business === null);
+    }
+  }
+
+  public filterActivityOffersByBusiness(businessName: string | undefined): void{
+    if (this.offeredByBusiness) {
+      if (businessName !== undefined){
+        this.filteredActivityOffers = this.filteredActivityOffers.filter(offer => offer.business?.name === businessName);
+      } else {
+        this.filteredActivityOffers = this.filteredActivityOffers.filter(offer => offer.business !== null);
+      }
+    } else if (this.offeredByPerson){
+      this.filteredActivityOffers = this.filteredActivityOffers.filter(offer => offer.business === null);
+    }
   }
 
   public resetFilterOptions(): void {
     this.offeredByBusiness = false;
     this.offeredByPerson = false;
-    this.selectedBusinessId = undefined;
+    this.selectedBusiness = undefined;
     this.sortMethod = 'latest';
     this.currency = 'RON';
     this.nrRooms = undefined;
@@ -214,13 +384,13 @@ export class UserOffersComponent implements OnInit {
 
   public filterByLodgingOptions(): void {
     if (this.nrRooms !== undefined){
-      this.lodgingOffers = this.filterLodgingOffersByNrRooms();
+      this.filterLodgingOffersByNrRooms();
     }
     if (this.nrSingleBeds !== undefined){
-      this.lodgingOffers = this.filterLodgingOffersByNrSingleBeds();
+      this.filterLodgingOffersByNrSingleBeds();
     }
     if (this.nrDoubleBeds !== undefined){
-      this.lodgingOffers = this.filterLodgingOffersByNrDoubleBeds();
+      this.filterLodgingOffersByNrDoubleBeds();
     }
     this.page = 1;
   }
@@ -249,6 +419,87 @@ export class UserOffersComponent implements OnInit {
     return this.filteredLodgingOffers;
   }
 
+  public openDeleteOfferDialog(offerId: number): void{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action cannot be undone',
+      icon: 'warning',
+      showCancelButton: true,
+      focusConfirm: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#696969',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteOffer(offerId);
+      }
+    })
+  }
+
+  public deleteOffer(offerId: number): void {
+    if (this.selectedCategory === 'lodging') {
+      this.deleteLodgingOffer(offerId);
+    } else if (this.selectedCategory === 'food & beverage') {
+      this.deleteFoodOffer(offerId);
+    } else if (this.selectedCategory === 'attractions') {
+      this.deleteAttractionOffer(offerId);
+    } else if (this.selectedCategory === 'activities') {
+      this.deleteActivityOffer(offerId);
+    }
+  }
+
+  public deleteLodgingOffer(offerId: number): void {
+    this.lodgingService.deleteLodgingOffer(offerId).subscribe(
+      () => {
+        this.onDeleteOfferSuccess();
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public deleteFoodOffer(offerId: number): void {
+    this.foodService.deleteFoodOffer(offerId).subscribe(
+      () => {
+        this.onDeleteOfferSuccess();
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public deleteAttractionOffer(offerId: number): void {
+    this.attractionService.deleteAttractionOffer(offerId).subscribe(
+      () => {
+        this.onDeleteOfferSuccess();
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public deleteActivityOffer(offerId: number): void {
+    this.activityService.deleteActivityOffer(offerId).subscribe(
+      () => {
+        this.onDeleteOfferSuccess();
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public onDeleteOfferSuccess(): void {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Offer Deleted!',
+      showConfirmButton: false,
+      timer: 2200,
+    }).then(function(){
+      location.reload();
+    })
+  }
+
   public sortOffers(): void {
     if (this.sortMethod !== undefined) {
       if (this.selectedCategory === 'lodging') {
@@ -266,24 +517,24 @@ export class UserOffersComponent implements OnInit {
 
   private sortLodgingOffers(sortingMethod: string): void {
     if (sortingMethod === 'latest'){
-      this.lodgingOffers = this.lodgingOffers.sort((o1, o2) => {
+      this.filteredLodgingOffers = this.filteredLodgingOffers.sort((o1, o2) => {
         return o1.createdAt < o2.createdAt ? 1 : -1
       })
     } else if (sortingMethod === 'oldest'){
-      this.lodgingOffers = this.lodgingOffers.sort((o1, o2) => {
+      this.filteredLodgingOffers = this.filteredLodgingOffers.sort((o1, o2) => {
         return o1.createdAt > o2.createdAt ? 1 : -1
       })
     } else if (sortingMethod === 'priceAsc'){
-      this.lodgingOffers = this.lodgingOffers.sort((o1, o2) => {
+      this.filteredLodgingOffers = this.filteredLodgingOffers.sort((o1, o2) => {
         return o1.price > o2.price ? 1 : -1
       })
     } else if (sortingMethod === 'priceDesc'){
-      this.lodgingOffers = this.lodgingOffers.sort((o1, o2) => {
+      this.filteredLodgingOffers = this.filteredLodgingOffers.sort((o1, o2) => {
         return o1.price < o2.price ? 1 : -1
       })
     }
     else if (sortingMethod === 'nameAsc') {
-      this.lodgingOffers = this.lodgingOffers.sort((o1, o2) => {
+      this.filteredLodgingOffers = this.filteredLodgingOffers.sort((o1, o2) => {
         if (o1.title !== undefined && o2.title !== undefined) {
           return o1.title.toLocaleLowerCase() > o2.title.toLocaleLowerCase() ? 1 : -1;
         } else if (o1.business?.name !== undefined && o2.business?.name !== undefined) {
@@ -296,7 +547,7 @@ export class UserOffersComponent implements OnInit {
         return 0;
       });
     } else if (sortingMethod === 'nameDesc'){
-      this.lodgingOffers = this.lodgingOffers.sort((o1, o2) => {
+      this.filteredLodgingOffers = this.filteredLodgingOffers.sort((o1, o2) => {
         if (o1.title !== undefined && o2.title !== undefined) {
           return o1.title.toLocaleLowerCase() < o2.title.toLocaleLowerCase() ? 1 : -1;
         } else if (o1.business?.name !== undefined && o2.business?.name !== undefined) {
@@ -334,21 +585,21 @@ export class UserOffersComponent implements OnInit {
 
   public sortAttractionOffers(sortingMethod: string): void {
     if (sortingMethod === 'latest'){
-      this.attractionOffers = this.attractionOffers.sort((o1, o2) => {
+      this.filteredAttractionOffers = this.filteredAttractionOffers.sort((o1, o2) => {
         return o1.createdAt < o2.createdAt ? 1 : -1
       })
     } else if (sortingMethod === 'oldest'){
-      this.attractionOffers = this.attractionOffers.sort((o1, o2) => {
+      this.filteredAttractionOffers = this.filteredAttractionOffers.sort((o1, o2) => {
         return o1.createdAt > o2.createdAt ? 1 : -1
       })
     }
 
     else if (sortingMethod === 'nameAsc'){
-      this.attractionOffers = this.attractionOffers.sort((o1, o2) => {
+      this.filteredAttractionOffers = this.filteredAttractionOffers.sort((o1, o2) => {
         return o1.title.toLocaleLowerCase() > o2.title.toLocaleLowerCase() ? 1 : -1;
       })
     } else if (sortingMethod === 'nameDesc') {
-      this.attractionOffers = this.attractionOffers.sort((o1, o2) => {
+      this.filteredAttractionOffers = this.filteredAttractionOffers.sort((o1, o2) => {
         return o1.title.toLocaleLowerCase() < o2.title.toLocaleLowerCase() ? 1 : -1;
       })
     }
@@ -356,20 +607,20 @@ export class UserOffersComponent implements OnInit {
 
   public sortActivityOffers(sortingMethod: string): void {
     if (sortingMethod === 'latest'){
-      this.activityOffers = this.activityOffers.sort((o1, o2) => {
+      this.filteredActivityOffers = this.filteredActivityOffers.sort((o1, o2) => {
         return o1.createdAt < o2.createdAt ? 1 : -1
       })
     } else if (sortingMethod === 'oldest'){
-      this.activityOffers = this.activityOffers.sort((o1, o2) => {
+      this.filteredActivityOffers = this.filteredActivityOffers.sort((o1, o2) => {
         return o1.createdAt > o2.createdAt ? 1 : -1
       })
     }
     else if (sortingMethod === 'nameAsc'){
-      this.activityOffers = this.activityOffers.sort((o1, o2) => {
+      this.filteredActivityOffers = this.filteredActivityOffers.sort((o1, o2) => {
         return o1.title.toLocaleLowerCase() > o2.title.toLocaleLowerCase() ? 1 : -1;
       })
     } else if (sortingMethod === 'nameDesc') {
-      this.activityOffers = this.activityOffers.sort((o1, o2) => {
+      this.filteredActivityOffers = this.filteredActivityOffers.sort((o1, o2) => {
         return o1.title.toLocaleLowerCase() < o2.title.toLocaleLowerCase() ? 1 : -1;
       })
     }

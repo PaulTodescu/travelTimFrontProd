@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {LodgingUtility} from "../../entities/lodgingUtility";
 import {ImageService} from "../../services/image/image.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 
 @Component({
@@ -13,6 +14,7 @@ export class LegalLodgingOfferDetailsComponent implements OnInit {
 
   constructor(
     private imageService: ImageService,
+    private sanitizer: DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: {
       id: number,
       description: string;
@@ -38,6 +40,10 @@ export class LegalLodgingOfferDetailsComponent implements OnInit {
         }
       )
     }
+  }
+
+  public getSanitizerUrl(url : string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   public mapImageObjects(){

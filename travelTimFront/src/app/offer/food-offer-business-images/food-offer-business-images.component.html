@@ -1,0 +1,13 @@
+<div id="carousel-background">
+  <carousel [height]="150">
+    <div *ngFor="let image of images" class="carousel-cell">
+      <img [src]="getSanitizerUrl(image)" alt="..." (click)="showImageModal(image)">
+    </div>
+  </carousel>
+  <ng-image-fullscreen-view
+    [images]="imageObjects"
+    [imageIndex]="selectedImageIndex"
+    [show]="showImageModalFlag"
+    (close)="closeImageModal()">
+  </ng-image-fullscreen-view>
+</div>

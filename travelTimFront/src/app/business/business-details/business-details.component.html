@@ -1,0 +1,73 @@
+<div class="card-body" style="overflow: hidden !important; position: relative; padding: 0 !important;">
+  <div class="section-title">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <h2>Business Details</h2>
+  </div>
+
+  <form style="margin-top: 30px" name="addBusinessForm" [formGroup]="businessDetailsForm">
+
+    <!--Name-->
+    <div>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput type="text"/>
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+      <!--Address-->
+      <mat-form-field style="flex: 3 1 0; margin-right: 15px" appearance="outline">
+        <mat-label>Address</mat-label>
+        <input formControlName="address" matInput type="text" />
+      </mat-form-field>
+
+      <!--City-->
+      <mat-form-field  appearance="outline" style="flex: 1 1 0;">
+        <mat-label>City</mat-label>
+        <input formControlName="city" matInput type="text"/>
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+      <!--Email-->
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin-right: 15px">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput type="text" autocomplete="off"/>
+      </mat-form-field>
+
+      <!--Phone-->
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin-right: 15px">
+        <mat-label>Phone</mat-label>
+        <input formControlName="phoneNumber" matInput type="text" autocomplete="off"/>
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; flex-direction: row">
+      <i class="fa fa-external-link-square fa-3x" aria-hidden="true"></i>
+      <mat-form-field appearance="outline" style="flex: 1 1 0">
+        <mat-label>Website</mat-label>
+        <input formControlName="websiteLink" matInput type="text" autocomplete="off"/>
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; flex-direction: row">
+      <i class="fa fa-brands fa-facebook-square fa-3x" aria-hidden="true"></i>
+      <mat-form-field appearance="outline" style="flex: 1 1 0">
+        <mat-label>Facebook</mat-label>
+        <input formControlName="facebookLink" matInput type="text" autocomplete="off"/>
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; flex-direction: row">
+      <i class="fa fa-external-link-square fa-3x fa-align-justify" aria-hidden="true"></i>
+      <mat-form-field appearance="outline" style="flex: 1 1 0">
+        <mat-label>Twitter</mat-label>
+        <input formControlName="twitterLink" matInput type="text" autocomplete="off"/>
+      </mat-form-field>
+    </div>
+  </form>
+
+
+</div>

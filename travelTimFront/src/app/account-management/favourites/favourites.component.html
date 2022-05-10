@@ -1,3 +1,56 @@
 <div class="account-management-right-container">
-  <h1>My Favourites</h1>
-  <div class="separator"></div></div>
+  <div id="top-section">
+    <h1>My Favourites</h1>
+    <div style="margin-left: auto">
+      <h4 class="sort-txt">Sort by: </h4>
+      <mat-form-field class="sort-field" appearance="legacy">
+        <mat-select [value]="sortingMethod" (selectionChange)="sortOffers($event.value)">
+          <mat-option style="color: black;" value="latest"> Latest </mat-option>
+          <mat-option style="color: black;" value="oldest"> Oldest </mat-option>
+          <mat-option style="color: black;" value="nameAsc"> Name Asc. </mat-option>
+          <mat-option style="color: black;" value="nameDesc"> Name Desc. </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="separator"></div>
+  <div id="offers-container">
+    <div *ngIf="favouriteOffers.length !== 0;">
+      <h4 class="nr-results">showing {{nrOffers}} result<span *ngIf="nrOffers > 1">s</span>
+      </h4>
+      <div *ngFor="let offer of favouriteOffers | paginate: { id: 'favouriteOffersPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: nrOffers }">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+          </div>
+          <div class="offer-info" >
+              <h4 class="offer-title"
+                  (click)=" offer.category !== 'lodging' ?
+                    goToOfferPage({id: offer.id, category: offer.category}) :
+                    goToOfferPage({id: offer.id, category: offer.category, type: offer.type})">
+                <mat-icon style="margin-right: 5px">title</mat-icon>
+                {{offer.title}}
+              </h4>
+          </div>
+          <div class="right-side">
+            <mat-icon class="favourite-btn" (click)="removeOfferFromFavourites(offer.id, offer.category)">
+              favorite
+            </mat-icon>
+            <h3>category: <b>{{offer.category}}</b></h3>
+          </div>
+        </div>
+      </div>
+      <pagination-controls
+        id="favouriteOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+      </pagination-controls>
+    </div>
+    <div *ngIf="showNoOffersMessage" class="offer-container" role="alert">
+      <h4 class="alert-heading">NO OFFERS FOUND!</h4>
+    </div>
+    <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
+  </div>
+</div>
+

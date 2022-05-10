@@ -1,35 +1,42 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {UserDTO} from "../../entities/userDTO";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user/user.service";
+import {OfferContact} from "../../entities/offerContact";
+import {Business} from "../../entities/business";
 
 @Component({
   selector: 'app-add-offer-contact-section',
   templateUrl: './add-offer-contact-section.html',
   styleUrls: ['./add-offer-contact-section.scss']
 })
-export class AddOfferContactSection implements OnInit {
+export class AddOfferContactSection implements OnInit, OnChanges {
 
   constructor(
     private userService: UserService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder) {
+  }
 
-  loggedInUser: UserDTO | undefined;
+  user: UserDTO | undefined;
+
+  @Input() business: Business | undefined;
+
+  contactDetails: OfferContact | undefined;
 
   ContactForm = this.formBuilder.group({
-    email: [],
+    email: ['', [Validators.required, Validators.email]],
     phoneNumber: ['', [Validators.minLength(5), Validators.pattern("^[0-9]*$")]]
   })
 
-  @Output() phoneNumberEvent: EventEmitter<string> = new EventEmitter<string>();
-  @Output() phoneNumberValidityEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() isContactValidEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() contactDetailsEvent: EventEmitter<OfferContact> = new EventEmitter<OfferContact>();
 
   public getLoggedInUser(): void{
     this.userService.getLoggedInUser().subscribe(
       (response: UserDTO) => {
-        this.loggedInUser = response
-        this.setInitialFormValues(response);
+        this.user = response
+        this.setFormValues(response.email, response.phoneNumber);
       },
       (error: HttpErrorResponse) => {
         console.log(error.message);
@@ -37,26 +44,42 @@ export class AddOfferContactSection implements OnInit {
     )
   }
 
-  private setInitialFormValues(user: UserDTO) {
+  private setFormValues(email: string | undefined, phoneNumber: string | undefined) {
     this.ContactForm.patchValue({
-      email: user.email,
-      phoneNumber: user.phoneNumber
+      email: email,
+      phoneNumber: phoneNumber
     })
+    this.sendContactDetails();
   }
 
-  // sends phone number to AddOfferContainer component
-  public sendPhoneNumber(): void{
-    let phoneNumber = this.ContactForm.get("phoneNumber")?.value;
-    let isPhoneNumberValid = this.ContactForm.get("phoneNumber")?.valid;
-    if (isPhoneNumberValid) {
-      this.phoneNumberEvent.emit(phoneNumber);
-      this.phoneNumberValidityEvent.emit(true);
+  public sendContactFormValidity(){
+    if (this.ContactForm.get('email')?.valid && this.ContactForm.get('phoneNumber')?.valid){
+      this.isContactValidEvent.emit(true);
     } else {
-      this.phoneNumberValidityEvent.emit(false);
+      this.isContactValidEvent.emit(false);
     }
   }
 
-  getFormPhoneNumberErrorMessage() {
+  public sendContactDetails(): void {
+    this.sendContactFormValidity();
+    let email = this.ContactForm.get('email')?.value;
+    let phoneNumber = this.ContactForm.get('phoneNumber')?.value;
+    if (email !== undefined && phoneNumber !== undefined){
+      let contactDetails = new OfferContact(email, phoneNumber);
+      this.contactDetailsEvent.emit(contactDetails);
+    }
+  }
+
+  public getFormEmailErrorMessage() {
+    if (this.ContactForm.get('email')?.hasError('required')){
+      return 'you must enter a value';
+    } else if (this.ContactForm.get('email')?.hasError('email')){
+      return 'invalid email';
+    }
+    return;
+  }
+
+  public getFormPhoneNumberErrorMessage() {
     if (this.ContactForm.get('phoneNumber')?.hasError('minlength')){
       return 'enter at least 5 digits';
     }
@@ -68,6 +91,15 @@ export class AddOfferContactSection implements OnInit {
 
   ngOnInit(): void {
     this.getLoggedInUser();
-    this.ContactForm.get("email")?.disable();
+  }
+
+  // when user selects a business, complete with business contact details,
+  // otherwise with user contact details
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.business){
+      this.setFormValues(this.business?.email, this.business?.phoneNumber)
+    } else {
+      this.setFormValues(this.user?.email, this.user?.phoneNumber);
+    }
   }
 }

@@ -9,11 +9,19 @@ html, body {
 
 .dialog-class {
   width: 60%;
+  max-height: 95%;
   overflow: auto;
-  max-height: 90%;
   position: absolute;
   z-index: 1;
   border-radius: 7px;
+}
+
+.dialog-class #menu-container {
+  margin: 0 auto;
+}
+
+.dialog-class #tickets-container {
+  margin: 0 auto;
 }
 
 .mat-button-focus-overlay {
@@ -42,8 +50,8 @@ html, body {
 }
 
 .mat-select-panel {
-  margin-top: 45px;
-  pointer-events: auto;
+  //margin-top: 45px;
+  //pointer-events: auto;
 }
 
 .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
@@ -90,6 +98,7 @@ html, body {
 .mat-checkbox-checked.mat-accent .mat-checkbox-background {
   background-color: #7c795d !important;
 }
+
 
 
 

@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MapComponent} from "../../map/map.component";
-import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOffer";
 import {LodgingService} from "../../services/lodging/lodging.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ImageService} from "../../services/image/image.service";
 import {LegalPersonLodgingOfferBaseDetailsDTO} from "../../entities/legalPersonLodgingOfferBaseDetailsDTO";
-import {UserContactDTO} from "../../entities/UserContactDTO";
 import {LegalPersonLodgingOfferDetailsDTO} from "../../entities/legalPersonLodgingOfferDetailsDTO";
 import {BusinessService} from "../../services/business/business.service";
 import {FoodService} from "../../services/food/food.service";
@@ -17,7 +15,16 @@ import {ActivityService} from "../../services/activity/activity.service";
 import {AttractionOfferDetails} from "../../entities/attractionOfferDetails";
 import {Ticket} from "../../entities/ticket";
 import {ActivityOfferDetails} from "../../entities/activityOfferDetails";
-import {LodgingOfferPriceDTO} from "../../entities/lodgingOfferPriceDTO";
+import {DomSanitizer} from "@angular/platform-browser";
+import {CurrencyService} from "../../services/currency/currency.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {
+  BusinessScheduleComponent
+} from "../../business/business-schedule/business-schedule.component";
+import {DaySchedule} from "../../entities/daySchedule";
+import {PhysicalPersonLodgingOfferDetails} from "../../entities/physicalPersonLodgingOfferDetails";
+import {OfferContact} from "../../entities/offerContact";
+import {BusinessSocials} from "../../entities/businessSocials";
 
 @Component({
   selector: 'app-offer-container',
@@ -29,6 +36,9 @@ export class OfferContainerComponent implements OnInit {
   @ViewChild(MapComponent) mapComponent: any;
   offerId: number | undefined
   businessId: number | undefined;
+  userId: number | undefined;
+
+  businessSchedule: DaySchedule[] | undefined;
   offerCategory: string | undefined;
   offerType: string | undefined;
 
@@ -45,11 +55,11 @@ export class OfferContainerComponent implements OnInit {
   offerProviderName: string | undefined;
   offerProviderImage: string | undefined;
 
-  contactDetails: UserContactDTO | undefined;
+  offerContact: OfferContact | undefined;
+  businessSocials: BusinessSocials | undefined;
 
   legalPersonLodgingOffers: LegalPersonLodgingOfferDetailsDTO[] | undefined;
-  physicalPersonLodgingOffer: PhysicalPersonLodgingOffer | undefined;
-  physicalPersonLodgingOfferPrice: LodgingOfferPriceDTO | undefined;
+  physicalPersonLodgingOffer: PhysicalPersonLodgingOfferDetails | undefined;
 
   foodOfferMenu: FoodMenuCategory[] | undefined;
 
@@ -62,13 +72,18 @@ export class OfferContainerComponent implements OnInit {
     private activityService: ActivityService,
     private businessService: BusinessService,
     private imageService: ImageService,
+    private dialog: MatDialog,
+    private currencyService: CurrencyService,
+    private sanitizer: DomSanitizer,
+    private router: Router,
     private activatedRout: ActivatedRoute) {
     this.activatedRout.queryParams.subscribe(
     data => {
       this.offerId = data.id;
       this.offerCategory = data.category;
       this.offerType = data.type;
-    });}
+    });
+  }
 
   images: string[] = [];
 
@@ -104,13 +119,18 @@ export class OfferContainerComponent implements OnInit {
       (response: LegalPersonLodgingOfferBaseDetailsDTO) => {
         this.hasOfferBusiness = true;
         this.businessId = response.business.id;
+        this.businessSchedule = response.business.schedule;
         this.getLegalPersonLodgingOffersDetails(response.business.id);
         this.offerAddress = response.business.address;
         this.offerCity = response.business.city;
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.offerProviderName = response.business.name;
-        this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
+        this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
+        this.businessSocials = new BusinessSocials(
+          response.business.websiteLink,
+          response.business.facebookLink,
+          response.business.twitterLink);
         this.getOfferImages(response.business.id);
         if (response.business?.id !== undefined) {
           this.getProviderImage(response.business.id);
@@ -133,17 +153,18 @@ export class OfferContainerComponent implements OnInit {
 
   public getPhysicalPersonLodgingOffer(offerId: number): void {
     this.lodgingService.getPhysicalLodgingOfferById(offerId).subscribe(
-      (response: PhysicalPersonLodgingOffer) => {
+      (response: PhysicalPersonLodgingOfferDetails) => {
         this.physicalPersonLodgingOffer = response;
         this.offerTitle = response.title;
         this.offerAddress = response.address;
         this.offerCity = response.city;
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
-        this.getLodgingOfferPrice(offerId);
         if (response.user !== undefined) {
+          this.userId = response.user.id;
           this.offerProviderName = response.user.firstName + ' ' + response.user.lastName;
-          this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
+          this.offerContact =
+            new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
           this.getProviderImage(response.user?.id);
         }
       },
@@ -153,18 +174,8 @@ export class OfferContainerComponent implements OnInit {
     )
   }
 
-  public getLodgingOfferPrice(offerId: number): void {
-    this.lodgingService.getLodgingOfferPrice(offerId, this.selectedCurrency).subscribe(
-      (response: LodgingOfferPriceDTO) => {
-        this.physicalPersonLodgingOfferPrice = response;
-      }, (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    )
-  }
-
   public getFoodOffer(offerId: number) {
-    this.foodService.getFoodOfferById(offerId).subscribe(
+    this.foodService.getFoodOfferDetails(offerId).subscribe(
       (response: FoodOfferDetails) => {
         this.hasOfferBusiness = true;
         this.offerAddress = response.business.address;
@@ -172,10 +183,15 @@ export class OfferContainerComponent implements OnInit {
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.offerProviderName = response.business.name;
-        this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
-        if (response.business?.id !== undefined) {
-          this.getProviderImage(response.business.id);
-        }
+        this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
+        this.businessId = response.business.id;
+        this.businessSchedule = response.business.schedule;
+        this.businessSocials = new BusinessSocials(
+          response.business.websiteLink,
+          response.business.facebookLink,
+          response.business.twitterLink
+        )
+        this.getProviderImage(response.business.id);
         this.foodOfferMenu = response.foodMenuCategories;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
@@ -184,13 +200,21 @@ export class OfferContainerComponent implements OnInit {
   }
 
   public getAttractionOffer(offerId: number): void {
-    this.attractionService.getAttractionOfferById(offerId).subscribe(
+    this.attractionService.getAttractionOfferDetails(offerId).subscribe(
       (response: AttractionOfferDetails) => {
         if (response.business !== null) {
           this.hasOfferBusiness = true;
+          this.businessId = response.business.id;
           this.offerProviderName = response.business.name;
+          this.businessSchedule = response.business.schedule;
+          this.businessSocials = new BusinessSocials(
+            response.business.websiteLink,
+            response.business.facebookLink,
+            response.business.twitterLink
+          )
           this.getProviderImage(response.business.id);
         } else {
+          this.userId = response.user?.id;
           this.offerProviderName = response.user?.firstName + ' ' + response.user?.lastName;
           this.getProviderImage(response.user.id);
         }
@@ -199,20 +223,28 @@ export class OfferContainerComponent implements OnInit {
         this.offerCity = response.city;
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
-        this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
+        this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
         this.tickets = response.tickets;
       }
     )
   }
 
   public getActivityOffer(offerId: number): void {
-    this.activityService.getActivityOfferById(offerId).subscribe(
+    this.activityService.getActivityOfferDetails(offerId).subscribe(
       (response: ActivityOfferDetails) => {
         if (response.business !== null) {
+          this.businessId = response.business.id;
           this.hasOfferBusiness = true;
           this.offerProviderName = response.business.name;
+          this.businessSchedule = response.business.schedule;
+          this.businessSocials = new BusinessSocials(
+            response.business.websiteLink,
+            response.business.facebookLink,
+            response.business.twitterLink
+          )
           this.getProviderImage(response.business.id);
         } else {
+          this.userId = response.user?.id;
           this.offerProviderName = response.user?.firstName + ' ' + response.user?.lastName;
           this.getProviderImage(response.user.id);
         }
@@ -221,7 +253,7 @@ export class OfferContainerComponent implements OnInit {
         this.offerCity = response.city;
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
-        this.contactDetails = new UserContactDTO(response.user.email, response.user.phoneNumber);
+        this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
         this.tickets = response.tickets;
       }
     )
@@ -251,7 +283,14 @@ export class OfferContainerComponent implements OnInit {
   }
 
   public setLocationMarkerOnMap(): void {
-   //this.setMarker(this.offerAddress + ' ' + this.offerCity);
+   this.setMarker(this.offerAddress + ' ' + this.offerCity);
+  }
+
+  public getSanitizerUrl(url : string | undefined) {
+    if (url !== undefined) {
+      return this.sanitizer.bypassSecurityTrustUrl(url);
+    }
+    return null;
   }
 
   public setImage(image: string): void {
@@ -298,19 +337,78 @@ export class OfferContainerComponent implements OnInit {
   }
 
   public setMarker(address: string): void {
-    this.mapComponent.setMarker(address);
+    //this.mapComponent.setMarker(address);
+  }
+
+  public seeBusinessSchedule(): void {
+    if (this.businessSchedule !== undefined) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.autoFocus = false;
+      dialogConfig.panelClass = 'dialog-class' // in styles.css
+      dialogConfig.data = {
+        schedule: this.businessSchedule
+      }
+      this.dialog.open(BusinessScheduleComponent, dialogConfig);
+    }
   }
 
   public changeCurrency(currency: string): void {
-    this.selectedCurrency = currency;
-    if (this.offerCategory === 'lodging' && this.offerId !== undefined){
-      if (this.offerType === 'legal') {
-        if (this.businessId !== undefined) {
-          this.getLegalPersonLodgingOffersDetails(this.businessId);
+    if (this.offerCategory === 'lodging' &&
+      this.offerId !== undefined &&
+      this.selectedCurrency.localeCompare(currency) !== 0){
+      this.setConvertedLodgingOfferPrices(this.selectedCurrency, currency);
+    }
+      this.selectedCurrency = currency;
+  }
+
+  public setConvertedLodgingOfferPrices(fromCode: string, toCode: string): void {
+    this.currencyService.getCurrencyConversionRate(fromCode, toCode).subscribe(
+      (response: number) => {
+        if (this.offerType === 'legal'){
+          if (this.legalPersonLodgingOffers !== undefined) {
+            for (let offer of this.legalPersonLodgingOffers) {
+              offer.price = offer.price * response;
+              offer.currency = toCode;
+            }
+          }
+        } else if (this.offerType === 'physical'){
+          if (this.physicalPersonLodgingOffer !== undefined){
+            this.physicalPersonLodgingOffer.price =
+              this.physicalPersonLodgingOffer.price * response;
+            this.physicalPersonLodgingOffer.currency = toCode;
+          }
         }
-      } else if (this.offerType === 'physical') {
-        this.getLodgingOfferPrice(this.offerId);
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
       }
+    )
+  }
+
+  public getFormattedOfferPrice(price: number | undefined): number {
+    alert(price)
+    if (price) {
+      if (price % 1 < 0.1 || price % 1 > 0.9){
+        return Math.round(price);
+      }
+      return parseFloat(price.toFixed(2));
+    }
+    return NaN;
+  }
+
+  public goToProviderPage(): void {
+    if (this.businessId) {
+      this.router.navigate(['offers/business'], {
+        queryParams: {
+          id: this.businessId
+        }
+      });
+    } else if (this.userId){
+      this.router.navigate(['offers/user'], {
+        queryParams: {
+          id: this.userId
+        }
+      });
     }
   }
 

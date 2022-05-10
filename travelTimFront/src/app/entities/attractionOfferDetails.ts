@@ -1,14 +1,16 @@
 import {Business} from "./business";
 import {Ticket} from "./ticket";
 import {UserDetailsDTO} from "./UserDetailsDTO";
+import {OfferContact} from "./offerContact";
 
 export interface AttractionOfferDetails {
   id: number;
-  business: Business;
   title: string;
   address: string;
   city: string;
   description: string;
-  user: UserDetailsDTO;
+  business: Business;
   tickets: Ticket[];
+  offerContact: OfferContact;
+  user: UserDetailsDTO;
 }

@@ -1,0 +1,39 @@
+.close-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  background-color: #f7f7f7;
+  color: #000000;
+  margin: 10px;
+}
+
+
+table {
+  border-collapse:separate;
+  border-spacing: 15px;
+}
+
+th {
+  font-family: "Trebuchet MS", sans-serif;
+  color: #7c795d;
+  font-size: 1.3em;
+  font-weight: bolder;
+}
+
+td {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+#day-column {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  font-size: 1.1em;
+}
+
+.checkbox {
+  margin: 0 10px;
+  color: #7c795d;
+}

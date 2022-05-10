@@ -25,34 +25,50 @@
     </p>
   </div>
   <div class="offers-container" *ngIf="showOffers" [ngSwitch]="selectedCategory">
-    <div *ngSwitchCase="'lodging'">
-      <div *ngIf="lodgingOffers.length !== 0">
-        <div *ngFor="let offer of lodgingOffers | paginate: { id: 'lodgingOffersPageId',
+    <div *ngSwitchCase="'lodging'" @fadeIn>
+      <div *ngIf="filteredLodgingOffers.length !== 0">
+        <h4 class="nr-results">
+          showing {{filteredLodgingOffers.length}}
+          result<span *ngIf="filteredLodgingOffers.length > 1">s</span>
+        </h4>
+        <div *ngFor="let offer of filteredLodgingOffers | paginate: { id: 'lodgingOffersPageId',
                                                         itemsPerPage: nrItemsOnPage,
                                                         currentPage: page,
-                                                        totalItems: lodgingOffers.length }">
+                                                        totalItems: filteredLodgingOffers.length }">
           <div class="offer-container">
             <div class="top-container">
-              <div class="img-container">
-                <img [src]="offer.image" alt="..." (click)="goToLodgingOfferPage(offer)">
+              <div class="offer-fields">
+                <div class="img-container">
+                  <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToLodgingOfferPage(offer)">
+                </div>
+                <div class="offer-info">
+                  <div *ngIf="offer.business !== undefined; then showLegalPersonOffer else showPhysicalPersonOffer"></div>
+                  <ng-template #showLegalPersonOffer>
+                    <h4 class="offer-title" (click)="goToLodgingOfferPage(offer)"><mat-icon style="margin-right: 10px">business</mat-icon>
+                      {{offer?.business?.name}}
+                    </h4>
+                    <h4 class="offer-address"><mat-icon style="margin-right: 10px">location_on</mat-icon>
+                      {{offer.business?.address}}, {{offer.business?.city}}
+                    </h4>
+                  </ng-template>
+                  <ng-template #showPhysicalPersonOffer>
+                    <h4 class="offer-title" (click)="goToLodgingOfferPage(offer)">
+                      <mat-icon style="margin-right: 10px">title</mat-icon>
+                      {{offer?.title}}
+                    </h4>
+                    <h4 class="offer-address"><mat-icon style="margin-right: 10px">location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+                  </ng-template>
+                </div>
+                <mat-icon class="delete-btn" (click)="openDeleteOfferDialog(offer.id)">delete_forever</mat-icon>
               </div>
-              <div class="offer-info">
-                <div *ngIf="offer.business !== undefined; then showLegalPersonOffer else showPhysicalPersonOffer"></div>
-                <ng-template #showLegalPersonOffer>
-                  <h4 class="offer-title"><mat-icon style="margin-right: 10px">business</mat-icon>
-                    {{offer?.business?.name}}
-                  </h4>
-                  <h4 class="offer-address"><mat-icon style="margin-right: 10px">location_on</mat-icon>
-                    {{offer.business?.address}}, {{offer.business?.city}}
-                  </h4>
-
-                </ng-template>
-                <ng-template #showPhysicalPersonOffer>
-                  <h4 class="offer-title"><mat-icon style="margin-right: 10px">title</mat-icon>{{offer?.title}}</h4>
-                  <h4 class="offer-address"><mat-icon style="margin-right: 10px">location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
-                </ng-template>
-              </div>
-              <mat-icon class="delete-btn">delete_forever</mat-icon>
+              <h4 class="offer-status">
+                <mat-icon style="margin-right: 5px">check_circle_outline</mat-icon>
+                Active
+              </h4>
+<!--              <h4 class="offer-status">-->
+<!--                <mat-icon style="margin-right: 5px">remove_circle_outline</mat-icon>-->
+<!--                Disabled-->
+<!--              </h4>-->
             </div>
             <div class="bottom-container">
               <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
@@ -61,10 +77,10 @@
                   <span class="bold-nr">{{offer.nrSingleBeds}}</span> single bed<span *ngIf="offer.nrSingleBeds > 1">s</span>,
                   <span class="bold-nr">{{offer.nrDoubleBeds}}</span> double bed<span *ngIf="offer.nrDoubleBeds > 1">s</span>
                 </h4>
-                <h2>Price {{offer.price}} {{offer.currency}} <span style="font-size: 0.6em">(/night)</span></h2>
+                <h2>Price: {{getFormattedOfferPrice(offer.price)}} {{offer.currency}} <span style="font-size: 0.6em">(/night)</span></h2>
               </div>
               <div class="action-buttons" style="margin-left: auto">
-                <button mat-raised-button class="edit-btn">
+                <button mat-raised-button class="edit-btn" (click)="goToEditLodgingOfferPage(offer)">
                   Edit<mat-icon>edit</mat-icon>
                 </button>
                 <button mat-raised-button class="disable-btn">
@@ -78,32 +94,45 @@
           id="lodgingOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="lodgingOffers.length === 0" class="offer-container" role="alert">
+      <div *ngIf="filteredLodgingOffers.length === 0" class="offer-container" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
-    <div *ngSwitchCase="'food & beverage'">
-      <div *ngIf="foodOffers.length !== 0">
-        <div *ngFor="let offer of foodOffers | paginate: { id: 'foodOffersPageId',
+    <div *ngSwitchCase="'food & beverage'" @fadeIn>
+      <div *ngIf="filteredFoodOffers.length !== 0">
+        <h4 class="nr-results">
+          showing {{filteredFoodOffers.length}}
+          result<span *ngIf="filteredFoodOffers.length > 1">s</span>
+        </h4>
+        <div *ngFor="let offer of filteredFoodOffers | paginate: { id: 'foodOffersPageId',
                                                        itemsPerPage: nrItemsOnPage,
                                                        currentPage: page,
-                                                       totalItems: foodOffers.length }">
+                                                       totalItems: filteredFoodOffers.length }">
           <div class="offer-container">
             <div class="top-container">
-              <div class="img-container">
-                <img [src]="offer.image" alt="..." (click)="goToFoodOfferPage(offer)">
+              <div class="offer-fields">
+                <div class="img-container">
+                  <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToFoodOfferPage(offer)">
+                </div>
+                <div class="offer-info">
+                  <h4 class="offer-title" (click)="goToFoodOfferPage(offer)">
+                    <mat-icon style="margin-right: 10px">business</mat-icon>
+                    {{offer.business.name}}
+                  </h4>
+                  <h4 class="offer-address"><mat-icon style="margin-right: 10px">location_on</mat-icon>
+                    {{offer.business.address}}, {{offer.business.city}}
+                  </h4>
+                </div>
+                <mat-icon class="delete-btn" (click)="openDeleteOfferDialog(offer.id)">delete_forever</mat-icon>
               </div>
-              <div class="offer-info">
-                <h4 class="offer-title"><mat-icon style="margin-right: 10px">business</mat-icon>{{offer.business.name}}</h4>
-                <h4 class="offer-address"><mat-icon style="margin-right: 10px">location_on</mat-icon>
-                  {{offer.business.address}}, {{offer.business.city}}
-                </h4>
-              </div>
-              <mat-icon class="delete-btn">delete_forever</mat-icon>
+              <h4 class="offer-status">
+                <mat-icon style="margin-right: 5px">check_circle_outline</mat-icon>
+                Active
+              </h4>
             </div>
             <div class="bottom-container">
               <div class="action-buttons" style="margin-left: auto">
-                <button mat-raised-button class="edit-btn">
+                <button mat-raised-button class="edit-btn" (click)="goToEditFoodOfferPage(offer)">
                   Edit<mat-icon>edit</mat-icon>
                 </button>
                 <button mat-raised-button class="disable-btn">
@@ -117,31 +146,43 @@
           id="foodOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="foodOffers.length === 0" class="offer-container" role="alert">
+      <div *ngIf="filteredFoodOffers.length === 0" class="offer-container" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
-    <div *ngSwitchCase="'attractions'">
-      <div *ngIf="attractionOffers.length !== 0">
-        <div *ngFor="let offer of attractionOffers | paginate: { id: 'attractionOffersPageId',
+    <div *ngSwitchCase="'attractions'" @fadeIn>
+      <div *ngIf="filteredAttractionOffers.length !== 0">
+        <h4 class="nr-results">
+          showing {{filteredAttractionOffers.length}}
+          result<span *ngIf="filteredAttractionOffers.length > 1">s</span>
+        </h4>
+        <div *ngFor="let offer of filteredAttractionOffers | paginate: { id: 'attractionOffersPageId',
                                                         itemsPerPage: nrItemsOnPage,
                                                         currentPage: page,
-                                                        totalItems: attractionOffers.length }">
+                                                        totalItems: filteredAttractionOffers.length }">
           <div class="offer-container">
             <div class="top-container">
-              <div class="img-container">
-                <img [src]="offer.image" alt="..." (click)="goToAttractionOfferPage(offer)">
+              <div class="offer-fields">
+                <div class="img-container">
+                  <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToAttractionOfferPage(offer)">
+                </div>
+                <div class="offer-info">
+                    <h4 class="offer-title" (click)="goToAttractionOfferPage(offer)">
+                      <mat-icon style="margin-right: 10px">title</mat-icon>{{offer.title}}
+                    </h4>
+                    <h4 *ngIf="offer?.business !== null" class="offer-business"><mat-icon style="margin-right: 10px">business</mat-icon>{{offer.business?.name}}</h4>
+                    <h4 class="offer-address"><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+                </div>
+                <mat-icon class="delete-btn" (click)="openDeleteOfferDialog(offer.id)">delete_forever</mat-icon>
               </div>
-              <div class="offer-info">
-                  <h4 class="offer-title"><mat-icon style="margin-right: 10px">title</mat-icon>{{offer.title}}</h4>
-                  <h4 *ngIf="offer?.business !== null" class="offer-business"><mat-icon style="margin-right: 10px">business</mat-icon>{{offer.business?.name}}</h4>
-                  <h4 class="offer-address"><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
-              </div>
-              <mat-icon class="delete-btn">delete_forever</mat-icon>
+              <h4 class="offer-status">
+                <mat-icon style="margin-right: 5px">check_circle_outline</mat-icon>
+                Active
+              </h4>
             </div>
             <div class="bottom-container">
               <div class="action-buttons" style="margin-left: auto">
-                <button mat-raised-button class="edit-btn">
+                <button mat-raised-button class="edit-btn" (click)="goToEditAttractionOfferPage(offer)">
                   Edit<mat-icon>edit</mat-icon>
                 </button>
                 <button mat-raised-button class="disable-btn">
@@ -155,31 +196,43 @@
           id="attractionOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="attractionOffers.length === 0" class="offer-container" role="alert">
+      <div *ngIf="filteredAttractionOffers.length === 0" class="offer-container" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
-    <div *ngSwitchCase="'activities'">
-      <div *ngIf="activityOffers.length !== 0">
-        <div *ngFor="let offer of activityOffers | paginate: { id: 'activityOffersPageId',
+    <div *ngSwitchCase="'activities'" @fadeIn>
+      <div *ngIf="filteredActivityOffers.length !== 0">
+        <h4 class="nr-results">
+          showing {{filteredActivityOffers.length}}
+          result<span *ngIf="filteredActivityOffers.length > 1">s</span>
+        </h4>
+        <div *ngFor="let offer of filteredActivityOffers | paginate: { id: 'activityOffersPageId',
                                                         itemsPerPage: nrItemsOnPage,
                                                         currentPage: page,
-                                                        totalItems: activityOffers.length }">
+                                                        totalItems: filteredActivityOffers.length }">
           <div class="offer-container">
             <div class="top-container">
-              <div class="img-container">
-                <img [src]="offer.image" alt="..." (click)="goToActivityOfferPage(offer)">
+              <div class="offer-fields">
+                <div class="img-container">
+                  <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToActivityOfferPage(offer)">
+                </div>
+                <div class="offer-info">
+                  <h4 class="offer-title" (click)="goToActivityOfferPage(offer)">
+                    <mat-icon style="margin-right: 10px">title</mat-icon>{{offer.title}}
+                  </h4>
+                  <h4 *ngIf="offer?.business !== null" class="offer-business"><mat-icon style="margin-right: 10px">business</mat-icon>{{offer.business?.name}}</h4>
+                  <h4 class="offer-address"><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+                </div>
+                <mat-icon class="delete-btn" (click)="openDeleteOfferDialog(offer.id)">delete_forever</mat-icon>
               </div>
-              <div class="offer-info">
-                <h4 class="offer-title"><mat-icon style="margin-right: 10px">title</mat-icon>{{offer.title}}</h4>
-                <h4 *ngIf="offer?.business !== null" class="offer-business"><mat-icon style="margin-right: 10px">business</mat-icon>{{offer.business?.name}}</h4>
-                <h4 class="offer-address"><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
-              </div>
-              <mat-icon class="delete-btn">delete_forever</mat-icon>
+              <h4 class="offer-status">
+                <mat-icon style="margin-right: 5px">check_circle_outline</mat-icon>
+                Active
+              </h4>
             </div>
             <div class="bottom-container">
               <div class="action-buttons" style="margin-left: auto">
-                <button mat-raised-button class="edit-btn">
+                <button mat-raised-button class="edit-btn" (click)="goToEditActivityOfferPage(offer)">
                   Edit<mat-icon>edit</mat-icon>
                 </button>
                 <button mat-raised-button class="disable-btn">
@@ -193,7 +246,7 @@
           id="activityOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="activityOffers.length === 0" class="offer-container" role="alert">
+      <div *ngIf="filteredActivityOffers.length === 0" class="offer-container" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>

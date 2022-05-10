@@ -1,3 +1,8 @@
+#top-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap
+}
 
 .separator{
   width: 100%;
@@ -5,9 +10,117 @@
   background-color: #ededed;
 }
 
-h1 {
-  font-family: "Trebuchet MS", sans-serif;
-  font-size: 1.8em;
+#offers-container {
+  width: 100%;
+  display: block;
+  margin: 20px auto;
+  overflow: hidden;
+  padding: 20px;
+  background-color: #f7f7f7;
+}
+
+.offer-container {
+  display: flex;
+  flex-direction: row;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+  overflow: auto;
+}
+
+.img-container {
+  min-height: 100px;
+  min-width: 100px;
+  max-width: 180px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: fill;
+  border-radius: 7px;
+}
+
+.offer-info {
+  margin: 10px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-title{
+  font-size: 1.3em;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  margin: 5px 0;
+  word-break: normal;
+}
+
+.offer-title:hover{
+  cursor: pointer;
+}
+
+.nr-offers {
+  margin-top: 10px;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  white-space: nowrap;
+}
+
+.sort-txt{
+  display: inline;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  font-weight: bold;
+  white-space: nowrap;
+  margin: auto 10px 0 0;
+}
+
+.sort-field{
+  width: 100px;
+}
+
+.favourite-btn {
+  transform: scale(1.4);
+  margin-left: auto;
+  margin-bottom: 10px;
+  color: #7c795d;
+}
+
+.right-side {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.right-side .favourite-btn {
+  margin-left: auto;
+}
+
+.right-side h3 {
+  margin-top: auto;
+  font-family: Bahnschrift, serif;
+  white-space: nowrap;
+  color: #7c795d;
+}
+
+.favourite-btn:hover {
+  cursor: pointer;
+}
+
+.mat-icon {
+  vertical-align: text-bottom;
+  transform: scale(1.2);
+}
+
+.alert-heading {
+  margin: 15px;
+}
+
+.nr-results {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
 }
 
 

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthenticationComponent implements OnInit {
 
-  flag: boolean = true
+  flag: boolean = true;
 
   constructor() { }
 

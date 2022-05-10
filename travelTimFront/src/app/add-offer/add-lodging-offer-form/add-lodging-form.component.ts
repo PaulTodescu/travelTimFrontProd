@@ -3,7 +3,7 @@ import {UserService} from "../../services/user/user.service";
 import {Business} from "../../entities/business";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {AddBusinessComponent} from "../../account-management/account/add-business/add-business.component";
+import {AddBusinessComponent} from "../../business/add-business/add-business.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LocationService} from "../../services/location/location.service";
 import Swal from "sweetalert2";

@@ -7,6 +7,13 @@ import {ImageService} from "../../services/image/image.service";
 import {FoodOfferDTO} from "../../entities/foodOfferDTO";
 import {AttractionOfferDTO} from "../../entities/attractionOfferDTO";
 import {ActivityOfferDTO} from "../../entities/activityOfferDTO";
+import {DomSanitizer} from "@angular/platform-browser";
+import {CurrencyService} from "../../services/currency/currency.service";
+import {FavouritesService} from "../../services/favourites/favourites.service";
+import {UserService} from "../../services/user/user.service";
+import Swal from "sweetalert2";
+import {FavouriteOfferCategoryId} from "../../entities/favouriteOfferCategoryId";
+import {BusinessService} from "../../services/business/business.service";
 
 @Component({
   selector: 'app-offers-container',
@@ -16,6 +23,8 @@ import {ActivityOfferDTO} from "../../entities/activityOfferDTO";
 export class OffersContainerComponent implements OnInit {
 
   category: string | undefined;
+  userId: number | undefined;
+  favouriteOffers: FavouriteOfferCategoryId[] | undefined;
 
   lodgingOffers: LodgingOfferDTO[] = [];
   lodgingOffersCopy: LodgingOfferDTO[] = []; // used for filtering results
@@ -32,6 +41,13 @@ export class OffersContainerComponent implements OnInit {
   showNoOffersMessage: boolean = false;
   showFilterOptions: boolean = true;
 
+  currencies: string[] = ['RON', 'EUR', 'USD', 'GBP'];
+  selectedCurrency: string = this.currencies[0];
+
+  showCurrency: boolean = true;
+  showSorting: boolean = true;
+  showNrItems: boolean = true;
+
   page: number = 1;
   nrItemsOnPage: number = 10;
   sortingMethod: string = 'latest';
@@ -41,8 +57,13 @@ export class OffersContainerComponent implements OnInit {
   constructor(
     private router: Router,
     private categoryService: CategoryService,
+    private currencyService: CurrencyService,
     private imageService: ImageService,
-    private activatedRout: ActivatedRoute) {
+    private userService: UserService,
+    private businessService: BusinessService,
+    private activatedRout: ActivatedRoute,
+    private favouritesService: FavouritesService,
+    private sanitizer: DomSanitizer) {
     this.activatedRout.queryParams.subscribe(
     data => {
       this.category = data.category;
@@ -120,6 +141,14 @@ export class OffersContainerComponent implements OnInit {
     }
   }
 
+  public getSanitizerUrl(url : string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+
+  public counter(nr: number): Array<number> {
+    return new Array(nr);
+  }
+
   public changeNrItemsOnPage(nrItems: number): void {
     this.nrItemsOnPage = nrItems;
     this.page = 1;
@@ -127,6 +156,118 @@ export class OffersContainerComponent implements OnInit {
 
   public changePage(pageNumber: number): number {
     return pageNumber;
+  }
+
+  public changeCurrency(currency: string): void {
+    if (this.lodgingOffers.length > 0) {
+      if (this.selectedCurrency.localeCompare(currency) !== 0) {
+        this.setConvertedLodgingOfferPrices(this.selectedCurrency, currency);
+      }
+      this.selectedCurrency = currency;
+    }
+  }
+
+  public setConvertedLodgingOfferPrices(fromCode: string, toCode: string): void {
+    this.currencyService.getCurrencyConversionRate(fromCode, toCode).subscribe(
+      (response: number) => {
+        for (let offer of this.lodgingOffersCopy){
+          offer.price = offer.price * response;
+          offer.currency = toCode;
+        }
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public getFormattedOfferPrice(price: number): number {
+    if (price % 1 < 0.1 || price % 1 > 0.9){
+      return Math.round(price);
+    }
+    return parseFloat(price.toFixed(2));
+  }
+
+  public addLodgingOffersToFavourites(id: number): void {
+    if (this.userService.checkIfUserIsLoggedIn()) {
+      let businessId = this.lodgingOffers.find(offer => offer.id === id)?.business?.id;
+      if (businessId) {
+        this.businessService.getLodgingOffersIDs(businessId).subscribe(
+          (offerIDs: number[]) => {
+            for (let offerId of offerIDs) {
+              this.addOfferToFavourites(offerId, 'lodging');
+            }
+          }, (error: HttpErrorResponse) => {
+            alert(error.message);
+          }
+        )
+      } else {
+        this.addOfferToFavourites(id, 'lodging');
+      }
+    } else {
+      this.showErrorToastMessage("You must log in to your account");
+    }
+  }
+
+  public addOfferToFavourites(id: number, category: string) {
+    if (this.userId) {
+      this.favouritesService.addOfferToFavourites(this.userId, id, category).subscribe(
+        () => {
+          this.favouriteOffers?.push(new FavouriteOfferCategoryId(id, category));
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+      this.showSuccessfulToastMessage('Offer added to favourites');
+    } else if (!this.userService.checkIfUserIsLoggedIn()){
+      this.showErrorToastMessage("You must log in to your account");
+    }
+  }
+
+  public removeOfferFromFavourites(id: number, category: string) {
+    if (this.userId && this.category) {
+      this.favouritesService.removeOfferFromFavourites(this.userId, id, this.category).subscribe(
+        () => {
+          this.favouriteOffers?.splice(this.favouriteOffers?.findIndex(
+            offer => offer.id === id && offer.category === category
+          ), 1);
+          this.showSuccessfulToastMessage('Offer removed from favourites');
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
+  }
+
+  public getLoggedInUserId(): void {
+    if (this.userService.checkIfUserIsLoggedIn()) {
+      this.userService.getLoggedInUserId().subscribe(
+        (response: number) => {
+          this.userId = response;
+          this.getFavouriteOffersForUser();
+        }, (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
+  }
+
+  public getFavouriteOffersForUser(): void {
+    if (this.userId) {
+      this.favouritesService.getFavouriteOffersCategoryIdForUser(this.userId).subscribe(
+        (response: FavouriteOfferCategoryId[]) => {
+          this.favouriteOffers = response;
+        }, (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
+  }
+
+  public checkIfOfferIsInFavourites(id: number, category: string): boolean {
+    return !!this.favouriteOffers?.find(
+      (offer) => offer.id === id && offer.category === category);
   }
 
   public getFilteredOffers(searchValue: string): void {
@@ -142,43 +283,47 @@ export class OffersContainerComponent implements OnInit {
   }
 
   public getFilteredLodgingOffers(searchValue: string): void {
-      this.lodgingOffers = this.lodgingOffersCopy.filter(
-        offer => {
-          return offer.title?.toLocaleLowerCase().match(searchValue) || offer.business?.name.toLocaleLowerCase().match(searchValue);
-        }
-      )
-      this.page = 1;
-      this.sortOffers(this.sortingMethod);
+    this.lodgingOffers = this.lodgingOffersCopy.filter(
+      offer => {
+        return offer.title?.toLocaleLowerCase().match(searchValue) || offer.business?.name.toLocaleLowerCase().match(searchValue);
+      }
+    )
+    this.checkIfLodgingOffersPresent();
+    this.page = 1;
+    this.sortOffers(this.sortingMethod);
   }
 
   public getFilteredFoodOffers(searchValue: string): void {
-      this.foodOffers = this.foodOffersCopy.filter(
-        offer => {
-          return offer.business.name.toLocaleLowerCase().match(searchValue);
-        }
-      )
-      this.page = 1;
-      this.sortOffers(this.sortingMethod);
+    this.foodOffers = this.foodOffersCopy.filter(
+      offer => {
+        return offer.business.name.toLocaleLowerCase().match(searchValue);
+      }
+    )
+    this.checkIfFoodOffersPresent();
+    this.page = 1;
+    this.sortOffers(this.sortingMethod);
   }
 
   public getFilteredAttractionOffers(searchValue: string): void {
-      this.attractionOffers = this.attractionOffersCopy.filter(
-        offer => {
-          return offer.title?.toLocaleLowerCase().match(searchValue);
-        }
-      )
-      this.page = 1;
-      this.sortOffers(this.sortingMethod);
+    this.attractionOffers = this.attractionOffersCopy.filter(
+      offer => {
+        return offer.title?.toLocaleLowerCase().match(searchValue);
+      }
+    )
+    this.checkIfAttractionOffersPresent();
+    this.page = 1;
+    this.sortOffers(this.sortingMethod);
   }
 
   public getFilteredActivityOffers(searchValue: string): void {
-      this.activityOffers = this.activityOffersCopy.filter(
-        offer => {
-          return offer.title?.toLocaleLowerCase().match(searchValue);
-        }
-      )
-      this.page = 1;
-      this.sortOffers(this.sortingMethod);
+    this.activityOffers = this.activityOffersCopy.filter(
+      offer => {
+        return offer.title?.toLocaleLowerCase().match(searchValue);
+      }
+    )
+    this.checkIfActivityOffersPresent();
+    this.page = 1;
+    this.sortOffers(this.sortingMethod);
   }
 
   public sortOffers(sortingMethod: string) {
@@ -306,6 +451,80 @@ export class OffersContainerComponent implements OnInit {
     }
   }
 
+  public checkIfLodgingOffersPresent(): void {
+    if (this.lodgingOffers.length === 0){
+      this.showCurrency = false;
+      this.showSorting = false;
+      this.showNrItems = false;
+      this.showNoOffersMessage = true;
+    } else {
+      this.showCurrency = true;
+      this.showSorting = true;
+      this.showNrItems = true;
+      this.showNoOffersMessage = false;
+    }
+  }
+
+  public checkIfFoodOffersPresent(): void {
+    if (this.foodOffers.length === 0){
+      this.showSorting = false;
+      this.showNrItems = false;
+      this.showNoOffersMessage = true;
+    } else {
+      this.showSorting = true;
+      this.showNrItems = true;
+      this.showNoOffersMessage = false;
+    }
+  }
+
+  public checkIfAttractionOffersPresent(): void {
+    if (this.attractionOffers.length === 0){
+      this.showSorting = false;
+      this.showNrItems = false;
+      this.showNoOffersMessage = true;
+    } else {
+      this.showSorting = true;
+      this.showNrItems = true;
+      this.showNoOffersMessage = false;
+    }
+  }
+
+  public checkIfActivityOffersPresent(): void {
+    if (this.activityOffers.length === 0){
+      this.showSorting = false;
+      this.showNrItems = false;
+      this.showNoOffersMessage = true;
+    } else {
+      this.showSorting = true;
+      this.showNrItems = true;
+      this.showNoOffersMessage = false;
+    }
+  }
+
+  public showSuccessfulToastMessage(message: string) {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    }).then(function(){})
+  }
+
+  public showErrorToastMessage(message: string) {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    }).then(function(){})
+  }
+
   public goToOfferPage(queryParams: any): void {
     this.router.navigate(['offer'], {
       queryParams: queryParams
@@ -314,6 +533,6 @@ export class OffersContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOffers();
+    this.getLoggedInUserId();
   }
-
 }

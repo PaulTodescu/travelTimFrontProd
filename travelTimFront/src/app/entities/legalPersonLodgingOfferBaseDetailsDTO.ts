@@ -1,9 +1,9 @@
-import {Business} from "./business";
-import {UserContactDTO} from "./UserContactDTO";
+import {BusinessDetailsDTO} from "./businessDetailsDTO";
+import {OfferContact} from "./offerContact";
 
 export interface LegalPersonLodgingOfferBaseDetailsDTO {
   id: number;
   description: string;
-  user: UserContactDTO;
-  business: Business;
+  offerContact: OfferContact;
+  business: BusinessDetailsDTO;
 }

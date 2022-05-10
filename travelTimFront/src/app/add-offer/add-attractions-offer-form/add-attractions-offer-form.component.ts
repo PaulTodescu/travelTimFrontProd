@@ -3,7 +3,7 @@ import {Business} from "../../entities/business";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user/user.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {AddBusinessComponent} from "../../account-management/account/add-business/add-business.component";
+import {AddBusinessComponent} from "../../business/add-business/add-business.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Ticket} from "../../entities/ticket";
 import {AttractionOffer} from "../../entities/attractionOffer";
@@ -95,7 +95,7 @@ export class AddAttractionsOfferFormComponent implements OnInit, OnDestroy {
 
   public changeTicketPrice(ticketPrice: string, ticketIndex: number){
     let ticket = this.tickets[ticketIndex];
-    if (Number(ticketPrice) >= 0) {
+    if (Number(ticketPrice) >= 0 && ticketPrice.length > 0) {
       ticket.price = Number(ticketPrice);
     } else {
       ticket.price = NaN;
@@ -124,7 +124,7 @@ export class AddAttractionsOfferFormComponent implements OnInit, OnDestroy {
       attractionOfferFormData.address,
       attractionOfferFormData.city,
       attractionOfferFormData.description,
-      this.tickets
+      this.tickets,
     )
     this.attractionsOfferFormEvent.emit(attractionsOffer);
     if (this.AddAttractionOfferForm.valid){

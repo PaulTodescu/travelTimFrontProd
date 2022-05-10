@@ -7,7 +7,7 @@
     <h4>Floor: <span>{{offer?.floor}}</span></h4>
   </div>
   <div class="offer-actions">
-    <h2>{{offerPrice?.price}} {{offerPrice?.currency}}</h2>
+    <h2>{{getFormattedOfferPrice(offer?.price)}} {{offer?.currency}}</h2>
     <button mat-raised-button class="reserve-btn">Reserve<mat-icon>loyalty</mat-icon></button>
   </div>
 </div>

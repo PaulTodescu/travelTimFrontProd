@@ -3,7 +3,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {LegalPersonLodgingOffer} from "../../entities/legalPersonLodgingOffer";
 import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOffer";
 import {LodgingService} from "../../services/lodging/lodging.service";
-import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
+import {HttpErrorResponse} from "@angular/common/http";
 import Swal from "sweetalert2";
 import {Router} from "@angular/router";
 import {FoodOffer} from "../../entities/foodOffer";
@@ -14,6 +14,8 @@ import {ActivityOffer} from "../../entities/activityOffer";
 import {ActivityService} from "../../services/activity/activity.service";
 import {UserService} from "../../services/user/user.service";
 import {ImageService} from "../../services/image/image.service";
+import {OfferContact} from "../../entities/offerContact";
+import {Business} from "../../entities/business";
 
 @Component({
   selector: 'app-add-offer-container',
@@ -50,8 +52,10 @@ export class AddOfferContainerComponent implements OnInit {
   activityOffer: ActivityOffer | undefined;
   isActivityOfferValid: boolean = false;
 
-  phoneNumber: string | undefined;
-  isPhoneNumberValid: boolean = true;
+  contactDetails: OfferContact | undefined;
+  isContactValid: boolean = true;
+
+  selectedBusiness: Business | undefined;
 
   images: File[] = [];
 
@@ -65,15 +69,20 @@ export class AddOfferContainerComponent implements OnInit {
     private injector: Injector) { }
 
   public getSelectedCategory(receivedCategory: string) {
+    if (this.selectedCategory !== receivedCategory){
+      this.selectedBusiness = undefined;
+    }
     this.selectedCategory = receivedCategory;
   }
 
   public getLegalPersonLodgingFormValue(receivedLegalPersonLodgingOffer: LegalPersonLodgingOffer): void {
     this.legalPersonLodgingOffer = receivedLegalPersonLodgingOffer;
+    this.selectedBusiness = receivedLegalPersonLodgingOffer.business;
   }
 
   public getPhysicalPersonLodgingFormValue(receivedPhysicalPersonLodgingOffer: PhysicalPersonLodgingOffer): void {
     this.physicalPersonLodgingOffer = receivedPhysicalPersonLodgingOffer;
+    this.selectedBusiness = undefined;
   }
 
   public getLodgingOfferType(receivedLodgingOfferType: string): void {
@@ -82,22 +91,21 @@ export class AddOfferContainerComponent implements OnInit {
 
   public getFoodOfferFormValue(receivedFoodOffer: FoodOffer): void {
     this.foodOffer = receivedFoodOffer;
+    this.selectedBusiness  = receivedFoodOffer.business;
   }
 
   public getAttractionOfferFormValue(receivedAttractionOffer: AttractionOffer): void {
     this.attractionOffer = receivedAttractionOffer;
+    this.selectedBusiness = receivedAttractionOffer.business;
   }
 
   public getActivityOfferFormValue(receivedActivityOffer: ActivityOffer): void {
     this.activityOffer = receivedActivityOffer;
+    this.selectedBusiness = receivedActivityOffer.business;
   }
 
-  public getPhoneNumber(receivedPhoneNumber: string): void {
-    this.phoneNumber = receivedPhoneNumber;
-  }
-
-  public checkPhoneNumberValidity(isValid: boolean) {
-    this.isPhoneNumberValid  = isValid;
+  public getContactDetails(contactDetails: OfferContact) {
+    this.contactDetails = contactDetails;
   }
 
   public getImages(receivedImages: File[]): void {
@@ -124,6 +132,10 @@ export class AddOfferContainerComponent implements OnInit {
     this.isActivityOfferValid = isValid;
   }
 
+  public checkContactValidity(isValid: boolean){
+    this.isContactValid = isValid;
+  }
+
   public addOffer(): void {
     if (this.selectedCategory === 'lodging'){
       this.addLodgingOffer();
@@ -134,23 +146,12 @@ export class AddOfferContainerComponent implements OnInit {
     } else if (this.selectedCategory === 'activities'){
       this.addActivityOffer();
     }
-    if (this.phoneNumber !== undefined){
-      this.updatePhoneNumber(this.phoneNumber);
-    }
-  }
 
-  public updatePhoneNumber(phoneNumber: string): void {
-    this.userService.editUserPhoneNumber(phoneNumber).subscribe(
-      () => {},
-      (error: HttpErrorResponse) => {
-        alert(error.message)
-      }
-    )
   }
 
   public addLodgingOffer(): void {
     if (this.lodgingOfferType === 'legal'){
-      if (!this.isLegalPersonLodgingOfferValid || !this.isPhoneNumberValid){
+      if (!this.isLegalPersonLodgingOfferValid){
         this.onFail("Form is invalid");
         return;
       }
@@ -158,10 +159,15 @@ export class AddOfferContainerComponent implements OnInit {
         this.onFail("Add at least one image");
         return;
       }
+      if (!this.isContactValid){
+        this.onFail("Invalid Contact Information");
+        return;
+      }
       if (this.legalPersonLodgingOffer !== undefined) {
         this.lodgingService.addLegalPersonLodgingOffer(this.legalPersonLodgingOffer).subscribe(
           (offerId: number) => {
             this.addImages(offerId);
+            this.addLodgingOfferContactDetails(offerId, this.contactDetails);
             this.onSuccess();
           },
           (error: HttpErrorResponse) => {
@@ -170,7 +176,7 @@ export class AddOfferContainerComponent implements OnInit {
         )
       }
     } else if (this.lodgingOfferType === 'physical'){
-      if (!this.isPhysicalPersonLodgingOfferValid || !this.isPhoneNumberValid){
+      if (!this.isPhysicalPersonLodgingOfferValid){
         this.onFail("Form is invalid");
         return;
       }
@@ -178,10 +184,15 @@ export class AddOfferContainerComponent implements OnInit {
         this.onFail("Add at least one image");
         return;
       }
+      if (!this.isContactValid){
+        this.onFail("Invalid Contact Information");
+        return;
+      }
       if (this.physicalPersonLodgingOffer !== undefined) {
         this.lodgingService.addPhysicalPersonLodgingOffer(this.physicalPersonLodgingOffer).subscribe(
           (offerId: number) => {
             this.addImages(offerId);
+            this.addLodgingOfferContactDetails(offerId, this.contactDetails);
             this.onSuccess();
           },
           (error: HttpErrorResponse) => {
@@ -193,12 +204,16 @@ export class AddOfferContainerComponent implements OnInit {
   }
 
   public addFoodOffer(): void {
-    if (!this.isFoodOfferValid || !this.isPhoneNumberValid){
+    if (!this.isFoodOfferValid){
       this.onFail("Form is invalid");
       return;
     }
     if (this.images.length < 1){
       this.onFail("Add at least one image");
+      return;
+    }
+    if (!this.isContactValid){
+      this.onFail("Invalid Contact Information");
       return;
     }
     if (this.foodOffer !== undefined) {
@@ -215,16 +230,25 @@ export class AddOfferContainerComponent implements OnInit {
         }
       }
 
-      this.foodService.addFoodOffer(this.foodOffer).subscribe(
-        (offerId: number) => {
-          this.addFoodMenu(offerId);
-          this.addImages(offerId);
-          this.onSuccess();
-        },
-        (error: HttpErrorResponse) => {
-          if (error.status === HttpStatusCode.Conflict){
+      this.foodService.checkIfBusinessHasFoodOffer(this.foodOffer.business.id).subscribe(
+        (response: boolean) => {
+          if (response){
             this.onFail("Selected business already has a food offer\nManage from your account");
+          } else if (this.foodOffer !== undefined) {
+            this.foodService.addFoodOffer(this.foodOffer).subscribe(
+              (offerId: number) => {
+                this.addFoodMenu(offerId);
+                this.addImages(offerId);
+                this.addFoodOfferContactDetails(offerId, this.contactDetails);
+                this.onSuccess();
+              },
+              (error: HttpErrorResponse) => {
+                alert(error.message)
+              }
+            )
           }
+        }, (error: HttpErrorResponse) => {
+          alert(error.message);
         }
       )
     }
@@ -242,12 +266,16 @@ export class AddOfferContainerComponent implements OnInit {
   }
 
   public addAttractionOffer(): void {
-    if (!this.isAttractionOfferValid || !this.isPhoneNumberValid){
+    if (!this.isAttractionOfferValid){
       this.onFail("Form is invalid");
       return;
     }
     if (this.images.length < 1){
       this.onFail("Add at least one image");
+      return;
+    }
+    if (!this.isContactValid){
+      this.onFail("Invalid Contact Information");
       return;
     }
     if (this.attractionOffer !== undefined) {
@@ -262,6 +290,7 @@ export class AddOfferContainerComponent implements OnInit {
       }
       this.attractionService.addAttractionOffer(this.attractionOffer).subscribe(
         (offerId: number) => {
+          this.addAttractionOfferContactDetails(offerId, this.contactDetails);
           this.addImages(offerId);
           this.onSuccess();
         },
@@ -273,12 +302,16 @@ export class AddOfferContainerComponent implements OnInit {
   }
 
   public addActivityOffer(): void {
-    if (!this.isActivityOfferValid || !this.isPhoneNumberValid){
+    if (!this.isActivityOfferValid){
       this.onFail("Form is invalid");
       return;
     }
     if (this.images.length < 1){
       this.onFail("Add at least one image");
+      return;
+    }
+    if (!this.isContactValid){
+      this.onFail("Invalid Contact Information");
       return;
     }
     if (this.activityOffer !== undefined){
@@ -294,8 +327,53 @@ export class AddOfferContainerComponent implements OnInit {
       this.activityOfferService.addActivityOffer(this.activityOffer).subscribe(
         (offerId: number) => {
           this.addImages(offerId);
+          this.addActivityOfferContactDetails(offerId, this.contactDetails);
           this.onSuccess();
         },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
+  }
+
+  private addLodgingOfferContactDetails(offerId: number, contactDetails: OfferContact | undefined) {
+    if (contactDetails !== undefined){
+      this.lodgingService.addContactDetails(offerId, contactDetails).subscribe(
+        () => {},
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
+  }
+
+  private addFoodOfferContactDetails(offerId: number, contactDetails: OfferContact | undefined) {
+    if (contactDetails !== undefined){
+      this.foodService.addContactDetails(offerId, contactDetails).subscribe(
+        () => {},
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
+  }
+
+  private addAttractionOfferContactDetails(offerId: number, contactDetails: OfferContact | undefined) {
+    if (contactDetails !== undefined){
+      this.attractionService.addContactDetails(offerId, contactDetails).subscribe(
+        () => {},
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
+  }
+
+  private addActivityOfferContactDetails(offerId: number, contactDetails: OfferContact | undefined) {
+    if (contactDetails !== undefined){
+      this.activityOfferService.addContactDetails(offerId, contactDetails).subscribe(
+        () => {},
         (error: HttpErrorResponse) => {
           alert(error.message);
         }

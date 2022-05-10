@@ -7,8 +7,10 @@
     <h4>Floor: <span>{{offer?.floor}}</span></h4>
   </div>
   <div class="offer-actions">
-    <h2>{{offer?.price}} {{offer?.currency}}</h2>
-    <button mat-raised-button class="details-btn" (click)="openLegalLodgingOfferDetails(i)">Photos<mat-icon>photo_library</mat-icon></button>
+    <h2>{{getFormattedOfferPrice(offer?.price)}} {{offer?.currency}}</h2>
+    <button mat-raised-button class="details-btn" (click)="openLegalLodgingOfferDetails(i)">
+      <mat-icon>remove_red_eye</mat-icon>
+    </button>
     <button mat-raised-button class="reserve-btn">Reserve<mat-icon>loyalty</mat-icon></button>
   </div>
 </div>

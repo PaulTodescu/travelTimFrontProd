@@ -1,0 +1,160 @@
+#container {
+  display: block;
+  width: 80%;
+  margin: 50px auto;
+  overflow: hidden;
+  padding: 20px;
+  background-color: #f7f7f7;
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+  background-color: #949494;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  border-radius: 7px;
+}
+
+.title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+  background-color: white;
+  color: #034953;
+  margin: 0 auto;
+  width: fit-content;
+  border-radius: 7px;
+  padding: 15px 50px;
+}
+
+.section-container {
+  display: block;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.section-container h1 {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+}
+
+#business-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 30px;
+}
+
+#add-business {
+  text-decoration: underline;
+  color: #7c795d;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.small-width {
+  min-width: 20%;
+}
+
+.medium-width {
+  min-width: 45%;
+}
+
+.large-width {
+  min-width: 62%;
+}
+
+#lodging-services {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  display: inline-block;
+  position: relative;
+}
+
+#lodging-services:hover {
+  cursor: pointer;
+}
+
+#lodging-services:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #7c795d;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+#lodging-services:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+
+#utilities-container {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  color: #7c795d;
+  font-family: Bahnschrift, serif;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #f7f7f7;
+  border-radius: 7px;
+  padding: 5px 0;
+}
+
+#utilities-container:empty {
+  display: none;
+}
+
+.utility {
+  display: flex;
+  border-radius: 7px;
+  background-color: #ffffff;
+  margin: 5px 0 5px 10px;
+  padding: 5px;
+}
+
+.utility h3 {
+  font-size: 1.2em;
+  margin: auto;
+}
+
+.utility h3 mat-icon {
+  color: #FF0000;
+}
+
+.utility h3 mat-icon:hover {
+  cursor: pointer;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.right-button {
+  border-radius: 7px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  overflow: auto;
+}
+
+.submit-button {
+  background-color: #ffffff;
+  color: #034953;
+  font-size: 1.1em;
+  margin: 0 auto;
+}

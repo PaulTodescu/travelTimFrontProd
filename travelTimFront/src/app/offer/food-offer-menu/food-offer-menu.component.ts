@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {FoodMenuCategory} from "../../entities/foodMenuCategory";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-food-offer-menu',
@@ -10,7 +11,13 @@ export class FoodOfferMenuComponent implements OnInit {
 
   @Input() foodMenu: FoodMenuCategory[] | undefined;
 
-  constructor() { }
+  constructor( @Inject(MAT_DIALOG_DATA) public data: {
+    menu: FoodMenuCategory[]
+  }) {
+    if (this.data.menu){
+      this.foodMenu = this.data.menu;
+    }
+  }
 
   ngOnInit(): void {
   }

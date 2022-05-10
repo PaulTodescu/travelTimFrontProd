@@ -7,7 +7,6 @@
     <h1>Category</h1>
     <app-add-offer-categories-section (selectedCategoryEvent)="getSelectedCategory($event)"></app-add-offer-categories-section>
   </div>
-
   <div *ngIf="selectedCategory === 'lodging'" @fadeIn>
     <app-add-lodging-form
       (lodgingOfferTypeEvent)="getLodgingOfferType($event)"
@@ -43,8 +42,10 @@
     <div class="section-container">
       <h1>Contact</h1>
       <app-add-offer-contact-section
-        (phoneNumberEvent)="getPhoneNumber($event)"
-        (phoneNumberValidityEvent)="checkPhoneNumberValidity($event)"></app-add-offer-contact-section>
+        [business]="selectedBusiness"
+        (isContactValidEvent)="checkContactValidity($event)"
+        (contactDetailsEvent)="getContactDetails($event)">
+      </app-add-offer-contact-section>
     </div>
     <div class="btn-container">
       <div class="right-button" style="margin-right: 10px">

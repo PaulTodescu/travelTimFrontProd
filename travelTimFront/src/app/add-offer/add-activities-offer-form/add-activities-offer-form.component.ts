@@ -4,7 +4,7 @@ import {UserService} from "../../services/user/user.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
-import {AddBusinessComponent} from "../../account-management/account/add-business/add-business.component";
+import {AddBusinessComponent} from "../../business/add-business/add-business.component";
 import {Ticket} from "../../entities/ticket";
 import {ActivityOffer} from "../../entities/activityOffer";
 import {LocationService} from "../../services/location/location.service";
@@ -95,7 +95,7 @@ export class AddActivitiesOfferFormComponent implements OnInit, OnDestroy {
 
   public changeTicketPrice(ticketPrice: string, ticketIndex: number){
     let ticket = this.tickets[ticketIndex];
-    if (Number(ticketPrice) >= 0) {
+    if (Number(ticketPrice) >= 0 && ticketPrice.length > 0) {
       ticket.price = Number(ticketPrice);
     } else {
       ticket.price = NaN;

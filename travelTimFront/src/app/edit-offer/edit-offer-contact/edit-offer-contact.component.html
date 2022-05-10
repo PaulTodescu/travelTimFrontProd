@@ -1,0 +1,28 @@
+<div class="section-container">
+  <h1>Contact</h1>
+  <form name="ContactForm" [formGroup]="ContactForm">
+    <!--Email-->
+    <div>
+      <mat-form-field class="small-width" appearance="fill">
+        <mat-label> Email <span style="color: red">*</span> </mat-label>
+        <input formControlName="email" matInput type="text" autocomplete="off"
+        (change)="sendContactDetails()"/>
+        <mat-error *ngIf="ContactForm.controls['email'].invalid">
+          {{getFormEmailErrorMessage()}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!--Phone-->
+    <div>
+      <mat-form-field class="small-width" appearance="fill">
+        <mat-label>Phone</mat-label>
+        <input formControlName="phoneNumber" matInput type="text" autocomplete="off"
+               (change)="sendContactDetails()"/>
+        <mat-error *ngIf="ContactForm.controls['phoneNumber'].invalid">
+          {{getFormPhoneNumberErrorMessage()}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>

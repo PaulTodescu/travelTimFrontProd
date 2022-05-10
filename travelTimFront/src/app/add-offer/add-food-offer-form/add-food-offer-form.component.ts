@@ -4,7 +4,7 @@ import {Business} from "../../entities/business";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user/user.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {AddBusinessComponent} from "../../account-management/account/add-business/add-business.component";
+import {AddBusinessComponent} from "../../business/add-business/add-business.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {FoodOffer} from "../../entities/foodOffer";
@@ -30,7 +30,7 @@ export class AddFoodOfferFormComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder) { }
 
   AddFoodOfferForm: FormGroup = this.formBuilder.group({
-    business:[undefined, Validators.required],
+    business:[undefined, [Validators.required]],
     description: [undefined, [Validators.required, Validators.minLength(10)]]
   })
 

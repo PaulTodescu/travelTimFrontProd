@@ -19,9 +19,10 @@
     <mat-form-field appearance="standard" style="margin-right: 10px;"
                     [ngStyle]="data.offerCategory !== 'lodging'? {'flex-grow': 1} : {'flex-grow': 0}">
       <mat-label><i>Business</i></mat-label>
-      <mat-select>
-        <mat-option style="color: black;" value=""> business 1 </mat-option>
-        <mat-option style="color: black;" value=""> business 2 </mat-option>
+      <mat-select [value]="data.selectedBusiness" (selectionChange)="setSelectedBusiness($event.value)">
+        <div *ngFor="let businessName of data.businesses">
+          <mat-option [value]="businessName"> {{businessName}} </mat-option>
+        </div>
       </mat-select>
     </mat-form-field>
   </div>
@@ -85,7 +86,12 @@
 
   </div>
 
-  <button mat-raised-button class="filter-btn" (click)="sendFilterOptions()">
-    Filter
-  </button>
+  <div style="margin-left: auto; display: flex; flex-direction: row;">
+    <button mat-raised-button class="reset-btn" (click)="resetFilterOptions()">
+      Reset
+    </button>
+    <button mat-raised-button class="filter-btn" (click)="sendFilterOptions()">
+      Filter
+    </button>
+  </div>
 </div>

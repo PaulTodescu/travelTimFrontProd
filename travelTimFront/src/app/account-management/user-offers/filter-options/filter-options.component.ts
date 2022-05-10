@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {MatSelectChange} from "@angular/material/select";
 
 @Component({
   selector: 'app-filter-options',
@@ -15,12 +14,13 @@ export class FilterOptionsComponent implements OnInit {
       offerCategory: string,
       offeredByBusiness: boolean,
       offeredByPerson: boolean,
-      selectedBusinessId: number,
+      businesses: string[],
+      selectedBusiness: string | undefined,
       sortMethod: string,
       currency: string,
-      nrRooms: number,
-      nrSingleBeds: number,
-      nrDoubleBeds: number
+      nrRooms: number | undefined,
+      nrSingleBeds: number | undefined,
+      nrDoubleBeds: number | undefined
     },
     private dialogRef: MatDialogRef<FilterOptionsComponent>) {}
 
@@ -34,6 +34,7 @@ export class FilterOptionsComponent implements OnInit {
       this.data.offeredByPerson = false;
     } else {
       this.data.offeredByBusiness = false;
+      this.data.selectedBusiness = undefined;
     }
   }
 
@@ -41,6 +42,9 @@ export class FilterOptionsComponent implements OnInit {
     if (event.checked) {
       this.data.offeredByPerson = true;
       this.data.offeredByBusiness = false;
+      this.data.selectedBusiness = undefined;
+    } else {
+      this.data.offeredByPerson = false;
     }
   }
 
@@ -59,6 +63,10 @@ export class FilterOptionsComponent implements OnInit {
 
   public showBusinessFilterOption(): boolean {
     return this.data.offerCategory === 'food & beverage';
+  }
+
+  public setSelectedBusiness(business: string): void{
+    this.data.selectedBusiness = business;
   }
 
   public setSelectedSortMethod(sortMethod: string): void {
@@ -81,10 +89,22 @@ export class FilterOptionsComponent implements OnInit {
     this.data.nrDoubleBeds = nrDoubleBeds;
   }
 
+  public resetFilterOptions(): void {
+    this.data.offeredByBusiness = false;
+    this.data.offeredByPerson = false;
+    this.data.selectedBusiness = undefined;
+    this.data.sortMethod = 'latest';
+    this.data.currency = 'RON';
+    this.data.nrRooms = undefined;
+    this.data.nrSingleBeds = undefined;
+    this.data.nrDoubleBeds = undefined;
+  }
+
   public sendFilterOptions(): void {
     this.dialogRef.close({
       offeredByBusiness: this.data.offeredByBusiness,
       offeredByPerson: this.data.offeredByPerson,
+      selectedBusiness: this.data.selectedBusiness,
       sortMethod: this.data.sortMethod,
       currency: this.data.currency,
       nrRooms: this.data.nrRooms,

@@ -11,7 +11,7 @@
 <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4">
   <div class="col my-2" *ngFor="let image of images; let i = index">
     <div id='img-container'>
-      <img [src]="image" alt="">
+      <img [src]="getSanitizerUrl(image)" alt="">
       <div id='img-number' [ngClass]="{'first-image': i === 0}">{{i + 1}}</div>
       <div id='img-delete'><mat-icon (click)="deleteImage(i)">close</mat-icon></div>
     </div>

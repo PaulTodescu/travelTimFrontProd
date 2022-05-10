@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {Ticket} from "../../entities/ticket";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-offer-tickets',
@@ -8,9 +9,15 @@ import {Ticket} from "../../entities/ticket";
 })
 export class OfferTicketsComponent implements OnInit {
 
-  constructor() { }
-
   @Input() tickets: Ticket[] | undefined;
+
+  constructor( @Inject(MAT_DIALOG_DATA) public data: {
+    tickets: Ticket[]
+  }) {
+    if (this.data.tickets){
+      this.tickets = this.data.tickets;
+    }
+  }
 
   ngOnInit(): void {
   }

@@ -4,6 +4,8 @@ import {Observable} from "rxjs";
 import {FoodOffer} from "../../entities/foodOffer";
 import {FoodMenuItem} from "../../entities/foodMenuItem";
 import {FoodOfferDetails} from "../../entities/foodOfferDetails";
+import {FoodOfferEditDTO} from "../../entities/foodOfferEditDTO";
+import {OfferContact} from "../../entities/offerContact";
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,34 @@ export class FoodService {
 
   public getFoodOfferById(offerId: number): Observable<FoodOfferDetails>{
     return this.http.get<FoodOfferDetails>(`${this.apiUrl}/food/${offerId}`);
+  }
+
+  public deleteFoodOffer(offerId: number): Observable<void>{
+    return this.http.delete<void>(`${this.apiUrl}/food/${offerId}`);
+  }
+
+  public getFoodOfferForEdit(offerId: number): Observable<FoodOfferEditDTO>{
+    return this.http.get<FoodOfferEditDTO>(`${this.apiUrl}/food/edit/get/${offerId}`);
+  }
+
+  public editFoodOffer(offer: FoodOfferEditDTO, offerId: number){
+    return this.http.put<void>(`${this.apiUrl}/food/${offerId}`, offer);
+  }
+
+  public getFoodOfferDetails(offerId: number): Observable<FoodOfferDetails>{
+    return this.http.get<FoodOfferDetails>(`${this.apiUrl}/food/${offerId}`);
+  }
+
+  public addContactDetails(offerId: number, contactDetails: OfferContact){
+    return this.http.put<void>(`${this.apiUrl}/food/${offerId}/contact/add`, contactDetails);
+  }
+
+  public editContactDetails(offerId: number, contactDetails: OfferContact){
+    return this.http.put<void>(`${this.apiUrl}/food/${offerId}/contact/edit`, contactDetails);
+  }
+
+  public getContactDetails(offerId: number): Observable<OfferContact>{
+    return this.http.get<OfferContact>(`${this.apiUrl}/food/${offerId}/contact`);
   }
 
 }

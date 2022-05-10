@@ -1,0 +1,168 @@
+#container {
+  display: block;
+  width: 80%;
+  margin: 50px auto;
+  overflow: hidden;
+  padding: 20px;
+  background-color: #f7f7f7;
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+  background-color: #949494;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  border-radius: 7px;
+}
+
+.title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+  background-color: white;
+  color: #034953;
+  margin: 0 auto;
+  width: fit-content;
+  border-radius: 7px;
+  padding: 15px 50px;
+}
+
+.section-container {
+  display: block;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.section-container h1 {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+}
+
+.text-btn {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  display: inline-block;
+  position: relative;
+}
+
+.text-btn:hover {
+  cursor: pointer;
+}
+
+.text-btn:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #7c795d;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.text-btn:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+#business-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#add-business {
+  text-decoration: underline;
+  color: #7c795d;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.small-width {
+  min-width: 24%;
+}
+
+.medium-width {
+  min-width: 50%;
+}
+
+.large-width {
+  min-width: 75%;
+}
+
+#optional-field {
+  display: inline-block;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+.ticket-container {
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  padding: 0 10px;
+  margin: 10px 0;
+}
+
+.ticket-container mat-form-field {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.delete-ticket-button {
+  display: flex;
+  margin-left: auto;
+  color: #034953;
+}
+
+.delete-ticket-button mat-icon {
+  margin: auto 0;
+  transform: scale(1.2);
+}
+
+.delete-ticket-button mat-icon:hover {
+  cursor: pointer;
+  color: #FF0000;
+}
+
+.invalid-ticket-input {
+  color: #FF0000;
+}
+
+.invalid-ticket-input:focus {
+  color: #000000;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.right-button {
+  border-radius: 7px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  overflow: auto;
+}
+
+.submit-button {
+  background-color: #ffffff;
+  color: #034953;
+  font-size: 1.1em;
+  margin: 0 auto;
+}

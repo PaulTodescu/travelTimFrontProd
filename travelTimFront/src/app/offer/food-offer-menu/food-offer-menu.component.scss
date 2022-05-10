@@ -7,7 +7,6 @@
 .menu-category {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
 }
 
 .menu-category h2 {
@@ -57,4 +56,11 @@
   color: #ffffff;
   background-color: #ffffff;
   margin: 0 20px 7px 20px;
+}
+
+#no-menu-message {
+  text-align: center;
+  color: #7c795d;
+  font-family: "Trebuchet MS", sans-serif;
+  margin: 5px;
 }

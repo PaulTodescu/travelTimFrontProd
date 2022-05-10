@@ -1,14 +1,20 @@
-<div id="menu-container">
-  <div *ngFor="let menuCategory of foodMenu;" class="menu-category">
-    <h2>{{menuCategory.name}}</h2>
-    <div *ngFor="let menuItem of menuCategory.foodMenuItems" class="menu-items">
-      <div class="item">
-        <h3 class="item-name">{{menuItem.name}}</h3>
-        <div class="dot-line"></div>
-        <h3 *ngIf="menuItem.weight !== null">{{menuItem.weight}} gr</h3>
-        <div *ngIf="menuItem.weight !== null" class="dot-line"></div>
-        <h3>{{menuItem.price}} RON</h3>
+<div *ngIf="foodMenu !== undefined && foodMenu?.length !== 0; then showFoodMenu else showNoFoodMenuMessage"></div>
+<ng-template #showFoodMenu>
+  <div id="menu-container">
+    <div *ngFor="let menuCategory of foodMenu;" class="menu-category">
+      <h2>{{menuCategory.name}}</h2>
+      <div *ngFor="let menuItem of menuCategory.foodMenuItems" class="menu-items">
+        <div class="item">
+          <h3 class="item-name">{{menuItem.name}}</h3>
+          <div class="dot-line"></div>
+          <h3 *ngIf="menuItem.weight !== null">{{menuItem.weight}} gr</h3>
+          <div *ngIf="menuItem.weight !== null" class="dot-line"></div>
+          <h3>{{menuItem.price}} RON</h3>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</ng-template>
+<ng-template #showNoFoodMenuMessage>
+  <h1 id="no-menu-message">No Food Menu Found!</h1>
+</ng-template>

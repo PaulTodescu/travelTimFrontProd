@@ -1,4 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import Swal from "sweetalert2";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-add-offer-images-section',
@@ -10,7 +12,7 @@ export class AddOfferImagesSection implements OnInit {
   images : string[] = [];
   imageFiles: File[] = [];
 
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
   @Output() imagesEvent: EventEmitter<File[]> = new EventEmitter<File[]>();
 
@@ -20,7 +22,8 @@ export class AddOfferImagesSection implements OnInit {
       this.imageFiles = [];
       let numberImages = event.target.files.length;
       if (numberImages > 10){
-        numberImages = 10;
+        this.onFail("Cannot add more than 10 images");
+        return;
       }
       for (let i = 0; i < numberImages; i++) {
         let reader = new FileReader();
@@ -34,10 +37,24 @@ export class AddOfferImagesSection implements OnInit {
     }
   }
 
+  public getSanitizerUrl(url : string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+
   public deleteImage(imageIndex: number): void {
     this.images.splice(imageIndex,1);
     this.imageFiles.splice(imageIndex, 1);
     this.imagesEvent.emit(this.imageFiles);
+  }
+
+  public onFail(message: string): void{
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 2500
+    }).then(function(){})
   }
 
   ngOnInit(): void {

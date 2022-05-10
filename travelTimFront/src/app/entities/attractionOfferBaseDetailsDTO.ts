@@ -5,7 +5,7 @@ export interface AttractionOfferBaseDetailsDTO {
   title: string;
   address: string;
   city: string;
-  business: BusinessDTO | undefined;
+  business: BusinessDTO;
   createdAt: string;
   image: string;
 }

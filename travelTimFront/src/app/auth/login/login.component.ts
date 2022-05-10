@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import { UserService } from 'src/app/services/user/user.service';
 import {AuthenticationResponse} from "../../entities/AuthenticationResponse";
-import {Router} from "@angular/router";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-login',
@@ -40,15 +40,14 @@ export class LoginComponent implements OnInit {
           }
         )
 
-      },
-      () => {
+      }, () => {
         this.wrongCredentialsError = true;
       }
     );
   }
 
   public onSuccess(username: string): void{
-    let router: Router = this.injector.get(Router);
+    let location: Location = this.injector.get(Location);
     Swal.fire({
       position: 'center',
       icon: 'success',
@@ -56,7 +55,7 @@ export class LoginComponent implements OnInit {
       showConfirmButton: false,
       timer: 2000
     }).then(function(){
-      router.navigateByUrl("home");
+      location.back();
     })
   }
 

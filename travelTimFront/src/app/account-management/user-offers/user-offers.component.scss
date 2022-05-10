@@ -78,12 +78,18 @@ h1 {
 
 .top-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   padding: 15px;
   background-color: #f7f7f7;
   border-radius: 7px;
   overflow: auto;
+}
+
+.offer-fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .img-container {
@@ -115,14 +121,29 @@ img:hover {
   font-size: 1.3em;
   font-family: Bahnschrift, serif;
   color: #7c795d;
-  word-break: break-word;
+  word-break: normal;
   margin: 5px 0;
+}
+
+.offer-title:hover{
+  cursor: pointer;
+}
+
+.nr-results {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
 }
 
 .offer-address{
   font-family: Bahnschrift, serif;
   color: #7c795d;
   margin: 5px 0;
+}
+
+.offer-status{
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  margin: 0 0 0 auto
 }
 
 .offer-business{

@@ -12,35 +12,40 @@
     </div>
     <div class="separator"></div>
     <div class="icon-text">
-      <h2 [ngClass]="{'selectedOption': selectedOption === 'my-account'}" (click)="switchSelectedOption('my-account')">
+      <h2 [ngClass]="{'selectedOption': selectedOption === 'my-account'}"
+          (click)="switchSelectedOption('my-account')">
         <mat-icon>account_box</mat-icon>
         My Account
       </h2>
     </div>
     <div class="separator"></div>
     <div class="icon-text">
-      <h2 [ngClass]="{'selectedOption': selectedOption === 'reservations'}" (click)="switchSelectedOption('reservations')">
+      <h2 [ngClass]="{'selectedOption': selectedOption === 'reservations'}"
+          (click)="switchSelectedOption('reservations')">
         <mat-icon>time_to_leave</mat-icon>
         My Reservations
       </h2>
     </div>
     <div class="separator"></div>
     <div class="icon-text">
-      <h2 [ngClass]="{'selectedOption': selectedOption === 'offers'}" (click)="switchSelectedOption('offers')">
+      <h2 [ngClass]="{'selectedOption': selectedOption === 'offers'}"
+          (click)="switchSelectedOption('offers')">
         <mat-icon>local_offer</mat-icon>
         My Offers
       </h2>
     </div>
     <div class="separator"></div>
     <div class="icon-text">
-      <h2 [ngClass]="{'selectedOption': selectedOption === 'favourites'}" (click)="switchSelectedOption('favourites')">
+      <h2 [ngClass]="{'selectedOption': selectedOption === 'favourites'}"
+          (click)="switchSelectedOption('favourites')">
         <mat-icon>favorite</mat-icon>
         My Favourites
       </h2>
     </div>
     <div class="separator"></div>
     <div class="icon-text">
-      <h2 [ngClass]="{'selectedOption': selectedOption === 'reviews'}" (click)="switchSelectedOption('reviews')">
+      <h2 [ngClass]="{'selectedOption': selectedOption === 'reviews'}"
+          (click)="switchSelectedOption('reviews')">
         <mat-icon>rate_review</mat-icon>
         My Reviews
       </h2>
@@ -55,19 +60,19 @@
   </div>
 
   <div id="content-container">
-    <div *ngIf="selectedOption === 'my-account'">
+    <div *ngIf="selectedOption === 'my-account'" @fadeIn>
       <app-account-container></app-account-container>
     </div>
-    <div *ngIf="selectedOption === 'reservations'">
+    <div *ngIf="selectedOption === 'reservations'" @fadeIn>
       <app-reservations></app-reservations>
     </div>
-    <div *ngIf="selectedOption === 'offers'">
+    <div *ngIf="selectedOption === 'offers'" @fadeIn>
       <app-user-offers></app-user-offers>
     </div>
-    <div *ngIf="selectedOption === 'favourites'">
+    <div *ngIf="selectedOption === 'favourites'" @fadeIn>
       <app-favourites></app-favourites>
     </div>
-    <div *ngIf="selectedOption === 'reviews'">
+    <div *ngIf="selectedOption === 'reviews'" @fadeIn>
       <app-reviews></app-reviews>
     </div>
 

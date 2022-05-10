@@ -1,7 +1,7 @@
 <div class="section-container">
   <h1>Details</h1>
   <div *ngIf="showBusinessInput === false; then showAddBusinessInput else showHideBusinessInput"></div>
-  <form name="AddActivityOfferForm" [formGroup]="AddAttractionOfferForm">
+  <form name="AddAttractionOfferForm" [formGroup]="AddAttractionOfferForm">
 
     <ng-template #showAddBusinessInput>
       <h2 class="text-btn" (click)="toggleBusinessInput()">Have an organization?</h2>

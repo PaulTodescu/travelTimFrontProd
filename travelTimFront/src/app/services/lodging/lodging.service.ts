@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOffer";
 import {LegalPersonLodgingOffer} from "../../entities/legalPersonLodgingOffer";
 import {LodgingUtility} from "../../entities/lodgingUtility";
 import {LegalPersonLodgingOfferBaseDetailsDTO} from "../../entities/legalPersonLodgingOfferBaseDetailsDTO";
-import {LodgingOfferPriceDTO} from "../../entities/lodgingOfferPriceDTO";
+import {PhysicalPersonLodgingOfferEditDTO} from "../../entities/physicalPersonLodgingOfferEditDTO";
+import {LegalPersonLodgingOfferEditDTO} from "../../entities/legalPersonLodgingOfferEditDTO";
+import {OfferContact} from "../../entities/offerContact";
+import {PhysicalPersonLodgingOfferDetails} from "../../entities/physicalPersonLodgingOfferDetails";
 
 @Injectable({
   providedIn: 'root'
@@ -28,17 +31,44 @@ export class LodgingService {
     return this.http.put<void>(`${this.apiUrl}/lodging/${lodgingOfferId}/utilities`, lodgingOfferServices);
   }
 
-  public getPhysicalLodgingOfferById(offerId: number): Observable<PhysicalPersonLodgingOffer>{
-    return this.http.get<PhysicalPersonLodgingOffer>(`${this.apiUrl}/lodging/physical/${offerId}`);
+  public getPhysicalLodgingOfferById(offerId: number): Observable<PhysicalPersonLodgingOfferDetails>{
+    return this.http.get<PhysicalPersonLodgingOfferDetails>(`${this.apiUrl}/lodging/physical/${offerId}`);
   }
 
   public getLegalLodgingOfferById(offerId: number): Observable<LegalPersonLodgingOfferBaseDetailsDTO>{
     return this.http.get<LegalPersonLodgingOfferBaseDetailsDTO>(`${this.apiUrl}/lodging/legal/${offerId}`);
   }
 
-  public getLodgingOfferPrice(offerId: number, currency: string): Observable<LodgingOfferPriceDTO>{
-    let params: HttpParams = new HttpParams().set('currency', currency);
-    return this.http.get<LodgingOfferPriceDTO>(`${this.apiUrl}/lodging/${offerId}/price`, {params: params});
+  public deleteLodgingOffer(offerId: number): Observable<void>{
+    return this.http.delete<void>(`${this.apiUrl}/lodging/${offerId}`);
+  }
+
+  public getLegalPersonLodgingOfferForEdit(offerId: number): Observable<LegalPersonLodgingOfferEditDTO>{
+    return this.http.get<LegalPersonLodgingOfferEditDTO>(`${this.apiUrl}/lodging/legal/edit/get/${offerId}`);
+  }
+
+  public getPhysicalPersonLodgingOfferForEdit(offerId: number): Observable<PhysicalPersonLodgingOfferEditDTO>{
+    return this.http.get<PhysicalPersonLodgingOfferEditDTO>(`${this.apiUrl}/lodging/physical/edit/get/${offerId}`);
+  }
+
+  public editLegalPersonLodgingOffer(offer: LegalPersonLodgingOfferEditDTO, offerId: number){
+    return this.http.put<void>(`${this.apiUrl}/lodging/legal/${offerId}`, offer);
+  }
+
+  public editPhysicalPersonLodgingOffer(offer: PhysicalPersonLodgingOfferEditDTO, offerId: number){
+    return this.http.put<void>(`${this.apiUrl}/lodging/physical/${offerId}`, offer);
+  }
+
+  public addContactDetails(offerId: number, contactDetails: OfferContact){
+    return this.http.put<void>(`${this.apiUrl}/lodging/${offerId}/contact/add`, contactDetails);
+  }
+
+  public editContactDetails(offerId: number, contactDetails: OfferContact){
+    return this.http.put<void>(`${this.apiUrl}/lodging/${offerId}/contact/edit`, contactDetails);
+  }
+
+  public getContactDetails(offerId: number): Observable<OfferContact>{
+    return this.http.get<OfferContact>(`${this.apiUrl}/lodging/${offerId}/contact`);
   }
 
 }

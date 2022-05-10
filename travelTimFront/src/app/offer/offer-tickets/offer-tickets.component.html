@@ -1,7 +1,14 @@
-<div id="tickets-container">
-  <div *ngFor="let ticket of tickets" class="ticket">
-    <h3 class="ticket-name">{{ticket.name}}</h3>
-    <div class="dot-line"></div>
-    <h3>{{ticket.price}} RON</h3>
+<div *ngIf="tickets !== undefined && tickets?.length !== 0;
+    then showTickets else showNoTicketsMessage"></div>
+<ng-template #showTickets>
+  <div id="tickets-container">
+    <div *ngFor="let ticket of tickets" class="ticket">
+      <h3 class="ticket-name">{{ticket.name}}</h3>
+      <div class="dot-line"></div>
+      <h3>{{ticket.price}} RON</h3>
+    </div>
   </div>
-</div>
+</ng-template>
+<ng-template #showNoTicketsMessage>
+  <h1 id="no-tickets-message">No Tickets Found!</h1>
+</ng-template>

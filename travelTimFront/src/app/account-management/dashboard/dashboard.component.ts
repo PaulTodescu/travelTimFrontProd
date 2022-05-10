@@ -3,12 +3,21 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user/user.service";
 import {UserDTO} from "../../entities/userDTO";
-import {relative} from "@angular/compiler-cli/src/ngtsc/file_system";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      state('*', style({'opacity': 1})),
+      transition('void => *', [
+        style({'opacity': 0}),
+        animate('300ms linear')
+      ])
+    ])
+  ]
 })
 export class DashboardComponent implements OnInit {
 

@@ -4,13 +4,13 @@
     </button>
   <div id="images-section">
     <div id="image-container">
-      <img id="selected-image" src="{{selectedImage}}" alt="..." (click)="showImageModal(selectedImage)">
+      <img id="selected-image" [src]="selectedImage" alt="..." (click)="showImageModal(selectedImage)">
     </div>
     <p id="fullscreen-img" (click)="showImageModal(selectedImage)">fullscreen</p>
     <div id="carousel-background">
       <carousel [height]="150">
         <div *ngFor="let image of images" class="carousel-cell">
-          <img src="{{image}}" alt="..." (click)="setImage(image)">
+          <img [src]="image" alt="..." (click)="setImage(image)">
         </div>
       </carousel>
     </div>

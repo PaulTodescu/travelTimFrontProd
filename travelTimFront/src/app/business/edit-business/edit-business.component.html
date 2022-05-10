@@ -1,0 +1,169 @@
+<div class="card-body" style="overflow: hidden !important; position: relative; padding: 0 !important;">
+  <div class="section-title">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <h2>Edit Business</h2>
+  </div>
+  <form style="margin-top: 30px" name="addBusinessForm" [formGroup]="editBusinessForm">
+    <!--Name-->
+    <div>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Name <span style="color: red;">*</span></mat-label>
+        <input formControlName="name" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="editBusinessForm.get('name')?.invalid">{{getFormNameErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+      <!--Address-->
+      <mat-form-field appearance="outline" style="flex: 3 1 0; margin-right: 15px">
+        <mat-label>Address <span style="color: red;">*</span></mat-label>
+        <input formControlName="address" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="editBusinessForm.get('address')?.invalid">{{getFormAddressErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <!--City-->
+      <mat-form-field  appearance="outline" style="flex: 1 1 0;">
+        <mat-label>City <span style="color: red;">*</span></mat-label>
+        <mat-select formControlName="city">
+          <div *ngFor="let city of cities">
+            <mat-option value="{{city}}"> {{city}} </mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+      <!--Email-->
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin-right: 15px">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="editBusinessForm.get('email')?.invalid">
+          {{getFormEmailErrorMessage()}}
+        </mat-error>
+      </mat-form-field>
+
+      <!--Phone-->
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin-right: 15px">
+        <mat-label>Phone</mat-label>
+        <input formControlName="phoneNumber" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="editBusinessForm.get('phoneNumber')?.invalid">
+          {{getFormPhoneNumberErrorMessage()}}
+        </mat-error>
+      </mat-form-field>
+
+      <!--Website-->
+      <i class="fa fa-external-link-square fa-3x" aria-hidden="true"
+         [style.color]="!websiteLink ? '#999999' : '#034953'"
+         style="margin: 10px 10px 0 0"
+         (click)="addWebsiteLink()"
+         matTooltip="{{getWebsiteLinkTooltip()}}"
+         matTooltipPosition="above"></i>
+
+      <!--Facebook-->
+      <i class="fa fa-brands fa-facebook-square fa-3x" aria-hidden="true"
+         [style.color]="!facebookLink ? '#999999' : '#034953'"
+         style="margin: 10px 10px 0 0;"
+         (click)="addFacebookLink()"
+         matTooltip="{{getFacebookLinkTooltip()}}"
+         matTooltipPosition="above"></i>
+
+      <!--Twitter-->
+      <i class="fa fa-brands fa-twitter-square fa-3x" aria-hidden="true"
+         [style.color]="!twitterLink ? '#999999' : '#034953'"
+         style="margin: 10px 0 0 0;"
+         (click)="addTwitterLink()"
+         matTooltip="{{getTwitterLinkTooltip()}}"
+         matTooltipPosition="above"></i>
+    </div>
+
+    <!--Schedule-->
+    <div id="schedule-container">
+      <div *ngIf="schedule?.length !== 0; then showAddedSchedule else showNoSchedule"></div>
+      <ng-template #showAddedSchedule>
+        <label (click)="openEditScheduleDialog()">
+          <div>
+            <mat-icon style="vertical-align: middle" inline=true>schedule</mat-icon>
+            &nbsp;  Edit Schedule
+          </div>
+        </label>
+        <div class="added-schedule">
+          <h4 style="margin: auto 5px">
+            schedule added
+          </h4>
+          <div id="schedule-buttons">
+            <mat-icon class="see-icon" (click)="seeSchedule()">remove_red_eye</mat-icon>
+            <mat-icon class="delete-icon" (click)="deleteSchedule()">delete</mat-icon>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #showNoSchedule>
+        <label (click)="openEditScheduleDialog()">
+          <div>
+            <mat-icon style="vertical-align: middle" inline=true>schedule</mat-icon>
+            &nbsp;  Add Schedule
+          </div>
+        </label>
+        <div class="added-schedule">
+          <h4 style="margin: auto 5px">
+            no schedule added
+          </h4>
+        </div>
+      </ng-template>
+    </div>
+
+    <!--Image-->
+    <div id="img-input-container">
+      <label for="business-img-input">
+        <div>
+          <mat-icon style="vertical-align: middle" inline=true>image</mat-icon>
+          &nbsp;  Import Images
+        </div>
+      </label>
+
+      <div id="selected-img">
+        <h4 style="margin: auto 5px">
+          <strong >Selected: </strong>
+        </h4>
+        <div *ngIf="imageNames.length === 0; then showNoSelectedImages else showNrImagesSelected"></div>
+        <ng-template #showNoSelectedImages>
+          <h4 style="margin: auto 5px">
+            default
+          </h4>
+        </ng-template>
+        <ng-template #showNrImagesSelected>
+          <div *ngIf="imageNames.length === 1; then showSingularSelectedImage else showMultipleImagesSelected"></div>
+          <ng-template #showSingularSelectedImage>
+            <h4 style="margin: auto 5px">
+              {{imageNames[0]}}
+            </h4>
+          </ng-template>
+          <ng-template #showMultipleImagesSelected>
+            <div style="display: flex; flex-direction: row; flex-grow: 1;">
+              <h4 style="margin: auto 5px">
+                {{imageNames.length}} images
+              </h4>
+              <mat-icon class="see-icon" style="margin-left: auto"
+                        matTooltip="{{getSelectedImages()}}"
+                        matTooltipPosition="above">
+                remove_red_eye
+              </mat-icon>
+            </div>
+          </ng-template>
+        </ng-template>
+        <input multiple type="file" id="business-img-input" (change)="selectImages($event)">
+      </div>
+    </div>
+
+    <!--Submit Button-->
+    <div class="center-button" style="margin-top: 25px">
+      <button mat-raised-button id="submitButton" [disabled]="!editBusinessForm.valid" data-dismiss="modal"
+              (click)="editBusiness(editBusinessForm)">Save Changes</button>
+    </div>
+  </form>
+</div>
+
+
+
