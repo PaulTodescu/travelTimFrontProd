@@ -29,7 +29,6 @@
     "@sweetalert2/theme-bootstrap-4": "^5.0.10",
     "@sweetalert2/theme-borderless": "^5.0.10",
     "@sweetalert2/theme-dark": "^5.0.10",
-    "angular-responsive-carousel": "^2.1.2",
     "bootstrap": "^4.5.0",
     "font-awesome": "^4.7.0",
     "lightbox2": "^2.11.3",
