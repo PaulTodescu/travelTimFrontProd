@@ -35,6 +35,7 @@
     "lightbox2": "^2.11.3",
     "mdb-angular-ui-kit": "^1.6.0",
     "ng-image-fullscreen-view": "^2.0.0",
+    "ng-pick-datetime": "^7.0.0",
     "ngx-csv": "^0.3.2",
     "ngx-google-places-autocomplete": "^2.0.5",
     "ngx-pagination": "^5.1.1",
@@ -45,8 +46,8 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~12.2.0",
-    "@angular/cli": "~12.2.0",
+    "@angular-devkit/build-angular": "^13.3.5",
+    "@angular/cli": "^13.3.5",
     "@angular/compiler-cli": "~12.2.0",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",

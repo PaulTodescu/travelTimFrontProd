@@ -5,9 +5,9 @@
     </button>
     <h2>Edit Business</h2>
   </div>
-  <form style="margin-top: 30px" name="addBusinessForm" [formGroup]="editBusinessForm">
+  <form style="margin-top: 30px; padding: 5px" name="addBusinessForm" [formGroup]="editBusinessForm">
     <!--Name-->
-    <div>
+    <div style="margin: 0 5px">
       <mat-form-field class="full-width" appearance="outline">
         <mat-label>Name <span style="color: red;">*</span></mat-label>
         <input formControlName="name" matInput type="text" autocomplete="off"/>
@@ -17,14 +17,14 @@
 
     <div style="display: flex; flex-direction: row; flex-wrap: wrap">
       <!--Address-->
-      <mat-form-field appearance="outline" style="flex: 3 1 0; margin-right: 15px">
+      <mat-form-field appearance="outline" style="flex: 3 1 0; margin: 0 5px">
         <mat-label>Address <span style="color: red;">*</span></mat-label>
         <input formControlName="address" matInput type="text" autocomplete="off"/>
         <mat-error *ngIf="editBusinessForm.get('address')?.invalid">{{getFormAddressErrorMessage()}}</mat-error>
       </mat-form-field>
 
       <!--City-->
-      <mat-form-field  appearance="outline" style="flex: 1 1 0;">
+      <mat-form-field  appearance="outline" style="flex: 1 1 0; margin: 0 5px">
         <mat-label>City <span style="color: red;">*</span></mat-label>
         <mat-select formControlName="city">
           <div *ngFor="let city of cities">
@@ -36,46 +36,54 @@
 
     <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
       <!--Email-->
-      <mat-form-field appearance="outline" style="flex: 1 1 0; margin-right: 15px">
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
         <mat-label>Email</mat-label>
         <input formControlName="email" matInput type="text" autocomplete="off"/>
+        <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
+          <mat-icon> email</mat-icon>
+        </button>
         <mat-error *ngIf="editBusinessForm.get('email')?.invalid">
           {{getFormEmailErrorMessage()}}
         </mat-error>
       </mat-form-field>
 
       <!--Phone-->
-      <mat-form-field appearance="outline" style="flex: 1 1 0; margin-right: 15px">
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
         <mat-label>Phone</mat-label>
         <input formControlName="phoneNumber" matInput type="text" autocomplete="off"/>
+        <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
+          <mat-icon> phone</mat-icon>
+        </button>
         <mat-error *ngIf="editBusinessForm.get('phoneNumber')?.invalid">
           {{getFormPhoneNumberErrorMessage()}}
         </mat-error>
       </mat-form-field>
 
-      <!--Website-->
-      <i class="fa fa-external-link-square fa-3x" aria-hidden="true"
-         [style.color]="!websiteLink ? '#999999' : '#034953'"
-         style="margin: 10px 10px 0 0"
-         (click)="addWebsiteLink()"
-         matTooltip="{{getWebsiteLinkTooltip()}}"
-         matTooltipPosition="above"></i>
+      <div style="margin: 0 5px">
+        <!--Website-->
+        <i class="fa fa-external-link-square fa-3x" aria-hidden="true"
+           [style.color]="!websiteLink ? '#999999' : '#034953'"
+           style="margin: 10px 10px 0 0"
+           (click)="addWebsiteLink()"
+           matTooltip="{{getWebsiteLinkTooltip()}}"
+           matTooltipPosition="above"></i>
 
-      <!--Facebook-->
-      <i class="fa fa-brands fa-facebook-square fa-3x" aria-hidden="true"
-         [style.color]="!facebookLink ? '#999999' : '#034953'"
-         style="margin: 10px 10px 0 0;"
-         (click)="addFacebookLink()"
-         matTooltip="{{getFacebookLinkTooltip()}}"
-         matTooltipPosition="above"></i>
+        <!--Facebook-->
+        <i class="fa fa-brands fa-facebook-square fa-3x" aria-hidden="true"
+           [style.color]="!facebookLink ? '#999999' : '#034953'"
+           style="margin: 10px 10px 0 0;"
+           (click)="addFacebookLink()"
+           matTooltip="{{getFacebookLinkTooltip()}}"
+           matTooltipPosition="above"></i>
 
-      <!--Twitter-->
-      <i class="fa fa-brands fa-twitter-square fa-3x" aria-hidden="true"
-         [style.color]="!twitterLink ? '#999999' : '#034953'"
-         style="margin: 10px 0 0 0;"
-         (click)="addTwitterLink()"
-         matTooltip="{{getTwitterLinkTooltip()}}"
-         matTooltipPosition="above"></i>
+        <!--Twitter-->
+        <i class="fa fa-brands fa-twitter-square fa-3x" aria-hidden="true"
+           [style.color]="!twitterLink ? '#999999' : '#034953'"
+           style="margin: 10px 0 0 0;"
+           (click)="addTwitterLink()"
+           matTooltip="{{getTwitterLinkTooltip()}}"
+           matTooltipPosition="above"></i>
+      </div>
     </div>
 
     <!--Schedule-->
@@ -159,7 +167,7 @@
 
     <!--Submit Button-->
     <div class="center-button" style="margin-top: 25px">
-      <button mat-raised-button id="submitButton" [disabled]="!editBusinessForm.valid" data-dismiss="modal"
+      <button mat-raised-button id="submit-button" [disabled]="!editBusinessForm.valid" data-dismiss="modal"
               (click)="editBusiness(editBusinessForm)">Save Changes</button>
     </div>
   </form>

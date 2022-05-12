@@ -1,24 +1,22 @@
 <form name="registerForm" [formGroup]="registerForm">
 
-  <div>
+  <div class="form-row">
     <!--First Name-->
-    <mat-form-field appearance="outline" style="margin-right: 2%; width: 49%">
+    <mat-form-field appearance="outline" style="flex: 2 1 0; margin: 0 5px">
       <mat-label>First Name <span style="color: red;"> *</span></mat-label>
       <input formControlName="firstName" matInput type="text" autocomplete="off"/>
       <mat-error *ngIf="registerForm.get('firstName')?.invalid">{{getFormFirstNameErrorMessage()}}</mat-error>
     </mat-form-field>
 
     <!--Last Name-->
-    <mat-form-field appearance="outline" style="width: 49%">
+    <mat-form-field appearance="outline" style="flex: 2 1 0; margin: 0 5px">
       <mat-label>Last Name <span style="color: red;"> *</span></mat-label>
       <input formControlName="lastName" matInput type="text" autocomplete="off"/>
       <mat-error *ngIf="registerForm.get('lastName')?.invalid">{{getFormLastNameErrorMessage()}}</mat-error>
     </mat-form-field>
-  </div>
 
-  <!--Gender-->
-  <div>
-    <mat-form-field appearance="outline" style="width: 49%">
+    <!--Gender-->
+    <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
       <mat-label>Gender <span style="color: red;"> *</span></mat-label>
       <mat-select  formControlName="gender">
         <mat-option value="Male">Male</mat-option>
@@ -28,12 +26,25 @@
     </mat-form-field>
   </div>
 
-  <!--Email-->
-  <div>
-    <mat-form-field class="full-width" appearance="outline">
+  <div class="form-row">
+    <!--Email-->
+    <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
       <mat-label>Email <span style="color: red;"> *</span></mat-label>
       <input formControlName="email" matInput type="text" autocomplete="off"/>
+      <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
+        <mat-icon>email</mat-icon>
+      </button>
       <mat-error *ngIf="registerForm.get('email')?.invalid">{{getFormEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <!--Phone-->
+    <mat-form-field class="full-width" appearance="outline" style="flex: 1 1 0; margin: 0 5px">
+      <mat-label>Phone</mat-label>
+      <input formControlName="phoneNumber" matInput type="text" autocomplete="off"/>
+      <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
+        <mat-icon>phone</mat-icon>
+      </button>
+      <mat-error *ngIf="registerForm.get('phoneNumber')?.invalid">{{getFormPhoneNumberErrorMessage()}}</mat-error>
     </mat-form-field>
   </div>
 

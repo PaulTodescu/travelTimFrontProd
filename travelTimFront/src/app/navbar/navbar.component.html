@@ -32,7 +32,7 @@
     </ul>
     <ul class="nav-right">
         <li class="nav-item">
-          <div *ngIf="username !== undefined; then showUsername else showLogin"></div>
+          <div *ngIf="username; then showUsername else showLogin"></div>
           <ng-template #showUsername>
             <img [src]="profileImage" alt="profile-img">
             <a class="nav-link active" [matMenuTriggerFor]="appMenu" mat-button>
@@ -51,7 +51,7 @@
             </mat-menu>
           </ng-template>
           <ng-template #showLogin>
-            <a class="nav-link active" mat-button (click)="goToAuthenticationPage()">My Account</a>
+            <a class="nav-link active" mat-button (click)="goToAuthenticationPage()">Log In</a>
           </ng-template>
         </li>
     </ul>

@@ -1,3 +1,13 @@
+form {
+  padding: 5px
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .full-width {
   width: 100%;
 }

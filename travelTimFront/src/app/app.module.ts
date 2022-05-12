@@ -8,11 +8,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationComponent } from './auth/authentication/authentication.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import {IvyCarouselModule} from 'angular-responsive-carousel';
+import { IvyCarouselModule} from 'angular-responsive-carousel';
 import { MatButtonModule } from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatSelectModule} from '@angular/material/select';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
@@ -20,19 +20,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {MatTableModule} from '@angular/material/table';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatTableModule} from '@angular/material/table';
+import { MatIconModule} from '@angular/material/icon';
+import { MatMenuModule} from '@angular/material/menu';
+import { MatToolbarModule} from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import {AuthInterceptorProvider} from "./services/authentication/authentication.interceptor";
+import { AuthInterceptorProvider} from "./services/authentication/authentication.interceptor";
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
-import {ImageCarouselComponent} from "./image-carousel/image-carousel.component";
+import { ImageCarouselComponent} from "./image-carousel/image-carousel.component";
 import { MapComponent } from './map/map.component';
 import { DashboardComponent } from './account-management/dashboard/dashboard.component';
 import { ReservationsComponent } from './account-management/reservations/reservations.component';
@@ -55,19 +55,19 @@ import { AddActivitiesOfferFormComponent } from './add-offer/add-activities-offe
 import { AccountContainerComponent } from './account-management/account/account-container/account-container.component';
 import { AddOfferContactSection } from './add-offer/add-offer-contact-section/add-offer-contact-section';
 import { AddOfferImagesSection } from "./add-offer/add-offer-images-section/add-offer-images-section";
-import {UserOffersComponent} from "./account-management/user-offers/user-offers.component";
+import { UserOffersComponent} from "./account-management/user-offers/user-offers.component";
 import { OffersContainerComponent } from './offers/offers-container/offers-container.component';
 import { OfferRecommendationsComponent } from './offers/offer-recommendations/offer-recommendations.component';
-import {NgxPaginationModule} from "ngx-pagination";
+import { NgxPaginationModule} from "ngx-pagination";
 import { NgImageFullscreenViewModule } from 'ng-image-fullscreen-view';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LegalLodgingOfferDetailsComponent } from './offer/legal-lodging-offer-details/legal-lodging-offer-details.component';
 import { OfferContainerComponent } from './offer/offer-container/offer-container.component';
 import { LegalLodgingOffersComponent } from './offer/legal-lodging-offers/legal-lodging-offers.component';
 import { FoodOfferMenuComponent } from './offer/food-offer-menu/food-offer-menu.component';
 import { OfferTicketsComponent } from './offer/offer-tickets/offer-tickets.component';
 import { PhysicalLodgingOfferDetailsComponent } from './offer/physical-lodging-offer-details/physical-lodging-offer-details.component';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule} from '@angular/material/tooltip';
 import { FilterOptionsComponent } from './account-management/user-offers/filter-options/filter-options.component';
 import { FoodOfferBusinessImagesComponent } from './offer/food-offer-business-images/food-offer-business-images.component';
 import { EditLodgingOfferFormComponent } from './edit-offer/edit-lodging-offer/edit-lodging-offer-form.component';
@@ -79,9 +79,9 @@ import { EditOfferContactComponent } from './edit-offer/edit-offer-contact/edit-
 import { AddBusinessScheduleComponent } from './business/add-business-schedule/add-business-schedule.component';
 import { BusinessScheduleComponent } from './business/business-schedule/business-schedule.component';
 import { EditBusinessScheduleComponent } from './business/edit-business-schedule/edit-business-schedule.component';
-import {BusinessOffersComponent} from "./business/business-offers/business-offers.component";
+import { BusinessOffersComponent} from "./business/business-offers/business-offers.component";
 import { UserProviderOffersComponent } from './user-provider-offers/user-provider-offers.component';
-
+import { OfferReservationComponent } from './offer/offer-reservation/offer-reservation.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +133,7 @@ import { UserProviderOffersComponent } from './user-provider-offers/user-provide
     EditBusinessScheduleComponent,
     BusinessOffersComponent,
     UserProviderOffersComponent,
+    OfferReservationComponent,
   ],
     imports: [
       BrowserModule,
@@ -182,3 +183,4 @@ import { UserProviderOffersComponent } from './user-provider-offers/user-provide
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

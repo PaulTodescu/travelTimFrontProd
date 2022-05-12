@@ -29,6 +29,9 @@
             <h3><mat-icon>email</mat-icon>{{offerContact?.email}}</h3>
             <h3 *ngIf="offerContact?.phoneNumber !== null">
               <mat-icon>phone</mat-icon>{{offerContact?.phoneNumber}}</h3>
+            <mat-icon class="favourite-btn">
+              favorite
+            </mat-icon>
           </div>
           <div id="socials" *ngIf="businessSocials">
             <div class="social" *ngIf="businessSocials?.websiteLink">
@@ -120,12 +123,6 @@
       <h1 class="section-title" style="margin-bottom: 15px">Menu</h1>
       <app-food-offer-menu [foodMenu]="foodOfferMenu"></app-food-offer-menu>
     </div>
-
-<!--    <div class="section" *ngIf="offerCategory === 'food' && businessId !== undefined">-->
-<!--      <h1 class="section-title">{{offerProviderName}}</h1>-->
-<!--      <app-food-offer-business-images [businessId]="businessId"></app-food-offer-business-images>-->
-<!--    </div>-->
-
     <div class="section" *ngIf="(offerCategory === 'attractions' || offerCategory === 'activities')
                                 && tickets?.length !== 0">
       <h1 class="section-title">Pricing</h1>

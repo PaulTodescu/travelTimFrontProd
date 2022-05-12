@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
       lastName:['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
       gender:['', [Validators.required]],
       email:['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [Validators.minLength(5), Validators.pattern("^[0-9]*$")]],
       password: ['', [Validators.required, Validators.minLength(5)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(5)]],
     })
@@ -109,6 +110,16 @@ export class RegisterComponent implements OnInit {
     }
     else if (this.registerForm.get('email')?.hasError('email')){
       return 'enter a valid email';
+    }
+    return;
+  }
+
+  getFormPhoneNumberErrorMessage() {
+    if (this.registerForm.get('phoneNumber')?.hasError('minlength')){
+      return 'enter at least 5 digits';
+    }
+    else if (this.registerForm.get('phoneNumber')?.invalid){
+      return 'only digits are allowed';
     }
     return;
   }

@@ -2,6 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {LegalLodgingOfferDetailsComponent} from "../legal-lodging-offer-details/legal-lodging-offer-details.component";
 import {LegalPersonLodgingOfferDetailsDTO} from "../../entities/legalPersonLodgingOfferDetailsDTO";
+import {OfferReservationComponent} from "../offer-reservation/offer-reservation.component";
+import {UserService} from "../../services/user/user.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-legal-lodging-offers',
@@ -10,7 +13,9 @@ import {LegalPersonLodgingOfferDetailsDTO} from "../../entities/legalPersonLodgi
 })
 export class LegalLodgingOffersComponent implements OnInit {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(
+    private userService: UserService,
+    private dialog: MatDialog) { }
 
   @Input() offers: LegalPersonLodgingOfferDetailsDTO[] | undefined;
 
@@ -38,7 +43,40 @@ export class LegalLodgingOffersComponent implements OnInit {
     return NaN;
   }
 
+  public makeReservation(offerId: number | undefined) {
+    if (this.userService.checkIfUserIsLoggedIn()) {
+      if (offerId) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        dialogConfig.autoFocus = false;
+        dialogConfig.panelClass = 'dialog-class' // in styles.css
+        if (this.offers !== undefined) {
+          dialogConfig.data = {
+            id: offerId
+          }
+        }
+        this.dialog.open(OfferReservationComponent, dialogConfig);
+        this.dialog._getAfterAllClosed().subscribe(() => {
+        });
+      }
+    } else {
+      this.onFail("You must log in to your account");
+    }
+  }
+
+
+  public onFail(message: string): void{
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 2500
+    }).then(function(){})
+  }
+
   ngOnInit(): void {
+    this.makeReservation(23);
   }
 
 }

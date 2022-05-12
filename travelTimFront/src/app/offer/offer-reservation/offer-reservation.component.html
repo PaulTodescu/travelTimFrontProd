@@ -1,0 +1,87 @@
+<div class="card-body" style="overflow: hidden !important; position: relative; padding: 0 !important;">
+  <div id="title">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <h2>Make Reservation</h2>
+  </div>
+  <form name="ReservationForm" style="width: 100%; margin-top: 30px; padding: 5px" [formGroup]="ReservationForm">
+    <div class="form-row">
+
+      <!--Arrival Date-->
+      <mat-form-field style="flex: 2 1 0; margin: 0 5px; min-width: 150px" appearance="outline"
+                      (click)="openArrivalDatePicker()">
+        <mat-label>Choose arrival date <span style="color: red;"> *</span></mat-label>
+        <input name="date-time-txt" matInput formControlName="arrivalDate" autocomplete="off"
+               [min]="minDate"
+               [max]="maxDate"
+               [matDatepicker]="$any(arrivalDatePicker)">
+        <mat-datepicker-toggle matSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #arrivalDatePicker [disabled]="false"></mat-datepicker>
+      </mat-form-field>
+
+      <!--Arrival Time-->
+      <mat-form-field style="flex: 1 1 50px; margin: 0 5px; min-width: 150px" appearance="outline">
+        <mat-label>Choose arrival time</mat-label>
+        <input name="date-time-txt" matInput formControlName="arrivalTime" autocomplete="off">
+        <button matSuffix mat-icon-button aria-label="Clear" [disabled]="false">
+          <mat-icon>access_time</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!--Departure Date-->
+      <mat-form-field style="flex: 2 1 0; margin: 0 5px;  min-width: 150px" appearance="outline"
+                      (click)="this.openDepartureDatePicker()">
+        <mat-label>Choose departure date <span style="color: red;"> *</span></mat-label>
+        <input name="date-time-txt" matInput formControlName="departureDate" autocomplete="off"
+               [min]="minDate"
+               [max]="maxDate"
+               [matDatepicker]="$any(departureDatePicker)">
+        <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #departureDatePicker [disabled]="false"></mat-datepicker>
+      </mat-form-field>
+
+    </div>
+
+    <div class="form-row">
+      <!--First Name-->
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
+        <mat-label>First Name <span style="color: red;"> *</span></mat-label>
+        <input formControlName="firstName" matInput type="text" autocomplete="off"/>
+        <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!--Last Name-->
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
+        <mat-label>Last Name <span style="color: red;"> *</span></mat-label>
+        <input formControlName="lastName" matInput type="text" autocomplete="off"/>
+        <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <!--Email-->
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px;">
+        <mat-label>Email <span style="color: red;"> *</span></mat-label>
+        <input formControlName="email" matInput type="text" autocomplete="off"/>
+        <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
+          <mat-icon>email</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!--Phone-->
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px;">
+        <mat-label>Phone</mat-label>
+        <input formControlName="phoneNumber" matInput type="text" autocomplete="off"/>
+        <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
+          <mat-icon>phone</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </form>
+
+</div>

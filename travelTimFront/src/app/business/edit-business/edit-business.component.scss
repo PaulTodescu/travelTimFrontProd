@@ -8,6 +8,10 @@
   margin: 10px;
 }
 
+.close-icon {
+  color: #000000 !important;
+}
+
 .section-title{
   background-color: #034953;
   border-radius: 7px;
@@ -31,14 +35,14 @@ h2 {
   text-align: center;
 }
 
-#submitButton {
+#submit-button {
   background-color: #034953;
   color: white;
   font-size: 1.1em;
   vertical-align: bottom;
 }
 
-button[disabled]{
+#submit-button:disabled{
   cursor: not-allowed;
 }
 
@@ -51,6 +55,7 @@ button[disabled]{
 }
 
 #img-input-container {
+  margin: 0 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -88,6 +93,7 @@ label:hover {
 
 #schedule-buttons {
   margin-left: auto;
+  margin-right: 5px;
 }
 
 .see-icon {
@@ -108,13 +114,13 @@ label:hover {
 }
 
 #schedule-container {
+  margin: 0 5px 1.5em 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
   border: 1px solid #e6e6e6;
   border-radius: 5px;
-  margin-bottom: 1.5em;
 }
 
 .added-schedule {

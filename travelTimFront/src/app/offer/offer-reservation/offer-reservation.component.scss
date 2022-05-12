@@ -1,0 +1,98 @@
+#title{
+  background-color: #034953;
+  border-radius: 7px;
+}
+
+#title h2 {
+  font-size: 26px;
+  color: white;
+  font-family: Bahnschrift, serif;
+  text-decoration: none;
+  text-align: center;
+  word-wrap: break-word;
+  padding: 15px 0;
+}
+
+.close-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  background-color: #f7f7f7;
+  margin: 10px;
+}
+
+.close-icon {
+  color: #000000 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #000000 !important;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+  color: #000000 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #000000;
+}
+
+::ng-deep .mat-calendar-body-label {
+  color: #7c795d !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+  background-color: unset !important;
+  color: #000000 !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content::before {
+  color: #7c795d;
+}
+
+::ng-deep .mat-datepicker-toggle {
+  color: #7c795d !important;
+}
+
+::ng-deep .mat-calendar-period-button {
+  display: none !important;
+}
+
+::ng-deep .mat-calendar-abbr {
+  color: #7c795d !important;
+  font-weight: bold !important;
+  font-size: 1.2em !important;
+  text-decoration: none !important;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  color: #ffffff !important;
+  background-color: #7c795d !important;
+}
+
+::ng-deep .mat-calendar-body-disabled .mat-calendar-body-cell-content {
+  color: #999999 !important;
+}
+
+::ng-deep .mat-form-field-autofill-control[name=date-time-txt]{
+  color: #7c795d !important;
+  font-weight: 500 !important;
+}
+
+mat-label {
+  color: rgb(118, 118, 118);
+}
+
+.mat-icon {
+  color: #7c795d;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+

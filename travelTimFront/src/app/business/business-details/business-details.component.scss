@@ -8,6 +8,10 @@
   margin: 10px;
 }
 
+.close-icon {
+  color: #000000 !important;
+}
+
 .section-title{
   background-color: #034953;
   border-radius: 7px;
@@ -30,4 +34,8 @@ h2 {
 i {
   margin: 10px 10px 0 0;
   color: #999999;
+}
+
+.mat-icon {
+  transform: scale(1.2);
 }

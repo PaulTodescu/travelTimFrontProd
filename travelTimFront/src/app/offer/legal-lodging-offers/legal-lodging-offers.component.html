@@ -11,6 +11,6 @@
     <button mat-raised-button class="details-btn" (click)="openLegalLodgingOfferDetails(i)">
       <mat-icon>remove_red_eye</mat-icon>
     </button>
-    <button mat-raised-button class="reserve-btn">Reserve<mat-icon>loyalty</mat-icon></button>
+    <button mat-raised-button class="reserve-btn" (click)="makeReservation(offer?.id)">Reserve<mat-icon>loyalty</mat-icon></button>
   </div>
 </div>

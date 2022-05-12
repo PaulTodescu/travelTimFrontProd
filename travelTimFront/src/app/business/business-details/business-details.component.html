@@ -6,11 +6,11 @@
     <h2>Business Details</h2>
   </div>
 
-  <form style="margin-top: 30px" name="addBusinessForm" [formGroup]="businessDetailsForm">
+  <form style="margin-top: 30px; padding: 5px" name="addBusinessForm" [formGroup]="businessDetailsForm">
 
     <!--Name-->
-    <div>
-      <mat-form-field class="full-width" appearance="outline">
+    <div style="margin: 0 5px">
+      <mat-form-field style="width: 100%;" appearance="outline">
         <mat-label>Name</mat-label>
         <input formControlName="name" matInput type="text"/>
       </mat-form-field>
@@ -18,13 +18,13 @@
 
     <div style="display: flex; flex-direction: row; flex-wrap: wrap">
       <!--Address-->
-      <mat-form-field style="flex: 3 1 0; margin-right: 15px" appearance="outline">
+      <mat-form-field style="flex: 3 1 0; margin: 0 5px" appearance="outline">
         <mat-label>Address</mat-label>
         <input formControlName="address" matInput type="text" />
       </mat-form-field>
 
       <!--City-->
-      <mat-form-field  appearance="outline" style="flex: 1 1 0;">
+      <mat-form-field  appearance="outline" style="flex: 1 1 0; margin: 0 5px">
         <mat-label>City</mat-label>
         <input formControlName="city" matInput type="text"/>
       </mat-form-field>
@@ -32,27 +32,27 @@
 
     <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
       <!--Email-->
-      <mat-form-field appearance="outline" style="flex: 1 1 0; margin-right: 15px">
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
         <mat-label>Email</mat-label>
         <input formControlName="email" matInput type="text" autocomplete="off"/>
       </mat-form-field>
 
       <!--Phone-->
-      <mat-form-field appearance="outline" style="flex: 1 1 0; margin-right: 15px">
+      <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
         <mat-label>Phone</mat-label>
         <input formControlName="phoneNumber" matInput type="text" autocomplete="off"/>
       </mat-form-field>
     </div>
 
-    <div style="display: flex; flex-direction: row">
+    <div style="display: flex; flex-direction: row; margin: 0 5px">
       <i class="fa fa-external-link-square fa-3x" aria-hidden="true"></i>
-      <mat-form-field appearance="outline" style="flex: 1 1 0">
+      <mat-form-field appearance="outline" style="flex: 1 1 0; ">
         <mat-label>Website</mat-label>
         <input formControlName="websiteLink" matInput type="text" autocomplete="off"/>
       </mat-form-field>
     </div>
 
-    <div style="display: flex; flex-direction: row">
+    <div style="display: flex; flex-direction: row; margin: 0 5px">
       <i class="fa fa-brands fa-facebook-square fa-3x" aria-hidden="true"></i>
       <mat-form-field appearance="outline" style="flex: 1 1 0">
         <mat-label>Facebook</mat-label>
@@ -60,9 +60,9 @@
       </mat-form-field>
     </div>
 
-    <div style="display: flex; flex-direction: row">
+    <div style="display: flex; flex-direction: row; margin: 0 5px">
       <i class="fa fa-external-link-square fa-3x fa-align-justify" aria-hidden="true"></i>
-      <mat-form-field appearance="outline" style="flex: 1 1 0">
+      <mat-form-field appearance="outline" style="flex: 1 1 0;">
         <mat-label>Twitter</mat-label>
         <input formControlName="twitterLink" matInput type="text" autocomplete="off"/>
       </mat-form-field>
