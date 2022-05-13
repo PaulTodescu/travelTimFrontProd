@@ -303,7 +303,7 @@ export class AddBusinessComponent implements OnInit {
     }).then(function(){})
   }
 
-  getFormNameErrorMessage() {
+  public getFormNameErrorMessage() {
     if (this.addBusinessForm.get('name')?.hasError('required')){
       return 'you must enter a value';
     }
@@ -316,14 +316,14 @@ export class AddBusinessComponent implements OnInit {
     return;
   }
 
-  getFormCityErrorMessage() {
+  public getFormCityErrorMessage() {
     if (this.addBusinessForm.get('city')?.hasError('required')){
       return 'you must select a value';
     }
     return;
   }
 
-  getFormAddressErrorMessage() {
+  public getFormAddressErrorMessage() {
     if (this.addBusinessForm.get('address')?.hasError('required')){
       return 'you must enter a value';
     }
@@ -333,7 +333,7 @@ export class AddBusinessComponent implements OnInit {
     return;
   }
 
-  getFormEmailErrorMessage() {
+  public getFormEmailErrorMessage() {
     if (this.addBusinessForm.get('email')?.hasError('email')){
       return 'invalid email';
     }

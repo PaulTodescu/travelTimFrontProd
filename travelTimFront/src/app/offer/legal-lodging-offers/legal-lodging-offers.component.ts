@@ -5,6 +5,7 @@ import {LegalPersonLodgingOfferDetailsDTO} from "../../entities/legalPersonLodgi
 import {OfferReservationComponent} from "../offer-reservation/offer-reservation.component";
 import {UserService} from "../../services/user/user.service";
 import Swal from "sweetalert2";
+import {LodgingOfferDetailsDTO} from "../../entities/lodgingOfferDetailsDTO";
 
 @Component({
   selector: 'app-legal-lodging-offers',
@@ -36,6 +37,20 @@ export class LegalLodgingOffersComponent implements OnInit {
     });
   }
 
+  public getMappedOfferToLodgingDetails(offer: LegalPersonLodgingOfferDetailsDTO): LodgingOfferDetailsDTO {
+    return {
+      id: offer.id,
+      nrRooms: offer.nrRooms,
+      nrBathrooms: offer.nrBathrooms,
+      nrSingleBeds: offer.nrSingleBeds,
+      nrDoubleBeds: offer.nrDoubleBeds,
+      floor: offer.floor,
+      price: offer.price,
+      currency: offer.currency,
+      utilities: offer.utilities
+    }
+  }
+
   public getFormattedOfferPrice(price: number | undefined): number {
     if (price !== undefined) {
       return parseFloat(price.toFixed(2));
@@ -43,17 +58,15 @@ export class LegalLodgingOffersComponent implements OnInit {
     return NaN;
   }
 
-  public makeReservation(offerId: number | undefined) {
+  public makeReservation(offer: LegalPersonLodgingOfferDetailsDTO | undefined) {
     if (this.userService.checkIfUserIsLoggedIn()) {
-      if (offerId) {
+      if (offer) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.autoFocus = true;
         dialogConfig.autoFocus = false;
         dialogConfig.panelClass = 'dialog-class' // in styles.css
-        if (this.offers !== undefined) {
-          dialogConfig.data = {
-            id: offerId
-          }
+        dialogConfig.data = {
+          offer: this.getMappedOfferToLodgingDetails(offer)
         }
         this.dialog.open(OfferReservationComponent, dialogConfig);
         this.dialog._getAfterAllClosed().subscribe(() => {
@@ -76,7 +89,6 @@ export class LegalLodgingOffersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.makeReservation(23);
   }
 
 }

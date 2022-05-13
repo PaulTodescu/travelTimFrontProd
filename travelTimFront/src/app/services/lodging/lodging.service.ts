@@ -9,6 +9,8 @@ import {PhysicalPersonLodgingOfferEditDTO} from "../../entities/physicalPersonLo
 import {LegalPersonLodgingOfferEditDTO} from "../../entities/legalPersonLodgingOfferEditDTO";
 import {OfferContact} from "../../entities/offerContact";
 import {PhysicalPersonLodgingOfferDetails} from "../../entities/physicalPersonLodgingOfferDetails";
+import {LodgingOfferDetailsDTO} from "../../entities/lodgingOfferDetailsDTO";
+import {DaySchedule} from "../../entities/daySchedule";
 
 @Injectable({
   providedIn: 'root'
@@ -39,12 +41,20 @@ export class LodgingService {
     return this.http.get<LegalPersonLodgingOfferBaseDetailsDTO>(`${this.apiUrl}/lodging/legal/${offerId}`);
   }
 
+  public getLodgingOfferDetails(offerId: number): Observable<LodgingOfferDetailsDTO>{
+    return this.http.get<LodgingOfferDetailsDTO>(`${this.apiUrl}/lodging/${offerId}/details`);
+  }
+
   public deleteLodgingOffer(offerId: number): Observable<void>{
     return this.http.delete<void>(`${this.apiUrl}/lodging/${offerId}`);
   }
 
   public getLegalPersonLodgingOfferForEdit(offerId: number): Observable<LegalPersonLodgingOfferEditDTO>{
     return this.http.get<LegalPersonLodgingOfferEditDTO>(`${this.apiUrl}/lodging/legal/edit/get/${offerId}`);
+  }
+
+  public getBusinessScheduleForLegalLodgingOffer(offerId: number): Observable<DaySchedule[]>{
+    return this.http.get<DaySchedule[]>(`${this.apiUrl}/lodging/legal/${offerId}/business/schedule`);
   }
 
   public getPhysicalPersonLodgingOfferForEdit(offerId: number): Observable<PhysicalPersonLodgingOfferEditDTO>{

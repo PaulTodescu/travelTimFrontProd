@@ -24,9 +24,10 @@
 }
 
 .field {
-  margin-left: 15px;
+  margin: 5px 0 5px 15px;
   font-family: Bahnschrift, serif;
   color: #7c795d;
+  justify-self: center;
   display: inline-block;
   white-space: nowrap;
   position: relative;

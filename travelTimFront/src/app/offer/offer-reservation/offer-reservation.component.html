@@ -5,39 +5,51 @@
     </button>
     <h2>Make Reservation</h2>
   </div>
-  <form name="ReservationForm" style="width: 100%; margin-top: 30px; padding: 5px" [formGroup]="ReservationForm">
+  <form name="ReservationForm" style="width: 100%; margin-top: 30px; padding: 0 5px" [formGroup]="ReservationForm">
     <div class="form-row">
 
       <!--Arrival Date-->
-      <mat-form-field style="flex: 2 1 0; margin: 0 5px; min-width: 150px" appearance="outline"
-                      (click)="openArrivalDatePicker()">
-        <mat-label>Choose arrival date <span style="color: red;"> *</span></mat-label>
+      <mat-form-field style="flex: 2 1 0; margin: 0 5px; min-width: 150px" appearance="outline">
+        <mat-label>Arrival date <span style="color: red;"> *</span></mat-label>
         <input name="date-time-txt" matInput formControlName="arrivalDate" autocomplete="off"
-               [min]="minDate"
-               [max]="maxDate"
-               [matDatepicker]="$any(arrivalDatePicker)">
-        <mat-datepicker-toggle matSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
+               [min]="minArrivalDate"
+               [max]="maxArrivalDate"
+               [matDatepicker]="$any(arrivalDatePicker)"
+               [matDatepickerFilter]="closedBusinessDaysFilter"
+               (dateChange)="arrivalDateChangeEvent($event)">
+        <mat-error *ngIf="ReservationForm.get('arrivalDate')?.invalid">{{getFormArrivalDateErrorMessage()}}</mat-error>
+        <mat-icon matSuffix class="calendar-icon" (click)="openArrivalDatePicker()">calendar_month</mat-icon>
         <mat-datepicker #arrivalDatePicker [disabled]="false"></mat-datepicker>
       </mat-form-field>
 
       <!--Arrival Time-->
       <mat-form-field style="flex: 1 1 50px; margin: 0 5px; min-width: 150px" appearance="outline">
-        <mat-label>Choose arrival time</mat-label>
-        <input name="date-time-txt" matInput formControlName="arrivalTime" autocomplete="off">
-        <button matSuffix mat-icon-button aria-label="Clear" [disabled]="false">
-          <mat-icon>access_time</mat-icon>
-        </button>
+        <mat-label>Arrival time</mat-label>
+        <mat-select formControlName="arrivalTime" class="selected-time">
+          <div *ngIf="arrivalTimeSelectEnabled; then showArrivalTimeOptions else showArrivalTimeMessage"></div>
+          <ng-template #showArrivalTimeOptions>
+            <mat-option *ngFor="let timeSlot of timeSlots" style="color: #7c795d; font-weight: 500"
+                        [value]="timeSlot">
+              {{timeSlot}}
+            </mat-option>
+          </ng-template>
+          <ng-template #showArrivalTimeMessage>
+            <mat-option style="color: #c73c3c"> Select arrival date first </mat-option>
+          </ng-template>
+        </mat-select>
+        <mat-icon matSuffix class="time-icon">access_time</mat-icon>
       </mat-form-field>
 
       <!--Departure Date-->
-      <mat-form-field style="flex: 2 1 0; margin: 0 5px;  min-width: 150px" appearance="outline"
-                      (click)="this.openDepartureDatePicker()">
-        <mat-label>Choose departure date <span style="color: red;"> *</span></mat-label>
+      <mat-form-field style="flex: 2 1 0; margin: 0 5px;  min-width: 150px" appearance="outline">
+        <mat-label>Departure date <span style="color: red;"> *</span></mat-label>
         <input name="date-time-txt" matInput formControlName="departureDate" autocomplete="off"
-               [min]="minDate"
-               [max]="maxDate"
-               [matDatepicker]="$any(departureDatePicker)">
-        <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+               [min]="minDepartureDate"
+               [max]="maxDepartureDate"
+               [matDatepicker]="$any(departureDatePicker)"
+               (dateChange)="departureDateChangeEvent($event)">
+        <mat-error *ngIf="ReservationForm.get('departureDate')?.invalid">{{getFormDepartureDateErrorMessage()}}</mat-error>
+        <mat-icon matSuffix class="calendar-icon" (click)="departureDatePicker.open()">calendar_month</mat-icon>
         <mat-datepicker #departureDatePicker [disabled]="false"></mat-datepicker>
       </mat-form-field>
 
@@ -48,6 +60,7 @@
       <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
         <mat-label>First Name <span style="color: red;"> *</span></mat-label>
         <input formControlName="firstName" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="ReservationForm.get('firstName')?.invalid">{{getFormFirstNameErrorMessage()}}</mat-error>
         <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
           <mat-icon>account_circle</mat-icon>
         </button>
@@ -57,6 +70,7 @@
       <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px">
         <mat-label>Last Name <span style="color: red;"> *</span></mat-label>
         <input formControlName="lastName" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="ReservationForm.get('lastName')?.invalid">{{getFormLastNameErrorMessage()}}</mat-error>
         <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
           <mat-icon>account_circle</mat-icon>
         </button>
@@ -68,6 +82,7 @@
       <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px;">
         <mat-label>Email <span style="color: red;"> *</span></mat-label>
         <input formControlName="email" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="ReservationForm.get('email')?.invalid">{{getFormEmailErrorMessage()}}</mat-error>
         <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
           <mat-icon>email</mat-icon>
         </button>
@@ -77,6 +92,7 @@
       <mat-form-field appearance="outline" style="flex: 1 1 0; margin: 0 5px;">
         <mat-label>Phone</mat-label>
         <input formControlName="phoneNumber" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="ReservationForm.get('phoneNumber')?.invalid">{{getFormPhoneNumberErrorMessage()}}</mat-error>
         <button matSuffix mat-icon-button aria-label="Clear" disabled="true">
           <mat-icon>phone</mat-icon>
         </button>
@@ -84,4 +100,52 @@
     </div>
   </form>
 
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap; padding: 5px; align-items: flex-start">
+    <div class="offer-details" style="flex: 2 1 0">
+      <div class="offer-details-row">
+        <h3 class="field">
+          Rooms: <span>{{offer?.nrRooms}}</span>
+        </h3>
+        <h3 class="field">
+          Bathrooms: <span>{{offer?.nrBathrooms}}</span>
+        </h3>
+        <h3 class="field" *ngIf="getNrSingleBeds() > 0">
+          Single Beds: <span>{{offer?.nrSingleBeds}}</span>
+        </h3>
+        <h3 class="field" *ngIf="getNrDoubleBeds() > 0">
+          Double Beds: <span>{{offer?.nrDoubleBeds}}</span>
+        </h3>
+        <h3 class="field">
+          Floor: <span>{{offer?.floor}}</span>
+        </h3>
+      </div>
+      <div class="offer-details-row" *ngIf="getNrUtilities() > 0">
+        <h3 class="field">
+          Services:
+          <span *ngFor="let utility of offer?.utilities" class="offer-service">{{utility?.name}}</span>
+        </h3>
+      </div>
+    </div>
+    <div class="offer-details" style="margin-left: 10px; background-color: #f7f7f7;">
+      <h3 class="field">
+        <span style="font-size: 1.3em !important;">Price:</span>
+      </h3>
+      <div *ngIf="nrNights === 1; then showPricePerNight else showTotalNights"></div>
+      <ng-template #showPricePerNight>
+        <h3 class="field" style="font-size: 1.2em">
+          {{totalPrice}} {{offer?.currency}} <span style="font-size: 0.8em">(/night)</span>
+        </h3>
+      </ng-template>
+      <ng-template #showTotalNights>
+        <h3 class="field" style="font-size: 1.2em">
+          {{totalPrice}} {{offer?.currency}} <span style="font-size: 0.8em">(/{{nrNights}} nights)</span>
+        </h3>
+      </ng-template>
+    </div>
+  </div>
+  <div class="center-button">
+    <button mat-raised-button id="submit-button" [disabled]="!ReservationForm.valid" data-dismiss="modal">
+      Send Reservation
+    </button>
+  </div>
 </div>
