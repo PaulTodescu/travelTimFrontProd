@@ -144,7 +144,9 @@
     </div>
   </div>
   <div class="center-button">
-    <button mat-raised-button id="submit-button" [disabled]="!ReservationForm.valid" data-dismiss="modal">
+    <button mat-raised-button id="submit-button"
+            [disabled]="!ReservationForm.valid" data-dismiss="modal"
+            (click)="sendReservation()">
       Send Reservation
     </button>
   </div>

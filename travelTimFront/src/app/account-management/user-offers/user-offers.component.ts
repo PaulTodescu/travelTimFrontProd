@@ -626,6 +626,109 @@ export class UserOffersComponent implements OnInit {
     }
   }
 
+  public changeLodgingOfferStatus(offerId: number, status: string): void {
+    this.lodgingService.changeLodgingOfferStatus(offerId, status).subscribe(
+      () => {
+        if (status === 'disabled') {
+          this.onSuccessToast("Offer disabled");
+        } else if (status === 'active'){
+          this.onSuccessToast("Offer activated");
+        }
+        let offer = this.filteredLodgingOffers.find(offer => offer.id === offerId);
+        if (offer) {
+          if (offer.status === 'reserved') {
+            Swal.fire({
+              title: 'Are you sure?',
+              text: 'This offer is currently marked as reserved',
+              icon: 'warning',
+              showCancelButton: true,
+              focusConfirm: true,
+              confirmButtonColor: '#d33',
+              cancelButtonColor: '#696969',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                if (offer) {
+                  offer.status = status;
+                }
+              }
+            })
+          } else {
+            offer.status = status;
+          }
+        }
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public changeFoodOfferStatus(offerId: number, status: string): void {
+    this.foodService.changeFoodOfferStatus(offerId, status).subscribe(
+      () => {
+        if (status === 'disabled') {
+          this.onSuccessToast("Offer disabled");
+        } else if (status === 'active'){
+          this.onSuccessToast("Offer activated");
+        }
+        let offer = this.filteredFoodOffers.find(offer => offer.id === offerId);
+        if (offer) {
+          offer.status = status;
+        }
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public changeAttractionOfferStatus(offerId: number, status: string): void {
+    this.attractionService.changeAttractionOfferStatus(offerId, status).subscribe(
+      () => {
+        if (status === 'disabled') {
+          this.onSuccessToast("Offer disabled");
+        } else if (status === 'active'){
+          this.onSuccessToast("Offer activated");
+        }
+        let offer = this.filteredAttractionOffers.find(offer => offer.id === offerId);
+        if (offer) {
+          offer.status = status;
+        }
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public changeActivityOfferStatus(offerId: number, status: string): void {
+    this.activityService.changeActivityOfferStatus(offerId, status).subscribe(
+      () => {
+        if (status === 'disabled') {
+          this.onSuccessToast("Offer disabled");
+        } else if (status === 'active'){
+          this.onSuccessToast("Offer activated");
+        }
+        let offer = this.filteredActivityOffers.find(offer => offer.id === offerId);
+        if (offer) {
+          offer.status = status;
+        }
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public onSuccessToast(message: string): void {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-start',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    }).then(function(){})
+  }
+
   ngOnInit(): void {
     this.getOffers();
   }

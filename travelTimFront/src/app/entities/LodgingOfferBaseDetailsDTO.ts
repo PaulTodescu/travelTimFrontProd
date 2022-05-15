@@ -13,5 +13,6 @@ export interface LodgingOfferBaseDetailsDTO {
   price: number;
   currency: string;
   image: string;
+  status: string;
 
 }

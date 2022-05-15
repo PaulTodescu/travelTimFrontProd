@@ -1,14 +1,17 @@
-import {Component, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, Injector, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {UserService} from "../../services/user/user.service";
 import {UserDTO} from "../../entities/userDTO";
 import {HttpErrorResponse} from "@angular/common/http";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {LodgingService} from "../../services/lodging/lodging.service";
 import {LodgingOfferDetailsDTO} from "../../entities/lodgingOfferDetailsDTO";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {DaySchedule} from "../../entities/daySchedule";
 import {ActivatedRoute} from "@angular/router";
+import {OfferReservation} from "../../entities/offerReservation";
+import {ReservationService} from "../../services/reservation/reservation.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-offer-reservation',
@@ -37,6 +40,8 @@ export class OfferReservationComponent implements OnInit {
   selectedArrivalDate: Date | undefined;
   selectedDepartureDate: Date | undefined;
 
+  userId: number | undefined;
+
   timeSlots: string[] = [
     "00:00 - 01:00", "01:00 - 02:00", "02:00 - 03:00", "03:00 - 04:00", "04:00 - 05:00",
     "05:00 - 06:00", "06:00 - 07:00", "07:00 - 08:00", "08:00 - 09:00", "09:00 - 10:00",
@@ -52,7 +57,9 @@ export class OfferReservationComponent implements OnInit {
   constructor(
     private userService: UserService,
     private lodgingService: LodgingService,
+    private reservationService: ReservationService,
     private formBuilder: FormBuilder,
+    private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: { offer: LodgingOfferDetailsDTO },
     private activatedRout: ActivatedRoute) {
     this.activatedRout.queryParams.subscribe(
@@ -84,6 +91,7 @@ export class OfferReservationComponent implements OnInit {
     this.userService.getLoggedInUser().subscribe(
       (response: UserDTO) => {
         this.setUserFormValues(response);
+        this.userId = response.id;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
@@ -186,8 +194,11 @@ export class OfferReservationComponent implements OnInit {
   }
 
   public getDayStringFromDate(date: Date): string {
-    let weekdays: string[] = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-    return weekdays[date.getDay()];
+    if (date) {
+      let weekdays: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return weekdays[date.getDay()];
+    }
+    return '';
   }
 
   public getClosedDays(): string[] {
@@ -215,6 +226,37 @@ export class OfferReservationComponent implements OnInit {
       return Math.round(diffInTime / oneDay);
     }
     return 1;
+  }
+
+  public sendReservation(): void {
+    if (this.userService.checkIfUserIsLoggedIn()) {
+      let arrivalDate = this.selectedArrivalDate;
+      let arrivalTime = this.ReservationForm.get('arrivalTime')?.value;
+      let departureDate = this.selectedDepartureDate;
+      let firstName = this.ReservationForm.get('firstName')?.value;
+      let lastName = this.ReservationForm.get('lastName')?.value;
+      let email = this.ReservationForm.get('email')?.value;
+      let phoneNumber = this.ReservationForm.get('phoneNumber')?.value;
+      let price = this.totalPrice;
+      let currency = this.offer?.currency;
+      if (arrivalDate && departureDate && price && currency) {
+        let reservation: OfferReservation = new OfferReservation(
+          arrivalDate, arrivalTime, departureDate, firstName, lastName, email, phoneNumber, price, currency
+        )
+        if (this.userId && this.offer) {
+          this.reservationService.addReservation(this.userId, this.offer.id, reservation).subscribe(
+            () => {
+              this.onSuccess("Reservation was successful");
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          )
+        }
+      }
+    } else {
+      this.onFail("You must log in to your account");
+    }
   }
 
   public getNrUtilities(): number {
@@ -302,6 +344,29 @@ export class OfferReservationComponent implements OnInit {
       return 'only digits are allowed';
     }
     return;
+  }
+
+  public onSuccess(message: string): void{
+    let dialogRef: MatDialogRef<OfferReservation> = this.injector.get(MatDialogRef);
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 2000
+    }).then(function(){
+      dialogRef.close();
+    })
+  }
+
+  public onFail(message: string): void{
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 2500
+    }).then(function(){})
   }
 
   ngOnInit(): void {

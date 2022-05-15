@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOffer";
 import {LegalPersonLodgingOffer} from "../../entities/legalPersonLodgingOffer";
@@ -79,6 +79,15 @@ export class LodgingService {
 
   public getContactDetails(offerId: number): Observable<OfferContact>{
     return this.http.get<OfferContact>(`${this.apiUrl}/lodging/${offerId}/contact`);
+  }
+
+  public changeLodgingOfferStatus(offerId: number, status: string){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    return this.http.put<void>(`${this.apiUrl}/lodging/${offerId}/status/change`, JSON.stringify(status), httpOptions);
   }
 
 }

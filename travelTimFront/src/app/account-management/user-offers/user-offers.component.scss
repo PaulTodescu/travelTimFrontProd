@@ -140,10 +140,14 @@ img:hover {
   margin: 5px 0;
 }
 
-.offer-status{
+.offer-status {
+  margin: 0 0 0 auto;
+}
+
+.offer-status h4{
   font-family: Bahnschrift, serif;
   color: #7c795d;
-  margin: 0 0 0 auto
+  margin: 0;
 }
 
 .offer-business{

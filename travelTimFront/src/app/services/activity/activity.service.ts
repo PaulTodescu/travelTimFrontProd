@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ActivityOffer} from "../../entities/activityOffer";
 import {ActivityOfferDetails} from "../../entities/activityOfferDetails";
@@ -49,6 +49,15 @@ export class ActivityService {
 
   public getContactDetails(offerId: number): Observable<OfferContact>{
     return this.http.get<OfferContact>(`${this.apiUrl}/activity/${offerId}/contact`);
+  }
+
+  public changeActivityOfferStatus(offerId: number, status: string){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    return this.http.put<void>(`${this.apiUrl}/activity/${offerId}/status/change`, JSON.stringify(status), httpOptions);
   }
 
 }

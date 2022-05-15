@@ -61,14 +61,20 @@
                 </div>
                 <mat-icon class="delete-btn" (click)="openDeleteOfferDialog(offer.id)">delete_forever</mat-icon>
               </div>
-              <h4 class="offer-status">
-                <mat-icon style="margin-right: 5px">check_circle_outline</mat-icon>
-                Active
-              </h4>
-<!--              <h4 class="offer-status">-->
-<!--                <mat-icon style="margin-right: 5px">remove_circle_outline</mat-icon>-->
-<!--                Disabled-->
-<!--              </h4>-->
+              <div class="offer-status" [ngSwitch]="offer.status">
+                <h4 *ngSwitchCase="'active'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">check_circle_outline</mat-icon>
+                  active
+                </h4>
+                <h4 *ngSwitchCase="'disabled'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">remove_circle_outline</mat-icon>
+                  disabled
+                </h4>
+                <h4 *ngSwitchCase="'reserved'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">block</mat-icon>
+                  reserved
+                </h4>
+              </div>
             </div>
             <div class="bottom-container">
               <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
@@ -83,9 +89,19 @@
                 <button mat-raised-button class="edit-btn" (click)="goToEditLodgingOfferPage(offer)">
                   Edit<mat-icon>edit</mat-icon>
                 </button>
-                <button mat-raised-button class="disable-btn">
-                  Disable<mat-icon>close</mat-icon>
-                </button>
+                <div *ngIf="offer.status === 'active'; then showDisableButton else showActivateButton"></div>
+                <ng-template #showDisableButton>
+                  <button mat-raised-button class="disable-btn"
+                          (click)="changeLodgingOfferStatus(offer.id, 'disabled')">
+                    Disable<mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+                <ng-template #showActivateButton>
+                  <button mat-raised-button class="disable-btn"
+                        (click)="changeLodgingOfferStatus(offer.id, 'active')">
+                    Activate<mat-icon>check</mat-icon>
+                  </button>
+                </ng-template>
               </div>
             </div>
           </div>
@@ -125,19 +141,39 @@
                 </div>
                 <mat-icon class="delete-btn" (click)="openDeleteOfferDialog(offer.id)">delete_forever</mat-icon>
               </div>
-              <h4 class="offer-status">
-                <mat-icon style="margin-right: 5px">check_circle_outline</mat-icon>
-                Active
-              </h4>
+              <div class="offer-status" [ngSwitch]="offer.status">
+                <h4 *ngSwitchCase="'active'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">check_circle_outline</mat-icon>
+                  active
+                </h4>
+                <h4 *ngSwitchCase="'disabled'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">remove_circle_outline</mat-icon>
+                  disabled
+                </h4>
+                <h4 *ngSwitchCase="'reserved'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">block</mat-icon>
+                  reserved
+                </h4>
+              </div>
             </div>
             <div class="bottom-container">
               <div class="action-buttons" style="margin-left: auto">
                 <button mat-raised-button class="edit-btn" (click)="goToEditFoodOfferPage(offer)">
                   Edit<mat-icon>edit</mat-icon>
                 </button>
-                <button mat-raised-button class="disable-btn">
-                  Disable<mat-icon>close</mat-icon>
-                </button>
+                <div *ngIf="offer.status === 'active'; then showDisableButton else showActivateButton"></div>
+                <ng-template #showDisableButton>
+                  <button mat-raised-button class="disable-btn"
+                          (click)="changeFoodOfferStatus(offer.id, 'disabled')">
+                    Disable<mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+                <ng-template #showActivateButton>
+                  <button mat-raised-button class="disable-btn"
+                          (click)="changeFoodOfferStatus(offer.id, 'active')">
+                    Activate<mat-icon>check</mat-icon>
+                  </button>
+                </ng-template>
               </div>
             </div>
           </div>
@@ -175,19 +211,39 @@
                 </div>
                 <mat-icon class="delete-btn" (click)="openDeleteOfferDialog(offer.id)">delete_forever</mat-icon>
               </div>
-              <h4 class="offer-status">
-                <mat-icon style="margin-right: 5px">check_circle_outline</mat-icon>
-                Active
-              </h4>
+              <div class="offer-status" [ngSwitch]="offer.status">
+                <h4 *ngSwitchCase="'active'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">check_circle_outline</mat-icon>
+                  active
+                </h4>
+                <h4 *ngSwitchCase="'disabled'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">remove_circle_outline</mat-icon>
+                  disabled
+                </h4>
+                <h4 *ngSwitchCase="'reserved'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">block</mat-icon>
+                  reserved
+                </h4>
+              </div>
             </div>
             <div class="bottom-container">
               <div class="action-buttons" style="margin-left: auto">
                 <button mat-raised-button class="edit-btn" (click)="goToEditAttractionOfferPage(offer)">
                   Edit<mat-icon>edit</mat-icon>
                 </button>
-                <button mat-raised-button class="disable-btn">
-                  Disable<mat-icon>close</mat-icon>
-                </button>
+                <div *ngIf="offer.status === 'active'; then showDisableButton else showActivateButton"></div>
+                <ng-template #showDisableButton>
+                  <button mat-raised-button class="disable-btn"
+                          (click)="changeAttractionOfferStatus(offer.id, 'disabled')">
+                    Disable<mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+                <ng-template #showActivateButton>
+                  <button mat-raised-button class="disable-btn"
+                          (click)="changeAttractionOfferStatus(offer.id, 'active')">
+                    Activate<mat-icon>check</mat-icon>
+                  </button>
+                </ng-template>
               </div>
             </div>
           </div>
@@ -225,19 +281,39 @@
                 </div>
                 <mat-icon class="delete-btn" (click)="openDeleteOfferDialog(offer.id)">delete_forever</mat-icon>
               </div>
-              <h4 class="offer-status">
-                <mat-icon style="margin-right: 5px">check_circle_outline</mat-icon>
-                Active
-              </h4>
+              <div class="offer-status" [ngSwitch]="offer.status">
+                <h4 *ngSwitchCase="'active'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">check_circle_outline</mat-icon>
+                  active
+                </h4>
+                <h4 *ngSwitchCase="'disabled'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">remove_circle_outline</mat-icon>
+                  disabled
+                </h4>
+                <h4 *ngSwitchCase="'reserved'">
+                  <mat-icon style="margin-right: 5px; vertical-align: middle !important;">block</mat-icon>
+                  reserved
+                </h4>
+              </div>
             </div>
             <div class="bottom-container">
               <div class="action-buttons" style="margin-left: auto">
                 <button mat-raised-button class="edit-btn" (click)="goToEditActivityOfferPage(offer)">
                   Edit<mat-icon>edit</mat-icon>
                 </button>
-                <button mat-raised-button class="disable-btn">
-                  Disable<mat-icon>close</mat-icon>
-                </button>
+                <div *ngIf="offer.status === 'active'; then showDisableButton else showActivateButton"></div>
+                <ng-template #showDisableButton>
+                  <button mat-raised-button class="disable-btn"
+                          (click)="changeActivityOfferStatus(offer.id, 'disabled')">
+                    Disable<mat-icon>close</mat-icon>
+                  </button>
+                </ng-template>
+                <ng-template #showActivateButton>
+                  <button mat-raised-button class="disable-btn"
+                          (click)="changeActivityOfferStatus(offer.id, 'active')">
+                    Activate<mat-icon>check</mat-icon>
+                  </button>
+                </ng-template>
               </div>
             </div>
           </div>
