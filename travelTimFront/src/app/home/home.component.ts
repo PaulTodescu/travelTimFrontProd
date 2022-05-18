@@ -87,6 +87,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  public getCurrentYear(): number {
+    return new Date().getFullYear();
+  }
+
   ngOnInit(): void {
   }
 

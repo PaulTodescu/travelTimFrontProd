@@ -626,36 +626,43 @@ export class UserOffersComponent implements OnInit {
     }
   }
 
+  public checkLodgingOfferStatusAndChange(offerId: number, status: string): void {
+    let offer = this.filteredLodgingOffers.find(offer => offer.id === offerId);
+    if (offer) {
+      if (offer.status === 'reserved') {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'This offer is currently marked as reserved',
+          icon: 'warning',
+          showConfirmButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Yes, activate it!',
+          confirmButtonColor: '#0275d8',
+          cancelButtonColor: '#696969'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (offer) {
+              this.changeLodgingOfferStatus(offer.id, status);
+            }
+          }
+        })
+      } else {
+        this.changeLodgingOfferStatus(offer.id, status);
+      }
+    }
+  }
+
   public changeLodgingOfferStatus(offerId: number, status: string): void {
     this.lodgingService.changeLodgingOfferStatus(offerId, status).subscribe(
       () => {
         if (status === 'disabled') {
           this.onSuccessToast("Offer disabled");
-        } else if (status === 'active'){
+        } else if (status === 'active') {
           this.onSuccessToast("Offer activated");
         }
         let offer = this.filteredLodgingOffers.find(offer => offer.id === offerId);
         if (offer) {
-          if (offer.status === 'reserved') {
-            Swal.fire({
-              title: 'Are you sure?',
-              text: 'This offer is currently marked as reserved',
-              icon: 'warning',
-              showCancelButton: true,
-              focusConfirm: true,
-              confirmButtonColor: '#d33',
-              cancelButtonColor: '#696969',
-              confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                if (offer) {
-                  offer.status = status;
-                }
-              }
-            })
-          } else {
-            offer.status = status;
-          }
+          offer.status = status;
         }
       }, (error: HttpErrorResponse) => {
         alert(error.message);

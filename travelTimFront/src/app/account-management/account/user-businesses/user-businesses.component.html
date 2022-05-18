@@ -9,11 +9,20 @@
   <ng-template #showBusinesses style="overflow: auto">
     <div class="business-row-header">
       <div style="flex: 1 0 0; display: flex; flex-direction: row;">
-        <h3 class="data-column">Name</h3>
-        <h3 class="data-column">City</h3>
+        <h3 class="data-column"
+            style=" font-family: Trebuchet MS, sans-serif;font-size: 1.3em; font-weight: bolder;">
+          Name
+        </h3>
+        <h3 class="data-column"
+            style=" font-family: Trebuchet MS, sans-serif;font-size: 1.3em; font-weight: bolder;">
+          City
+        </h3>
       </div>
       <div style="flex: 1 0 20%">
-        <h3 class="data-column">Actions</h3>
+        <h3 class="data-column"
+            style=" font-family: Trebuchet MS, sans-serif;font-size: 1.3em; font-weight: bolder;">
+          Actions
+        </h3>
       </div>
     </div>
     <div class="business-row" *ngFor="let business of businesses">

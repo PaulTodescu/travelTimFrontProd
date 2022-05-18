@@ -47,6 +47,7 @@ export class LegalLodgingOffersComponent implements OnInit {
       floor: offer.floor,
       price: offer.price,
       currency: offer.currency,
+      address: offer.address,
       utilities: offer.utilities
     }
   }

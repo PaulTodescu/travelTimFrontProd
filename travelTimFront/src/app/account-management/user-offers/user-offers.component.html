@@ -92,13 +92,13 @@
                 <div *ngIf="offer.status === 'active'; then showDisableButton else showActivateButton"></div>
                 <ng-template #showDisableButton>
                   <button mat-raised-button class="disable-btn"
-                          (click)="changeLodgingOfferStatus(offer.id, 'disabled')">
+                          (click)="checkLodgingOfferStatusAndChange(offer.id, 'disabled')">
                     Disable<mat-icon>close</mat-icon>
                   </button>
                 </ng-template>
                 <ng-template #showActivateButton>
                   <button mat-raised-button class="disable-btn"
-                        (click)="changeLodgingOfferStatus(offer.id, 'active')">
+                        (click)="checkLodgingOfferStatusAndChange(offer.id, 'active')">
                     Activate<mat-icon>check</mat-icon>
                   </button>
                 </ng-template>
@@ -110,7 +110,7 @@
           id="lodgingOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="filteredLodgingOffers.length === 0" class="offer-container" role="alert">
+      <div *ngIf="filteredLodgingOffers.length === 0" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
@@ -182,7 +182,7 @@
           id="foodOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="filteredFoodOffers.length === 0" class="offer-container" role="alert">
+      <div *ngIf="filteredFoodOffers.length === 0" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
@@ -252,7 +252,7 @@
           id="attractionOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="filteredAttractionOffers.length === 0" class="offer-container" role="alert">
+      <div *ngIf="filteredAttractionOffers.length === 0" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
@@ -322,7 +322,7 @@
           id="activityOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="filteredActivityOffers.length === 0" class="offer-container" role="alert">
+      <div *ngIf="filteredActivityOffers.length === 0" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>

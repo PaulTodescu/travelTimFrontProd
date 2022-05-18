@@ -1,0 +1,99 @@
+<div id="reservation-details-container">
+  <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+  <table>
+    <tr style="border: none; background-color: #e1e2e3;">
+      <th class="section-header">Reservation Details #</th>
+      <td id="reservation-date">{{reservation?.createdAt}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="top-padding">Arrival Date</th>
+      <td class="top-padding">{{reservation?.arrivalDate}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="normal-padding">Arrival Time</th>
+      <td class="normal-padding">
+        {{reservation?.arrivalTime ? reservation?.arrivalTime : 'Not Provided'}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="normal-padding">Departure Date</th>
+      <td class="normal-padding">{{reservation?.departureDate}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="normal-padding">Name</th>
+      <td class="normal-padding">{{reservation?.firstName}} {{reservation?.lastName}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="normal-padding">Email</th>
+      <td class="normal-padding">{{reservation?.email}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="bottom-padding">Phone</th>
+      <td class="bottom-padding">
+        {{reservation?.phoneNumber ? reservation?.phoneNumber : 'Not Provided'}}</td>
+    </tr>
+    <tr style="border: none; background-color: #e1e2e3;">
+      <th class="section-header">Pricing</th>
+      <td></td>
+    </tr>
+    <tr style="border: none;">
+      <th class="middle-padding">Total Price</th>
+      <td class="middle-padding">{{reservation?.totalPrice}} {{reservation?.currency}} (/{{reservation?.nrNights}} nights)</td>
+    </tr>
+    <tr style="border: none; background-color: #e1e2e3;">
+      <th class="section-header">Offer Details</th>
+      <td></td>
+    </tr>
+    <tr style="border: none;">
+      <th class="top-padding">Nr. Rooms</th>
+      <td class="top-padding">{{reservation?.lodgingOffer?.nrRooms}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="normal-padding">Nr. Bathrooms</th>
+      <td class="normal-padding">{{reservation?.lodgingOffer?.nrBathrooms}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="normal-padding">Nr. Single Beds</th>
+      <td class="normal-padding">{{reservation?.lodgingOffer?.nrSingleBeds}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="normal-padding">Nr. Double Beds</th>
+      <td class="normal-padding">{{reservation?.lodgingOffer?.nrDoubleBeds}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="bottom-padding">Floor</th>
+      <td class="bottom-padding">{{reservation?.lodgingOffer?.floor}}</td>
+    </tr>
+    <tr style="border: none; background-color: #e1e2e3;">
+      <th class="section-header">Location</th>
+      <td></td>
+    </tr>
+    <tr style="border: none;">
+      <th class="top-padding">Address</th>
+      <td class="top-padding">{{reservation?.address}}</td>
+    </tr>
+    <tr style="border: none;">
+      <th class="bottom-padding">City</th>
+      <td class="bottom-padding">{{reservation?.city}}</td>
+    </tr>
+    <tr style="border: none; background-color: #e1e2e3;">
+      <th class="section-header">Provider Contact</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th class="top-padding">Name</th>
+      <td class="top-padding">{{reservation?.providerName}}</td>
+    </tr>
+    <tr>
+      <th class="normal-padding">Email</th>
+      <td class="normal-padding">{{reservation?.providerEmail}}</td>
+    </tr>
+    <tr>
+    <tr style="border: none;">
+      <th class="normal-padding">Phone</th>
+      <td class="normal-padding">
+        {{reservation?.providerPhone ? reservation?.providerPhone : 'Not Provided'}}</td>
+    </tr>
+  </table>
+</div>

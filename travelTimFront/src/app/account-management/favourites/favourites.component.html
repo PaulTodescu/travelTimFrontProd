@@ -1,7 +1,7 @@
 <div class="account-management-right-container">
   <div id="top-section">
     <h1>My Favourites</h1>
-    <div style="margin-left: auto">
+    <div *ngIf="favouriteOffers.length !== 0;" style="margin-left: auto">
       <h4 class="sort-txt">Sort by: </h4>
       <mat-form-field class="sort-field" appearance="legacy">
         <mat-select [value]="sortingMethod" (selectionChange)="sortOffers($event.value)">
@@ -47,7 +47,7 @@
         id="favouriteOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
       </pagination-controls>
     </div>
-    <div *ngIf="showNoOffersMessage" class="offer-container" role="alert">
+    <div *ngIf="showNoOffersMessage" id="no-offers-wrapper" role="alert">
       <h4 class="alert-heading">NO OFFERS FOUND!</h4>
     </div>
     <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>

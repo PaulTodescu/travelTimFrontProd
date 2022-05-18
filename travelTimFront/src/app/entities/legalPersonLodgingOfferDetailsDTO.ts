@@ -11,6 +11,7 @@ export interface LegalPersonLodgingOfferDetailsDTO {
   price: number;
   currency: string;
   description: string;
+  address: string;
   utilities: LodgingUtility[];
 
 }

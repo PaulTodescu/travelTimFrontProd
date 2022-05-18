@@ -1,18 +1,19 @@
 export class OfferReservation {
   id: number | undefined;
-  arrivalDate: Date;
+  arrivalDate: string;
   arrivalTime: string;
-  departureDate: Date;
+  departureDate: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
   totalPrice: number;
   currency: string;
+  nrNights: number;
 
-
-  constructor(arrivalDate: Date, arrivalTime: string, departureDate: Date, firstName: string,
-              lastName: string, email: string, phoneNumber: string, totalPrice: number, currency: string) {
+  constructor(arrivalDate: string, arrivalTime: string, departureDate: string, firstName: string,
+              lastName: string, email: string, phoneNumber: string, totalPrice: number,
+              currency: string, nrNights: number) {
     this.arrivalDate = arrivalDate;
     this.arrivalTime = arrivalTime;
     this.departureDate = departureDate;
@@ -22,5 +23,6 @@ export class OfferReservation {
     this.phoneNumber = phoneNumber;
     this.totalPrice = totalPrice;
     this.currency = currency;
+    this.nrNights = nrNights;
   }
 }

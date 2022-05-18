@@ -18,8 +18,8 @@
                [matDatepickerFilter]="closedBusinessDaysFilter"
                (dateChange)="arrivalDateChangeEvent($event)">
         <mat-error *ngIf="ReservationForm.get('arrivalDate')?.invalid">{{getFormArrivalDateErrorMessage()}}</mat-error>
-        <mat-icon matSuffix class="calendar-icon" (click)="openArrivalDatePicker()">calendar_month</mat-icon>
-        <mat-datepicker #arrivalDatePicker [disabled]="false"></mat-datepicker>
+        <mat-icon matSuffix class="calendar-icon" (click)="arrivalDatePicker.open()">calendar_month</mat-icon>
+        <mat-datepicker #arrivalDatePicker></mat-datepicker>
       </mat-form-field>
 
       <!--Arrival Time-->
@@ -104,24 +104,32 @@
     <div class="offer-details" style="flex: 2 1 0">
       <div class="offer-details-row">
         <h3 class="field">
-          Rooms: <span>{{offer?.nrRooms}}</span>
+          <span class="bold-txt">Details: </span>
         </h3>
         <h3 class="field">
-          Bathrooms: <span>{{offer?.nrBathrooms}}</span>
+          Rooms: <span class="bold-txt">{{offer?.nrRooms}}</span>
+        </h3>
+        <h3 class="field">
+          Bathrooms: <span class="bold-txt">{{offer?.nrBathrooms}}</span>
         </h3>
         <h3 class="field" *ngIf="getNrSingleBeds() > 0">
-          Single Beds: <span>{{offer?.nrSingleBeds}}</span>
+          Single Beds: <span class="bold-txt">{{offer?.nrSingleBeds}}</span>
         </h3>
         <h3 class="field" *ngIf="getNrDoubleBeds() > 0">
-          Double Beds: <span>{{offer?.nrDoubleBeds}}</span>
+          Double Beds: <span class="bold-txt">{{offer?.nrDoubleBeds}}</span>
         </h3>
         <h3 class="field">
-          Floor: <span>{{offer?.floor}}</span>
+          Floor: <span class="bold-txt">{{offer?.floor}}</span>
+        </h3>
+      </div>
+      <div class="offer-details-row">
+        <h3 class="field">
+          <span class="bold-txt">Address: </span>{{offer?.address}}
         </h3>
       </div>
       <div class="offer-details-row" *ngIf="getNrUtilities() > 0">
         <h3 class="field">
-          Services:
+          <span class="bold-txt">Services:</span>
           <span *ngFor="let utility of offer?.utilities" class="offer-service">{{utility?.name}}</span>
         </h3>
       </div>

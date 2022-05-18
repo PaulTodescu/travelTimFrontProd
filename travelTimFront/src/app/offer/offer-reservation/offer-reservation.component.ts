@@ -1,5 +1,5 @@
 import {Component, Inject, Injector, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {UserService} from "../../services/user/user.service";
 import {UserDTO} from "../../entities/userDTO";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -8,7 +8,7 @@ import {LodgingService} from "../../services/lodging/lodging.service";
 import {LodgingOfferDetailsDTO} from "../../entities/lodgingOfferDetailsDTO";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {DaySchedule} from "../../entities/daySchedule";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {OfferReservation} from "../../entities/offerReservation";
 import {ReservationService} from "../../services/reservation/reservation.service";
 import Swal from "sweetalert2";
@@ -17,8 +17,8 @@ import Swal from "sweetalert2";
   selector: 'app-offer-reservation',
   templateUrl: './offer-reservation.component.html',
   styleUrls: ['./offer-reservation.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
 })
+
 export class OfferReservationComponent implements OnInit {
 
   @ViewChild("arrivalDatePicker") arrivalDatePicker: any;
@@ -78,9 +78,9 @@ export class OfferReservationComponent implements OnInit {
   }
 
   ReservationForm = this.formBuilder.group({
-    arrivalDate:['', Validators.required],
+    arrivalDate:['', [Validators.required]],
     arrivalTime:[''],
-    departureDate:['', Validators.required],
+    departureDate:['', [Validators.required]],
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
     lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
     email: ['', [Validators.required, Validators.email]],
@@ -105,10 +105,6 @@ export class OfferReservationComponent implements OnInit {
       email: user.email,
       phoneNumber: user.phoneNumber
     })
-  }
-
-  public openArrivalDatePicker(): void {
-    this.arrivalDatePicker.open();
   }
 
   public arrivalDateChangeEvent(newDate: MatDatepickerInputEvent<Date>) {
@@ -230,29 +226,52 @@ export class OfferReservationComponent implements OnInit {
 
   public sendReservation(): void {
     if (this.userService.checkIfUserIsLoggedIn()) {
-      let arrivalDate = this.selectedArrivalDate;
+      let arrivalDate = this.selectedArrivalDate?.toLocaleDateString('en-GB');
       let arrivalTime = this.ReservationForm.get('arrivalTime')?.value;
-      let departureDate = this.selectedDepartureDate;
+      let departureDate = this.selectedDepartureDate?.toLocaleDateString('en-GB');
       let firstName = this.ReservationForm.get('firstName')?.value;
       let lastName = this.ReservationForm.get('lastName')?.value;
       let email = this.ReservationForm.get('email')?.value;
       let phoneNumber = this.ReservationForm.get('phoneNumber')?.value;
       let price = this.totalPrice;
       let currency = this.offer?.currency;
+      let nrNights = this.getNrNightsBetweenArrivalAnDeparture();
       if (arrivalDate && departureDate && price && currency) {
         let reservation: OfferReservation = new OfferReservation(
-          arrivalDate, arrivalTime, departureDate, firstName, lastName, email, phoneNumber, price, currency
+          arrivalDate, arrivalTime, departureDate, firstName, lastName, email, phoneNumber, price, currency, nrNights
         )
-        if (this.userId && this.offer) {
-          this.reservationService.addReservation(this.userId, this.offer.id, reservation).subscribe(
-            () => {
-              this.onSuccess("Reservation was successful");
-            },
-            (error: HttpErrorResponse) => {
-              alert(error.message);
+        Swal.fire({
+          title: 'Confirm Email',
+          html: 'Your reservation details will be sent to <br><b>' + email + '</b>',
+          icon: 'info',
+          showConfirmButton: true,
+          showCancelButton: true,
+          focusConfirm: true,
+          confirmButtonColor: '#034953',
+          cancelButtonColor: '#696969',
+          confirmButtonText: 'Confirm'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (this.userId && this.offer) {
+              Swal.fire({
+                title: 'Sending Reservation...',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading()
+                }
+              });
+              this.reservationService.addReservation(this.userId, this.offer.id, reservation).subscribe(
+                () => {
+                  Swal.close();
+                  this.onSuccessfulReservation();
+                }, (error: HttpErrorResponse) => {
+                  alert(error.message);
+                }
+              )
             }
-          )
-        }
+          }
+        })
       }
     } else {
       this.onFail("You must log in to your account");
@@ -346,16 +365,20 @@ export class OfferReservationComponent implements OnInit {
     return;
   }
 
-  public onSuccess(message: string): void{
+  public onSuccessfulReservation(): void{
     let dialogRef: MatDialogRef<OfferReservation> = this.injector.get(MatDialogRef);
+    let router: Router = this.injector.get(Router);
     Swal.fire({
       position: 'center',
       icon: 'success',
-      title: message,
+      title: 'Reservation was successful',
       showConfirmButton: false,
       timer: 2000
     }).then(function(){
       dialogRef.close();
+      router.navigate(['account'], {
+        queryParams: {'section': 'reservations'},
+      });
     })
   }
 

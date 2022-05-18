@@ -9,5 +9,6 @@ export interface LodgingOfferDetailsDTO {
   floor: number;
   price: number;
   currency: string;
+  address: string;
   utilities: LodgingUtility[];
 }

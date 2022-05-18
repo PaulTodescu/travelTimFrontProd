@@ -82,6 +82,7 @@ import { EditBusinessScheduleComponent } from './business/edit-business-schedule
 import { BusinessOffersComponent} from "./business/business-offers/business-offers.component";
 import { UserProviderOffersComponent } from './user-provider-offers/user-provider-offers.component';
 import { OfferReservationComponent } from './offer/offer-reservation/offer-reservation.component';
+import { ReservationDetailsComponent } from './account-management/reservations/reservation-details/reservation-details.component';
 
 @NgModule({
   declarations: [
@@ -134,6 +135,7 @@ import { OfferReservationComponent } from './offer/offer-reservation/offer-reser
     BusinessOffersComponent,
     UserProviderOffersComponent,
     OfferReservationComponent,
+    ReservationDetailsComponent,
   ],
     imports: [
       BrowserModule,

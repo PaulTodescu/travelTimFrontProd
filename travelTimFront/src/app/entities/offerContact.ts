@@ -1,8 +1,8 @@
 export class OfferContact {
-  email: string
-  phoneNumber: string;
+  email: string | undefined;
+  phoneNumber: string | undefined;
 
-  constructor(email: string, phoneNumber: string) {
+  constructor(email: string | undefined, phoneNumber: string | undefined) {
     this.email = email;
     this.phoneNumber = phoneNumber;
   }

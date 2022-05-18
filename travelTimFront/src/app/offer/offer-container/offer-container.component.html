@@ -27,7 +27,7 @@
         <div id="contact-socials">
           <div id="contact">
             <h3><mat-icon>email</mat-icon>{{offerContact?.email}}</h3>
-            <h3 *ngIf="offerContact?.phoneNumber !== null">
+            <h3 *ngIf="offerContact?.phoneNumber">
               <mat-icon>phone</mat-icon>{{offerContact?.phoneNumber}}</h3>
             <mat-icon class="favourite-btn">
               favorite
@@ -69,9 +69,9 @@
             schedule
           </h3>
         </div>
-<!--        <div id="map">-->
-<!--          <app-map></app-map>-->
-<!--        </div>-->
+        <div id="map">
+          <app-map></app-map>
+        </div>
       </div>
     </div>
 
@@ -81,16 +81,24 @@
         <ng-template #showLegalOffers>
           <div style="display: flex; flex-direction: row;">
             <h1 class="section-title">Offers</h1>
-            <div style="margin-left: auto;">
-              <h4 class="currency-txt">Currency: </h4>
-              <mat-form-field appearance="legacy" class="currency-field">
-                <mat-select [value]="selectedCurrency" (selectionChange)="changeCurrency($event.value)">
-                  <mat-option *ngFor="let currency of currencies" style="color: black;" [value]="currency">
-                    {{currency}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
+            <div *ngIf="legalPersonLodgingOffers.length; then showLegalOffers else showNoOffersMessage"></div>
+            <ng-template #showLegalOffers>
+              <div style="margin-left: auto;">
+                <h4 class="currency-txt">Currency: </h4>
+                <mat-form-field appearance="legacy" class="currency-field">
+                  <mat-select [value]="selectedCurrency" (selectionChange)="changeCurrency($event.value)">
+                    <mat-option *ngFor="let currency of currencies" style="color: black;" [value]="currency">
+                      {{currency}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </ng-template>
+            <ng-template #showNoOffersMessage>
+              <div role="alert">
+                <h4 class="alert-heading">NO ACTIVE OFFERS FOUND!</h4>
+              </div>
+            </ng-template>
           </div>
           <app-legal-lodging-offers [offers]="legalPersonLodgingOffers"></app-legal-lodging-offers>
         </ng-template>

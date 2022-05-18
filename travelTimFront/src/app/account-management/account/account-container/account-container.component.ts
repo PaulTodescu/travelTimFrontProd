@@ -56,7 +56,7 @@ export class AccountContainerComponent implements OnInit {
       text: 'All information associated with your account will be lost',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
+      confirmButtonColor: '#c73c3c',
       cancelButtonColor: '#696969',
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {

@@ -1,0 +1,71 @@
+#reservation-details-container {
+  position: relative;
+}
+
+table {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.section-header {
+  padding: 15px 8px;
+  text-align: left;
+  border: none;
+  font-weight: bold;
+  font-family: Bahnschrift, serif;
+  font-size: 18px;
+}
+
+#reservation-date {
+  padding: 15px 8px;
+  text-align: left;
+  border: none;
+  font-weight: bold;
+  font-family: Bahnschrift, serif;
+}
+
+th, td {
+  text-align: left;
+  border: none;
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+tr {
+  border: none;
+}
+
+.top-padding {
+  padding: 20px 8px 8px 8px;
+}
+
+.middle-padding {
+  padding: 20px 8px 20px 8px;
+}
+
+.bottom-padding {
+  padding: 8px 8px 20px 8px;
+}
+
+.normal-padding {
+  padding: 8px;
+}
+
+.close-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  background-color: #f7f7f7;
+  color: #000000;
+  margin: 5px;
+}
+
+.close-icon {
+  transform: scale(1.2);
+  color: #000000 !important;
+}

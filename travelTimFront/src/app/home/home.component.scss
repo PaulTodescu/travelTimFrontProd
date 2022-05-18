@@ -180,3 +180,18 @@ img {
 .selectedTransportationOption {
   background-color: #034953 !important;
 }
+
+.footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(148, 148, 148);
+}
+
+.footer h2 {
+  margin: 10px auto;
+  font-family: 'Trocchi', sans-serif;
+  color: #ffffff;
+}

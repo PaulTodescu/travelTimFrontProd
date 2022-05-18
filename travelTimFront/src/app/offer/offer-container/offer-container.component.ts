@@ -58,7 +58,7 @@ export class OfferContainerComponent implements OnInit {
   offerContact: OfferContact | undefined;
   businessSocials: BusinessSocials | undefined;
 
-  legalPersonLodgingOffers: LegalPersonLodgingOfferDetailsDTO[] | undefined;
+  legalPersonLodgingOffers: LegalPersonLodgingOfferDetailsDTO[] = [];
   physicalPersonLodgingOffer: PhysicalPersonLodgingOfferDetails | undefined;
 
   foodOfferMenu: FoodMenuCategory[] | undefined;
@@ -126,7 +126,7 @@ export class OfferContainerComponent implements OnInit {
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.offerProviderName = response.business.name;
-        this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
+        this.offerContact = new OfferContact(response.business.email, response.business.phoneNumber);
         this.businessSocials = new BusinessSocials(
           response.business.websiteLink,
           response.business.facebookLink,

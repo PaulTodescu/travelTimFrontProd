@@ -76,7 +76,7 @@ export class UserBusinessesComponent implements OnInit {
       icon: 'warning',
       showCancelButton: true,
       focusConfirm: true,
-      confirmButtonColor: '#d33',
+      confirmButtonColor: '#c73c3c',
       cancelButtonColor: '#696969',
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {

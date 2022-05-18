@@ -18,6 +18,15 @@ html, body {
   border-radius: 7px;
 }
 
+.reservation-dialog-class {
+  width: 50%;
+  max-height: 95%;
+  overflow: auto;
+  position: absolute;
+  z-index: 1;
+  border-radius: 7px;
+}
+
 .dialog-class #menu-container {
   margin: 0 auto;
 }
