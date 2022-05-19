@@ -10,4 +10,5 @@ export interface FoodOfferDetails {
   description: string;
   offerContact: OfferContact;
   foodMenuCategories: FoodMenuCategory[];
+  status: string;
 }

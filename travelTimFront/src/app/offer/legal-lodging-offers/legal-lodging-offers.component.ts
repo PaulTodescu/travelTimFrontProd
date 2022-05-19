@@ -37,21 +37,6 @@ export class LegalLodgingOffersComponent implements OnInit {
     });
   }
 
-  public getMappedOfferToLodgingDetails(offer: LegalPersonLodgingOfferDetailsDTO): LodgingOfferDetailsDTO {
-    return {
-      id: offer.id,
-      nrRooms: offer.nrRooms,
-      nrBathrooms: offer.nrBathrooms,
-      nrSingleBeds: offer.nrSingleBeds,
-      nrDoubleBeds: offer.nrDoubleBeds,
-      floor: offer.floor,
-      price: offer.price,
-      currency: offer.currency,
-      address: offer.address,
-      utilities: offer.utilities
-    }
-  }
-
   public getFormattedOfferPrice(price: number | undefined): number {
     if (price !== undefined) {
       return parseFloat(price.toFixed(2));
@@ -67,7 +52,7 @@ export class LegalLodgingOffersComponent implements OnInit {
         dialogConfig.autoFocus = false;
         dialogConfig.panelClass = 'dialog-class' // in styles.css
         dialogConfig.data = {
-          offer: this.getMappedOfferToLodgingDetails(offer)
+          offerId: offer.id
         }
         this.dialog.open(OfferReservationComponent, dialogConfig);
         this.dialog._getAfterAllClosed().subscribe(() => {

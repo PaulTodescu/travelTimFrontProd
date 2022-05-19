@@ -1,0 +1,64 @@
+#reviews-container {
+  width: 100%;
+}
+
+.section-title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.8em;
+  color: #7c795d;
+}
+
+#add-review-btn {
+  font-size: 1.1em;
+  margin-left: auto;
+  background-color: #034953;
+  color: #ffffff;
+}
+
+#add-review-btn .mat-icon {
+  color: #ffffff;
+}
+
+.review {
+  color: #7c795d;
+  font-family: Bahnschrift, serif;
+  background-color: #f7f7f7;
+  border-radius: 7px;
+  margin-top: 15px;
+  padding: 15px;
+}
+
+.user-img {
+  border: 1px solid #ededed;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 5px 15px 5px 0;
+}
+
+.review-author-name {
+  font-family: "Trebuchet MS", sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 5px 15px 5px 0;
+}
+
+.rating {
+  margin: 10px 15px 5px 0;
+}
+
+.review-date {
+  font-family: Bahnschrift, serif;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 5px 15px 5px auto;
+}
+
+.review-content {
+  padding: 10px 15px 0 15px;
+  font-family: Bahnschrift, serif;
+}
+

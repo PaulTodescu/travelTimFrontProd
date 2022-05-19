@@ -59,6 +59,7 @@ export class UserOffersComponent implements OnInit {
   sortMethod: string = 'latest';
   originalCurrency: string = 'RON';
   currency: string = this.originalCurrency;
+  status: string | undefined;
   nrRooms: number | undefined;
   nrSingleBeds: number | undefined;
   nrDoubleBeds: number | undefined;
@@ -242,6 +243,7 @@ export class UserOffersComponent implements OnInit {
       selectedBusiness: this.selectedBusiness,
       sortMethod: this.sortMethod,
       currency: this.currency,
+      status: this.status,
       nrRooms: this.nrRooms,
       nrSingleBeds: this.nrSingleBeds,
       nrDoubleBeds: this.nrDoubleBeds
@@ -254,6 +256,7 @@ export class UserOffersComponent implements OnInit {
         this.selectedBusiness = res.selectedBusiness;
         this.sortMethod = res.sortMethod;
         this.currency = res.currency;
+        this.status = res.status;
         if (this.currency !== this.originalCurrency) {
           this.setConvertedLodgingOfferPrices(this.originalCurrency, this.currency);
           this.originalCurrency = this.currency;
@@ -275,6 +278,7 @@ export class UserOffersComponent implements OnInit {
           this.filteredActivityOffers = this.activityOffers;
           this.filterActivityOffersByBusiness(this.selectedBusiness);
         }
+        this.filterOffersByStatus();
         this.sortOffers();
       }
     })
@@ -377,6 +381,7 @@ export class UserOffersComponent implements OnInit {
     this.selectedBusiness = undefined;
     this.sortMethod = 'latest';
     this.currency = 'RON';
+    this.status = undefined;
     this.nrRooms = undefined;
     this.nrSingleBeds = undefined;
     this.nrDoubleBeds = undefined;
@@ -417,6 +422,48 @@ export class UserOffersComponent implements OnInit {
       return offer["nrDoubleBeds"] === nrDoubleBeds;
     })
     return this.filteredLodgingOffers;
+  }
+
+  public filterOffersByStatus(): void {
+    if (this.status) {
+      if (this.selectedCategory === 'lodging') {
+        this.filterLodgingOffersByStatus(this.status);
+      } else if (this.selectedCategory === 'food & beverage') {
+        this.filterFoodOffersByStatus(this.status);
+      } else if (this.selectedCategory === 'attractions') {
+        this.filterAttractionOffersByStatus(this.status);
+      } else if (this.selectedCategory === 'activities') {
+        this.filterActivityOffersByStatus(this.status);
+      }
+    }
+  }
+
+  public filterLodgingOffersByStatus(status: string): LodgingOfferBaseDetailsDTO[] {
+    this.filteredLodgingOffers = this.filteredLodgingOffers.filter(function (offer){
+      return offer["status"] === status;
+    });
+    return this.filteredLodgingOffers;
+  }
+
+  public filterFoodOffersByStatus(status: string): FoodOfferBaseDetailsDTO[] {
+    this.filteredFoodOffers = this.filteredFoodOffers.filter(function (offer){
+      return offer["status"] === status;
+    });
+    return this.filteredFoodOffers;
+  }
+
+  public filterAttractionOffersByStatus(status: string): AttractionOfferBaseDetailsDTO[] {
+    this.filteredAttractionOffers = this.filteredAttractionOffers.filter(function (offer){
+      return offer["status"] === status;
+    });
+    return this.filteredAttractionOffers;
+  }
+
+  public filterActivityOffersByStatus(status: string): ActivityOfferBaseDetailsDTO[] {
+    this.filteredActivityOffers = this.filteredActivityOffers.filter(function (offer){
+      return offer["status"] === status;
+    });
+    return this.filteredActivityOffers;
   }
 
   public openDeleteOfferDialog(offerId: number): void{

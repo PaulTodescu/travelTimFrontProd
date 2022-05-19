@@ -75,12 +75,6 @@ export class ReservationsComponent implements OnInit {
       () => {
         this.onSuccess('Reservation Deleted');
         let reservation = this.reservations.find(reservation => reservation.id === reservationId);
-        if (reservation) {
-          this.reservations.splice(this.reservations.indexOf(reservation), 1);
-          if (this.reservations.length === 0) {
-            this.showNoOffersMessage = true;
-          }
-        }
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
@@ -94,7 +88,9 @@ export class ReservationsComponent implements OnInit {
       title: message,
       showConfirmButton: false,
       timer: 2000
-    }).then(function(){})
+    }).then(function(){
+      location.reload();
+    })
   }
 
   ngOnInit(): void {

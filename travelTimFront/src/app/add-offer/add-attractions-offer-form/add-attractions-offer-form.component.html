@@ -10,7 +10,7 @@
     <ng-template #showHideBusinessInput>
       <h2 class="text-btn" (click)="toggleBusinessInput()">Remove organization</h2>
       <div id="business-container" *ngIf="showBusinessInput === true">
-        <mat-form-field appearance="fill" class="medium-width">
+        <mat-form-field appearance="fill" class="small-width">
           <mat-label> Business </mat-label>
           <div *ngIf="userBusinesses?.length !== 0; then showBusinesses else showNoBusinessMessage"></div>
           <ng-template #showBusinesses>
@@ -84,14 +84,14 @@
     <div class="ticket-container" *ngFor="let ticket of getTickets(); let i = index" >
 
       <!--Name-->
-      <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 55%">
+      <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="flex: 3 1 0; max-width: 100%">
         <mat-label> Ticket Name <span style="color: red;"> *</span></mat-label>
         <input #menuItemNameInput matInput type="text" autocomplete="off"
                (change)="changeTicketName(menuItemNameInput.value, i)"/>
       </mat-form-field>
 
       <!--Price-->
-      <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 20%">
+      <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="flex: 1 1 0; max-width: 100%">
         <mat-label> Price  <span style="font-size: 0.8em">(RON)</span> <span style="color: red;"> *</span></mat-label>
         <input #menuItemPriceInput matInput type="number" autocomplete="off"
                (change)="changeTicketPrice(menuItemPriceInput.value, i)"

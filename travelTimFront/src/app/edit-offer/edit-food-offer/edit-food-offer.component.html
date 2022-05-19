@@ -65,7 +65,7 @@
              *ngFor="let menuItem of getItemsForMenuCategory(category); let i = index" >
 
           <!--Name-->
-          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 35%">
+          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="flex: 2 1 0; max-width: 50%;">
             <mat-label> Item Name <span style="color: red;"> *</span></mat-label>
             <input #menuItemNameInput matInput type="text" autocomplete="off"
                    [value]="menuItem.name"
@@ -73,7 +73,7 @@
           </mat-form-field>
 
           <!--Weight-->
-          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 20%">
+          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="flex: 1 1 0; max-width: 50%">
             <mat-label> Quantity <span style="font-size: 0.8em">(grams)</span> </mat-label>
             <input #menuItemWeightInput matInput type="number" autocomplete="off"
                    [value]="convertNumberToString(menuItem.weight)"
@@ -82,7 +82,7 @@
           </mat-form-field>
 
           <!--Price-->
-          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="min-width: 20%">
+          <mat-form-field appearance="fill" class="mat-form-field-no-padding" style="flex: 1 1 0; max-width: 50%">
             <mat-label> Price  <span style="font-size: 0.8em">(RON)</span> <span style="color: red;"> *</span></mat-label>
             <input #menuItemPriceInput matInput type="number" autocomplete="off"
                    [value]="convertNumberToString(menuItem.price)"

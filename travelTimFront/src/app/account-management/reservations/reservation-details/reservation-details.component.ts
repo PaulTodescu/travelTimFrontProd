@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {DaySchedule} from "../../../entities/daySchedule";
 import {ReservationDetailsDTO} from "../../../entities/reservationDetailsDTO";
 import {HttpErrorResponse} from "@angular/common/http";
+import {OfferReservation} from "../../../entities/offerReservation";
 
 @Component({
   selector: 'app-reservation-details',
@@ -12,7 +13,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class ReservationDetailsComponent implements OnInit {
 
-  reservation: ReservationDetailsDTO | undefined;
+  reservation: OfferReservation | undefined;
 
   constructor(
     private reservationService: ReservationService,
@@ -22,7 +23,7 @@ export class ReservationDetailsComponent implements OnInit {
   public getReservationDetails(): void {
     if (this.data.reservationId) {
       this.reservationService.getReservationDetails(this.data.reservationId).subscribe(
-        (response: ReservationDetailsDTO) => {
+        (response: OfferReservation) => {
           this.reservation = response;
         }, (error: HttpErrorResponse) => {
           alert(error.message);

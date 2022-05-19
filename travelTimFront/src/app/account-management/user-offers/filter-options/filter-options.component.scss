@@ -35,3 +35,7 @@
   flex-direction: row;
   flex-wrap: wrap
 }
+
+::ng-deep .mat-focused .mat-form-field-label {
+  color: black !important;
+}

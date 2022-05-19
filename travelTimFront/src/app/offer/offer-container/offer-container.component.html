@@ -26,7 +26,8 @@
         </ng-image-fullscreen-view>
         <div id="contact-socials">
           <div id="contact">
-            <h3><mat-icon>email</mat-icon>{{offerContact?.email}}</h3>
+            <h3 *ngIf="offerContact?.email">
+              <mat-icon>email</mat-icon>{{offerContact?.email}}</h3>
             <h3 *ngIf="offerContact?.phoneNumber">
               <mat-icon>phone</mat-icon>{{offerContact?.phoneNumber}}</h3>
             <mat-icon class="favourite-btn">
@@ -138,7 +139,7 @@
     </div>
 
     <div class="section">
-      <h1 class="section-title">Reviews</h1>
+      <app-reviews [offerProviderName]="offerProviderName"></app-reviews>
     </div>
   </div>
 </div>

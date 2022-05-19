@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {OfferReservation} from "../../entities/offerReservation";
 import {ReservationDTO} from "../../entities/reservationDTO";
 import {ReservationDetailsDTO} from "../../entities/reservationDetailsDTO";
+import {LodgingOfferDetailsForReservationDTO} from "../../entities/lodgingOfferDetailsForReservationDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,11 @@ export class ReservationService {
     return this.http.delete<void>(`${this.apiUrl}/reservation/${reservationId}`);
   }
 
-  public getReservationDetails(reservationId: number): Observable<ReservationDetailsDTO> {
-    return this.http.get<ReservationDetailsDTO>(`${this.apiUrl}/reservation/${reservationId}/details`);
+  public getReservationDetails(reservationId: number): Observable<OfferReservation> {
+    return this.http.get<OfferReservation>(`${this.apiUrl}/reservation/${reservationId}/details`);
+  }
+
+  public getLodgingOfferDetailsForReservation(reservationId: number): Observable<LodgingOfferDetailsForReservationDTO> {
+    return this.http.get<LodgingOfferDetailsForReservationDTO>(`${this.apiUrl}/reservation/${reservationId}/offer/details`);
   }
 }

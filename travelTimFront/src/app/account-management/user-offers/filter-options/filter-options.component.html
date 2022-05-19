@@ -51,6 +51,15 @@
         <mat-option style="color: black;" value="GBP"> GBP </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field appearance="standard" style="margin-right: 10px;">
+      <mat-label><i>Status</i></mat-label>
+      <mat-select [value]="data.status" (selectionChange)="setStatus($event.value)">
+        <mat-option style="color: black;" value="active"> active </mat-option>
+        <mat-option style="color: black;" value="disabled"> disabled </mat-option>
+        <mat-option *ngIf="data.offerCategory === 'lodging'" style="color: black;" value="reserved"> reserved </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 
   <div *ngIf="showLodgingFilterOptions()" class="fields-row">

@@ -37,7 +37,7 @@ import { MapComponent } from './map/map.component';
 import { DashboardComponent } from './account-management/dashboard/dashboard.component';
 import { ReservationsComponent } from './account-management/reservations/reservations.component';
 import { FavouritesComponent } from './account-management/favourites/favourites.component';
-import { ReviewsComponent } from './account-management/reviews/reviews.component';
+import { UserReviewsComponent } from './account-management/user-reviews/user-reviews.component';
 import { UserInformationComponent } from './account-management/account/user-information/user-information.component';
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { UserBusinessesComponent } from './account-management/account/user-businesses/user-businesses.component';
@@ -83,6 +83,8 @@ import { BusinessOffersComponent} from "./business/business-offers/business-offe
 import { UserProviderOffersComponent } from './user-provider-offers/user-provider-offers.component';
 import { OfferReservationComponent } from './offer/offer-reservation/offer-reservation.component';
 import { ReservationDetailsComponent } from './account-management/reservations/reservation-details/reservation-details.component';
+import { DisabledOfferDialogComponent } from './offer/disabled-offer-dialog/disabled-offer-dialog.component';
+import { ReviewsComponent } from './reviews/reviews.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +100,7 @@ import { ReservationDetailsComponent } from './account-management/reservations/r
     ReservationsComponent,
     UserOffersComponent,
     FavouritesComponent,
-    ReviewsComponent,
+    UserReviewsComponent,
     UserInformationComponent,
     UserBusinessesComponent,
     AddBusinessComponent,
@@ -136,6 +138,8 @@ import { ReservationDetailsComponent } from './account-management/reservations/r
     UserProviderOffersComponent,
     OfferReservationComponent,
     ReservationDetailsComponent,
+    DisabledOfferDialogComponent,
+    ReviewsComponent,
   ],
     imports: [
       BrowserModule,

@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {OfferReservation} from "../../entities/offerReservation";
 import {ReservationService} from "../../services/reservation/reservation.service";
 import Swal from "sweetalert2";
+import {LodgingOfferDetailsForReservationDTO} from "../../entities/lodgingOfferDetailsForReservationDTO";
 
 @Component({
   selector: 'app-offer-reservation',
@@ -23,7 +24,7 @@ export class OfferReservationComponent implements OnInit {
 
   @ViewChild("arrivalDatePicker") arrivalDatePicker: any;
 
-  offer: LodgingOfferDetailsDTO | undefined;
+  offer: LodgingOfferDetailsForReservationDTO | undefined;
   offerType: string | undefined;
 
   totalPrice: number | undefined;
@@ -60,16 +61,14 @@ export class OfferReservationComponent implements OnInit {
     private reservationService: ReservationService,
     private formBuilder: FormBuilder,
     private injector: Injector,
-    @Inject(MAT_DIALOG_DATA) public data: { offer: LodgingOfferDetailsDTO },
+    @Inject(MAT_DIALOG_DATA) public data: { offerId: number },
     private activatedRout: ActivatedRoute) {
     this.activatedRout.queryParams.subscribe(
       data => {
         this.offerType = data.type;
       });
-    this.offer = this.data.offer;
-    this.totalPrice = this.data.offer.price;
     if (this.offerType === 'legal'){
-      this.getBusinessScheduleForLegalLodgingOffer(this.offer.id);
+      this.getBusinessScheduleForLegalLodgingOffer(this.data.offerId);
     }
     let date = new Date();
     this.minDepartureDate.setDate(date.getDate() + 1);
@@ -105,6 +104,19 @@ export class OfferReservationComponent implements OnInit {
       email: user.email,
       phoneNumber: user.phoneNumber
     })
+  }
+
+  public getLodgingOfferForReservation(): void {
+    if (this.data.offerId) {
+      this.reservationService.getLodgingOfferDetailsForReservation(this.data.offerId).subscribe(
+        (response: LodgingOfferDetailsForReservationDTO) => {
+          this.offer = response;
+          this.totalPrice = response.price;
+        }, (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      )
+    }
   }
 
   public arrivalDateChangeEvent(newDate: MatDatepickerInputEvent<Date>) {
@@ -225,7 +237,7 @@ export class OfferReservationComponent implements OnInit {
   }
 
   public sendReservation(): void {
-    if (this.userService.checkIfUserIsLoggedIn()) {
+    if (this.userService.checkIfUserIsLoggedIn() && this.offer) {
       let arrivalDate = this.selectedArrivalDate?.toLocaleDateString('en-GB');
       let arrivalTime = this.ReservationForm.get('arrivalTime')?.value;
       let departureDate = this.selectedDepartureDate?.toLocaleDateString('en-GB');
@@ -234,11 +246,24 @@ export class OfferReservationComponent implements OnInit {
       let email = this.ReservationForm.get('email')?.value;
       let phoneNumber = this.ReservationForm.get('phoneNumber')?.value;
       let price = this.totalPrice;
-      let currency = this.offer?.currency;
+      let currency = this.offer.currency;
+      let nrRooms = this.offer.nrRooms;
+      let nrBathrooms = this.offer.nrBathrooms;
+      let nrSingleBeds = this.offer.nrSingleBeds;
+      let nrDoubleBeds = this.offer.nrDoubleBeds;
+      let floor = this.offer.floor;
+      let providerName = this.offer.providerName;
+      let providerEmail = this.offer.providerEmail;
+      let providerPhone = this.offer.providerPhone;
+      let offerTitle = this.offer.offerTitle;
+      let address = this.offer.address;
+      let city = this.offer.city;
       let nrNights = this.getNrNightsBetweenArrivalAnDeparture();
       if (arrivalDate && departureDate && price && currency) {
         let reservation: OfferReservation = new OfferReservation(
-          arrivalDate, arrivalTime, departureDate, firstName, lastName, email, phoneNumber, price, currency, nrNights
+          arrivalDate, arrivalTime, departureDate, firstName, lastName, email, phoneNumber, price, currency, nrNights,
+          nrRooms, nrBathrooms, nrSingleBeds, nrDoubleBeds, floor, providerName, providerEmail, providerPhone, offerTitle,
+          address, city
         )
         Swal.fire({
           title: 'Confirm Email',
@@ -394,6 +419,7 @@ export class OfferReservationComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserDetails();
+    this.getLodgingOfferForReservation();
   }
 
 

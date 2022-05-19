@@ -75,7 +75,7 @@
             </mat-form-field>
 
             <!--Number Double Beds-->
-            <mat-form-field appearance="fill" class="small-width">
+            <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
               <mat-label>Nr. Double Beds <span style="color: red;"> *</span></mat-label>
               <mat-select formControlName="nrDoubleBeds" (selectionChange)="sendFormData()">
                 <div *ngFor='let index of counter(21) ;let i = index'>
@@ -85,8 +85,6 @@
               <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['nrDoubleBeds'].invalid">you must select a value</mat-error>
             </mat-form-field>
 
-          </div>
-          <div>
             <!--Floor-->
             <mat-form-field appearance="fill" class="small-width">
               <mat-label> Floor <span style="color: red;"> *</span></mat-label>
@@ -97,6 +95,7 @@
               </mat-select>
               <mat-error *ngIf="AddLegalPersonLodgingOfferForm.controls['floor'].invalid">you must select a value</mat-error>
             </mat-form-field>
+
           </div>
 
           <div>
@@ -200,7 +199,7 @@
           </mat-form-field>
 
           <!--Number Double Beds-->
-          <mat-form-field appearance="fill" class="small-width">
+          <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">
             <mat-label>Nr. Double Beds <span style="color: red;"> *</span></mat-label>
             <mat-select formControlName="nrDoubleBeds" (selectionChange)="sendFormData()">
               <div *ngFor='let index of counter(21) ;let i = index'>
@@ -210,8 +209,6 @@
             <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['nrDoubleBeds'].invalid">you must select a value</mat-error>
           </mat-form-field>
 
-        </div>
-        <div>
           <!--Floor-->
           <mat-form-field appearance="fill" class="small-width">
             <mat-label> Floor <span style="color: red;"> *</span></mat-label>
@@ -222,8 +219,8 @@
             </mat-select>
             <mat-error *ngIf="AddPhysicalPersonLodgingOfferForm.controls['floor'].invalid">you must select a value</mat-error>
           </mat-form-field>
-        </div>
 
+        </div>
         <div>
           <!--Price-->
           <mat-form-field appearance="fill" class="small-width" style="margin-right: 1%;">

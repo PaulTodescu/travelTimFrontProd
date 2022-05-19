@@ -1,10 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PhysicalPersonLodgingOffer} from "../../entities/physicalPersonLodgingOffer";
-import {LegalPersonLodgingOfferDetailsDTO} from "../../entities/legalPersonLodgingOfferDetailsDTO";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {OfferReservationComponent} from "../offer-reservation/offer-reservation.component";
 import Swal from "sweetalert2";
-import {LodgingOfferDetailsDTO} from "../../entities/lodgingOfferDetailsDTO";
 import {UserService} from "../../services/user/user.service";
 
 @Component({
@@ -35,7 +33,7 @@ export class PhysicalLodgingOfferDetailsComponent implements OnInit {
         dialogConfig.autoFocus = false;
         dialogConfig.panelClass = 'dialog-class' // in styles.css
         dialogConfig.data = {
-          offer: this.getMappedOfferToLodgingDetails(this.offer)
+          offerId: this.offer.id
         }
         this.dialog.open(OfferReservationComponent, dialogConfig);
         this.dialog._getAfterAllClosed().subscribe(() => {
@@ -44,24 +42,6 @@ export class PhysicalLodgingOfferDetailsComponent implements OnInit {
     } else {
       this.onFail("You must log in to your account");
     }
-  }
-
-  public getMappedOfferToLodgingDetails(offer: PhysicalPersonLodgingOffer): LodgingOfferDetailsDTO | null {
-    if (offer.id) {
-      return {
-        id: offer.id,
-        nrRooms: offer.nrRooms,
-        nrBathrooms: offer.nrBathrooms,
-        nrSingleBeds: offer.nrSingleBeds,
-        nrDoubleBeds: offer.nrDoubleBeds,
-        floor: offer.floor,
-        price: offer.price,
-        currency: offer.currency,
-        address: offer.address,
-        utilities: offer.utilities
-      }
-    }
-    return null;
   }
 
   public onFail(message: string): void{

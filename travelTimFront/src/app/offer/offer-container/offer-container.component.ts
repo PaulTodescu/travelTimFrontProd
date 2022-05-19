@@ -25,6 +25,7 @@ import {DaySchedule} from "../../entities/daySchedule";
 import {PhysicalPersonLodgingOfferDetails} from "../../entities/physicalPersonLodgingOfferDetails";
 import {OfferContact} from "../../entities/offerContact";
 import {BusinessSocials} from "../../entities/businessSocials";
+import {DisabledOfferDialogComponent} from "../disabled-offer-dialog/disabled-offer-dialog.component";
 
 @Component({
   selector: 'app-offer-container',
@@ -154,6 +155,9 @@ export class OfferContainerComponent implements OnInit {
   public getPhysicalPersonLodgingOffer(offerId: number): void {
     this.lodgingService.getPhysicalLodgingOfferById(offerId).subscribe(
       (response: PhysicalPersonLodgingOfferDetails) => {
+        if (response.status !== 'active') {
+          this.showDisabledOfferDialog();
+        }
         this.physicalPersonLodgingOffer = response;
         this.offerTitle = response.title;
         this.offerAddress = response.address;
@@ -181,6 +185,9 @@ export class OfferContainerComponent implements OnInit {
         this.offerAddress = response.business.address;
         this.offerCity = response.business.city;
         this.setLocationMarkerOnMap();
+        if (response.status !== 'active') {
+          this.showDisabledOfferDialog();
+        }
         this.offerDescription = response.description;
         this.offerProviderName = response.business.name;
         this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
@@ -221,6 +228,9 @@ export class OfferContainerComponent implements OnInit {
         this.offerTitle = response.title;
         this.offerAddress = response.address;
         this.offerCity = response.city;
+        if (response.status !== 'active') {
+          this.showDisabledOfferDialog();
+        }
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
         this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
@@ -253,6 +263,9 @@ export class OfferContainerComponent implements OnInit {
         this.offerCity = response.city;
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
+        if (response.status !== 'active') {
+          this.showDisabledOfferDialog();
+        }
         this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
         this.tickets = response.tickets;
       }
@@ -344,7 +357,6 @@ export class OfferContainerComponent implements OnInit {
     if (this.businessSchedule !== undefined) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
-      dialogConfig.autoFocus = false;
       dialogConfig.panelClass = 'dialog-class' // in styles.css
       dialogConfig.data = {
         schedule: this.businessSchedule
@@ -410,6 +422,14 @@ export class OfferContainerComponent implements OnInit {
         }
       });
     }
+  }
+
+  public showDisabledOfferDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true;
+    dialogConfig.backdropClass = 'dark-background';
+    this.dialog.open(DisabledOfferDialogComponent, dialogConfig);
   }
 
   ngOnInit(): void {

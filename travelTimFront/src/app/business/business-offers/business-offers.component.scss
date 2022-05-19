@@ -24,7 +24,7 @@
 }
 
 .field {
-  margin-left: 15px;
+  margin: 5px 0 5px 15px;
   font-family: Bahnschrift, serif;
   color: #7c795d;
   display: inline-block;
@@ -191,10 +191,6 @@ img {
   height: auto;
   object-fit: fill;
   border-radius: 7px;
-}
-
-img:hover {
-  cursor: pointer;
 }
 
 .offer-info {

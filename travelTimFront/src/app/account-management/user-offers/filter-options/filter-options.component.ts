@@ -18,6 +18,7 @@ export class FilterOptionsComponent implements OnInit {
       selectedBusiness: string | undefined,
       sortMethod: string,
       currency: string,
+      status: string | undefined,
       nrRooms: number | undefined,
       nrSingleBeds: number | undefined,
       nrDoubleBeds: number | undefined
@@ -77,6 +78,10 @@ export class FilterOptionsComponent implements OnInit {
     this.data.currency = currency;
   }
 
+  public setStatus(status: string) {
+    this.data.status = status;
+  }
+
   public setNrRooms(nrRooms: number) {
     this.data.nrRooms = nrRooms;
   }
@@ -95,6 +100,7 @@ export class FilterOptionsComponent implements OnInit {
     this.data.selectedBusiness = undefined;
     this.data.sortMethod = 'latest';
     this.data.currency = 'RON';
+    this.data.status = undefined;
     this.data.nrRooms = undefined;
     this.data.nrSingleBeds = undefined;
     this.data.nrDoubleBeds = undefined;
@@ -107,6 +113,7 @@ export class FilterOptionsComponent implements OnInit {
       selectedBusiness: this.data.selectedBusiness,
       sortMethod: this.data.sortMethod,
       currency: this.data.currency,
+      status: this.data.status,
       nrRooms: this.data.nrRooms,
       nrSingleBeds: this.data.nrSingleBeds,
       nrDoubleBeds: this.data.nrDoubleBeds
