@@ -85,6 +85,7 @@ import { OfferReservationComponent } from './offer/offer-reservation/offer-reser
 import { ReservationDetailsComponent } from './account-management/reservations/reservation-details/reservation-details.component';
 import { DisabledOfferDialogComponent } from './offer/disabled-offer-dialog/disabled-offer-dialog.component';
 import { ReviewsComponent } from './reviews/reviews.component';
+import { AddReviewDialogComponent } from './reviews/add-review-dialog/add-review-dialog.component';
 
 @NgModule({
   declarations: [
@@ -140,6 +141,7 @@ import { ReviewsComponent } from './reviews/reviews.component';
     ReservationDetailsComponent,
     DisabledOfferDialogComponent,
     ReviewsComponent,
+    AddReviewDialogComponent,
   ],
     imports: [
       BrowserModule,

@@ -2,7 +2,10 @@
 <div id="reviews-container">
   <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: flex-start;">
     <h1 class="section-title" style="margin: 0">Reviews for <span style="opacity: 0.7">{{offerProviderName}}</span></h1>
-    <button id="add-review-btn" mat-raised-button>Add a review <mat-icon>add</mat-icon></button>
+    <button id="add-review-btn" mat-raised-button (click)="openAddReviewDialog()">
+      Add a review
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 
   <div class="review">

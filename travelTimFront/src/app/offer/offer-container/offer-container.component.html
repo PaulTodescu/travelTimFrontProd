@@ -70,9 +70,9 @@
             schedule
           </h3>
         </div>
-        <div id="map">
-          <app-map></app-map>
-        </div>
+<!--        <div id="map">-->
+<!--          <app-map></app-map>-->
+<!--        </div>-->
       </div>
     </div>
 
@@ -139,7 +139,11 @@
     </div>
 
     <div class="section">
-      <app-reviews [offerProviderName]="offerProviderName"></app-reviews>
+      <app-reviews
+        [offerProviderName]="offerProviderName"
+        [offerId]="offerId"
+        [offerCategory]="offerCategory">
+      </app-reviews>
     </div>
   </div>
 </div>

@@ -1,0 +1,50 @@
+.card-body {
+  overflow: hidden !important;
+  position: relative;
+  padding: 0 !important;
+}
+
+.close-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  background-color: #f7f7f7;
+  margin: 10px;
+}
+
+.close-icon {
+  color: #000000 !important;
+}
+
+#title{
+  background-color: #034953;
+  border-radius: 7px;
+}
+
+#title h2 {
+  font-size: 26px;
+  color: #ffffff;
+  font-family: Bahnschrift, serif;
+  text-decoration: none;
+  text-align: center;
+  word-wrap: break-word;
+  padding: 15px 0;
+}
+
+.submit-button {
+  background-color: #034953 !important;
+  color: #ffffff !important;
+  font-size: 1.1em;
+}
+
+.mat-icon {
+  transform: scale(1.2);
+}
+
+textarea {
+  width: 100%;
+  border:solid 2px #a3acad;
+  outline-color: #a3acad;
+}

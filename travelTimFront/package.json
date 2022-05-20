@@ -30,6 +30,7 @@
     "@sweetalert2/theme-borderless": "^5.0.10",
     "@sweetalert2/theme-dark": "^5.0.10",
     "angular-responsive-carousel": "^2.1.2",
+    "angular-star-rating": "^5.0.1",
     "bootstrap": "^4.5.0",
     "font-awesome": "^4.7.0",
     "lightbox2": "^2.11.3",
@@ -46,7 +47,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~12.2.0",
+    "@angular-devkit/build-angular": "^13.3.6",
     "@angular/cli": "~12.2.0",
     "@angular/compiler-cli": "~12.2.0",
     "@types/jasmine": "~3.8.0",

@@ -1,0 +1,15 @@
+<div class="card-body">
+  <div id="title">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <h2>Add Review</h2>
+  </div>
+  <div style="overflow: hidden">
+    <textarea [rows]="8" maxlength="600"></textarea>
+    <p style="float: right">23/600</p>
+  </div>
+  <div style="text-align: center;">
+    <button mat-raised-button class="submit-button" data-dismiss="modal">Add</button>
+  </div>
+</div>
