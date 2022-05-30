@@ -160,7 +160,8 @@ ng-image-fullscreen-view {
   color: #7c795d;
 }
 
-#offer-details #rating:hover {
+#offer-details #rating #nr-reviews {
+  margin-left: 10px;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -306,6 +307,8 @@ ng-image-fullscreen-view {
 .section #offer-description {
   font-family: 'Trocchi', sans-serif;
   font-size: 1.3em;
+  color: #7c795d;
+  opacity: 0.9;
   margin-left: 15px;
 }
 
@@ -313,8 +316,67 @@ ng-image-fullscreen-view {
   margin-left: auto;
 }
 
+.favourite-btn:hover {
+  cursor: pointer;
+}
+
 .alert-heading {
   margin: 30px 0 0 15px;
   color: #7c795d;
 }
 
+.price-request {
+  display: flex;;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.price-request h3 {
+  width: fit-content;
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.2em;
+  color: #7c795d;
+  font-weight: bold;
+  display: inline-block;
+  position: relative;
+}
+
+.price-request .mat-icon {
+  vertical-align: middle;
+  margin-left: 10px;
+  background-color: #ffffff;
+}
+
+.price-request h3:hover {
+  cursor: pointer;
+}
+
+.price-request h3:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #7c795d;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.price-request h3:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+#nr-views {
+  margin: 0 auto;
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.1em;
+  color: #7c795d;
+}
+
+#nr-views span {
+  font-weight: 500;
+  font-size: 1.2em;
+}

@@ -18,5 +18,6 @@ export interface PhysicalPersonLodgingOfferDetails {
   utilities: LodgingUtility[];
   user: UserDetailsDTO;
   offerContact: OfferContact;
+  nrViews: number,
   status: string;
 }

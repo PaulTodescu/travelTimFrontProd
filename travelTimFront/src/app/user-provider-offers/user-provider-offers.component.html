@@ -12,6 +12,12 @@
       </div>
     </div>
     <div id="user-contact">
+      <h3 id="rating">
+        <mat-icon *ngFor="let star of counter(getNrFullStars(userRating?.rating))">star</mat-icon>
+        <mat-icon *ngFor="let star of counter(getHalfStar(userRating?.rating))">star_half</mat-icon>
+        <mat-icon *ngFor="let star of counter(getNrEmptyStars(userRating?.rating))">star_border</mat-icon>
+        <span id="nr-reviews" (click)="scroll(reviews)">({{getNrReviews()}} review<span *ngIf="getNrReviews() !== 1">s</span>)</span>
+      </h3>
       <h3 class="field">
         <mat-icon style="margin-right: 10px">email</mat-icon>
         {{user?.email}}
@@ -130,5 +136,13 @@
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
+  </div>
+  <div #reviews>
+    <app-reviews
+      [offerProviderName]="user?.firstName + ' ' + user?.lastName"
+      [reviewType]="'user'"
+      [offerUserId]="user?.id"
+      (reviewAddedEvent)="addedReviewEvent($event)">
+    </app-reviews>
   </div>
 </div>

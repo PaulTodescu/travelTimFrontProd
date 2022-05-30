@@ -1,7 +1,10 @@
 <div class="account-management-right-container">
+  <h1>My Offers</h1>
   <div style="display: flex; flex-direction: row">
-    <h1>My Offers</h1>
-    <p id="filter-btn" (click)="openFilterOptionsModal()">filter<mat-icon>filter_list</mat-icon>
+    <p class="top-btn">statistics<mat-icon>bar_chart</mat-icon>
+    </p>
+    <p class="top-btn" style="margin-left: auto"
+       (click)="openFilterOptionsModal()">filter<mat-icon>filter_list</mat-icon>
       <app-filter-options></app-filter-options>
     </p>
   </div>
@@ -107,7 +110,7 @@
           </div>
         </div>
         <pagination-controls
-          id="lodgingOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+          id="lodgingOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
       <div *ngIf="filteredLodgingOffers.length === 0" role="alert">
@@ -179,7 +182,7 @@
           </div>
         </div>
         <pagination-controls
-          id="foodOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+          id="foodOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
       <div *ngIf="filteredFoodOffers.length === 0" role="alert">
@@ -249,7 +252,7 @@
           </div>
         </div>
         <pagination-controls
-          id="attractionOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+          id="attractionOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
       <div *ngIf="filteredAttractionOffers.length === 0" role="alert">
@@ -319,7 +322,7 @@
           </div>
         </div>
         <pagination-controls
-          id="activityOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+          id="activityOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
       <div *ngIf="filteredActivityOffers.length === 0" role="alert">

@@ -114,6 +114,15 @@ export class FavouritesComponent implements OnInit {
     }
   }
 
+  public changePage(page: number): void {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+    this.page = page;
+  }
+
   public showSuccessfulToastMessage(message: string) {
     Swal.fire({
       toast: true,

@@ -12,6 +12,7 @@ import {EditAttractionOfferComponent} from "./edit-offer/edit-attraction-offer/e
 import {EditActivityOfferComponent} from "./edit-offer/edit-activity-offer/edit-activity-offer.component";
 import {BusinessOffersComponent} from "./business/business-offers/business-offers.component";
 import {UserProviderOffersComponent} from "./user-provider-offers/user-provider-offers.component";
+import {OfferRecommendationsComponent} from "./offers/offer-recommendations/offer-recommendations.component";
 
 const routes: Routes = [
   {
@@ -54,6 +55,10 @@ const routes: Routes = [
   {
     path: 'offers',
     component: OffersContainerComponent
+  },
+  {
+    path: 'offers/recommendations',
+    component: OfferRecommendationsComponent
   },
   {
     path: 'offer',

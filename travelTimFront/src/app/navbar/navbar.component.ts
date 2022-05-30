@@ -21,9 +21,9 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer) { }
 
-  public goToOffers(categoryName: string): void {
+  public goToOffersPage(category: string): void {
     this.router.navigate(['offers'], {
-      queryParams: {'category': categoryName}
+      queryParams: {'category': category}
     });
   }
 
@@ -53,7 +53,7 @@ export class NavbarComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
-  public goToAddOffer(): void {
+  public goToAddOfferPage(): void {
     if (this.userService.checkIfUserIsLoggedIn()){
       this.router.navigateByUrl('offer/add');
     } else {
@@ -73,6 +73,13 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['account'], {
       queryParams: {'section': 'my-account'},
     });
+  }
+
+  public goToRecommendedOffersPage(): void {
+    let queryParams = {
+      category: 'lodging' // default category
+    }
+    this.router.navigate(['offers/recommendations'], {queryParams});
   }
 
   public logout(): void{

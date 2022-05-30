@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar #top></app-navbar>
 <div id="container">
   <div id="dashboard-container">
     <div class="icon-text">
@@ -20,6 +20,14 @@
     </div>
     <div class="separator"></div>
     <div class="icon-text">
+      <h2 [ngClass]="{'selectedOption': selectedOption === 'offers'}"
+          (click)="switchSelectedOption('offers')">
+        <mat-icon>local_offer</mat-icon>
+        My Offers
+      </h2>
+    </div>
+    <div class="separator"></div>
+    <div class="icon-text">
       <h2 [ngClass]="{'selectedOption': selectedOption === 'reservations'}"
           (click)="switchSelectedOption('reservations')">
         <mat-icon>time_to_leave</mat-icon>
@@ -28,10 +36,10 @@
     </div>
     <div class="separator"></div>
     <div class="icon-text">
-      <h2 [ngClass]="{'selectedOption': selectedOption === 'offers'}"
-          (click)="switchSelectedOption('offers')">
-        <mat-icon>local_offer</mat-icon>
-        My Offers
+      <h2 [ngClass]="{'selectedOption': selectedOption === 'visited-locations'}"
+          (click)="switchSelectedOption('visited-locations')">
+        <mat-icon>location_on</mat-icon>
+        Visited Locations
       </h2>
     </div>
     <div class="separator"></div>
@@ -63,11 +71,14 @@
     <div *ngIf="selectedOption === 'my-account'" @fadeIn>
       <app-account-container></app-account-container>
     </div>
+    <div *ngIf="selectedOption === 'offers'" @fadeIn>
+      <app-user-offers></app-user-offers>
+    </div>
     <div *ngIf="selectedOption === 'reservations'" @fadeIn>
       <app-reservations></app-reservations>
     </div>
-    <div *ngIf="selectedOption === 'offers'" @fadeIn>
-      <app-user-offers></app-user-offers>
+    <div *ngIf="selectedOption === 'visited-locations'" @fadeIn>
+      <app-visited-locations></app-visited-locations>
     </div>
     <div *ngIf="selectedOption === 'favourites'" @fadeIn>
       <app-favourites></app-favourites>

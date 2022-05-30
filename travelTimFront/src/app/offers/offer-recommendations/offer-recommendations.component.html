@@ -1,3 +1,289 @@
-<div id="recommendations-container">
-  <h1>Recommendations Here</h1>
+<app-navbar></app-navbar>
+
+<div id="recommendations-container" [ngSwitch]="selectedCategory">
+  <div class="header">
+    <h1 class="header-title" style="font-size: 1.6em; margin: 0 auto;"><b>Recommended Offers</b></h1>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px">
+    <div id="offer-types">
+      <p [ngClass]="{'selected-category': selectedCategory === 'lodging'}"
+         (click)="switchSelectedCategory('lodging')">
+        lodging
+      </p>
+      <p [ngClass]="{'selected-category': selectedCategory === 'food & beverage'}"
+         (click)="switchSelectedCategory('food & beverage')">
+        food & beverage
+      </p>
+      <p [ngClass]="{'selected-category': selectedCategory === 'attractions'}"
+         (click)="switchSelectedCategory('attractions')">
+        attractions
+      </p>
+      <p [ngClass]="{'selected-category': selectedCategory === 'activities'}"
+         (click)="switchSelectedCategory('activities')">
+        activities
+      </p>
+    </div>
+    <div *ngIf="selectedCategory === 'lodging' && (!noUserLodgingOffers || !noBusinessLodgingOffers)" style="align-self: flex-end;">
+      <h4 class="option-txt">Currency: </h4>
+      <mat-form-field appearance="legacy" class="currency-field">
+        <mat-select [value]="selectedCurrency"
+                    (selectionChange)="changeCurrency($event.value)">
+          <mat-option *ngFor="let currency of currencies" style="color: black;" [value]="currency">
+            {{currency}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'lodging'" @fadeIn>
+    <div *ngIf="businessLodgingOffers.length !== 0">
+      <div class="header">
+        <h1 class="header-title" style="font-size: 1.4em"><b>From Top-Rated Businesses</b></h1>
+      </div>
+      <div *ngFor="let offer of businessLodgingOffers">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+          </div>
+          <div class="offer-info">
+              <h1 (click)="goToOfferPage({id: offer.id, category: 'lodging', type: 'legal'})">{{offer.business?.name}}</h1>
+              <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.business?.address}}, {{offer.business?.city}}</h4>
+              <h4><mat-icon style="margin-right: 10px"> local_offer</mat-icon>
+                <span id="nr-offers">
+                    <b>{{offer.nrLodgingOffers}}</b>
+                  </span> available offer<span *ngIf="offer.nrLodgingOffers !== 1">s</span>
+              </h4>
+          </div>
+          <div class="right-side">
+            <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'lodging');
+                    then showColoredHeart else showEmptyHeart"></div>
+            <ng-template #showColoredHeart>
+              <mat-icon class="favourite-btn"
+                        (click)="removeOfferFromFavourites(offer.id, 'lodging')">
+                favorite
+              </mat-icon>
+            </ng-template>
+            <ng-template #showEmptyHeart>
+              <mat-icon class="favourite-btn"
+                        (click)="addLodgingOffersToFavourites(offer.id)">
+                favorite_border
+              </mat-icon>
+            </ng-template>
+            <h2>Price<span *ngIf="offer.business"> starting from</span>:
+              {{getFormattedOfferPrice(offer.price)}} {{offer.currency}}
+              <span style="font-size: 0.6em">(/night)</span></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="userLodgingOffers.length !== 0">
+      <div class="header">
+        <h1 class="header-title" style="font-size: 1.4em"><b>From Top-Rated Users</b></h1>
+      </div>
+      <div *ngFor="let offer of userLodgingOffers">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'lodging', type: 'physical'})">
+              {{offer.title}}
+            </h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer?.address}}, {{offer?.city}}</h4>
+          </div>
+          <div class="right-side">
+            <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'lodging');
+                    then showColoredHeart else showEmptyHeart"></div>
+            <ng-template #showColoredHeart>
+              <mat-icon class="favourite-btn"
+                        (click)="removeOfferFromFavourites(offer.id, 'lodging')">
+                favorite
+              </mat-icon>
+            </ng-template>
+            <ng-template #showEmptyHeart>
+              <mat-icon class="favourite-btn"
+                        (click)="addLodgingOffersToFavourites(offer.id)">
+                favorite_border
+              </mat-icon>
+            </ng-template>
+            <h2>Price<span *ngIf="offer.business"> starting from</span>:
+              {{getFormattedOfferPrice(offer.price)}} {{offer.currency}}
+              <span style="font-size: 0.6em">(/night)</span></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="noBusinessLodgingOffers && noUserLodgingOffers" class="offer-container" role="alert">
+      <h4 class="alert-heading">NO OFFERS TO RECOMMEND!</h4>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'food & beverage'" @fadeIn>
+    <div *ngIf="foodOffers.length !== 0">
+      <div class="header">
+        <h1 class="header-title" style="font-size: 1.4em"><b>From Top-Rated Businesses</b></h1>
+      </div>
+      <div *ngFor="let offer of foodOffers">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'food'})">{{offer.business?.name}}</h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.business?.address}}, {{offer.business?.city}}</h4>
+          </div>
+          <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'food');
+                    then showColoredHeart else showEmptyHeart"></div>
+          <ng-template #showColoredHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="removeOfferFromFavourites(offer.id, 'food')">
+              favorite
+            </mat-icon>
+          </ng-template>
+          <ng-template #showEmptyHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="addOfferToFavourites(offer.id, 'food')">
+              favorite_border
+            </mat-icon>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="noFoodOffers" class="offer-container" role="alert">
+      <h4 class="alert-heading">NO OFFERS TO RECOMMEND!</h4>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'attractions'" @fadeIn>
+    <div *ngIf="businessAttractionOffers.length !== 0">
+      <div class="header">
+        <h1 class="header-title" style="font-size: 1.4em"><b>From Top-Rated Businesses</b></h1>
+      </div>
+      <div *ngFor="let offer of businessAttractionOffers">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'attractions'})">{{offer.title}}</h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+          </div>
+          <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'attractions');
+                    then showColoredHeart else showEmptyHeart"></div>
+          <ng-template #showColoredHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="removeOfferFromFavourites(offer.id, 'attractions')">
+              favorite
+            </mat-icon>
+          </ng-template>
+          <ng-template #showEmptyHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="addOfferToFavourites(offer.id, 'attractions')">
+              favorite_border
+            </mat-icon>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="userAttractionOffers.length !== 0">
+      <div class="header">
+        <h1 class="header-title" style="font-size: 1.4em"><b>From Top-Rated Users</b></h1>
+      </div>
+      <div *ngFor="let offer of userAttractionOffers">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'attractions'})">{{offer.title}}</h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+          </div>
+          <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'attractions');
+                    then showColoredHeart else showEmptyHeart"></div>
+          <ng-template #showColoredHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="removeOfferFromFavourites(offer.id, 'attractions')">
+              favorite
+            </mat-icon>
+          </ng-template>
+          <ng-template #showEmptyHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="addOfferToFavourites(offer.id, 'attractions')">
+              favorite_border
+            </mat-icon>
+          </ng-template>
+        </div>
+      </div>
+      <div *ngIf="noBusinessAttractionOffers && noUserAttractionOffers" class="offer-container" role="alert">
+        <h4 class="alert-heading">NO OFFERS TO RECOMMEND!</h4>
+      </div>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'activities'" @fadeIn>
+    <div *ngIf="businessActivityOffers.length !== 0">
+      <div class="header">
+        <h1 class="header-title" style="font-size: 1.4em"><b>From Top-Rated Businesses</b></h1>
+      </div>
+      <div *ngFor="let offer of businessActivityOffers">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'activities'})">{{offer.title}}</h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+          </div>
+          <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'activities');
+                    then showColoredHeart else showEmptyHeart"></div>
+          <ng-template #showColoredHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="removeOfferFromFavourites(offer.id, 'activities')">
+              favorite
+            </mat-icon>
+          </ng-template>
+          <ng-template #showEmptyHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="addOfferToFavourites(offer.id, 'activities')">
+              favorite_border
+            </mat-icon>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="userActivityOffers.length !== 0">
+      <div class="header">
+        <h1 class="header-title" style="font-size: 1.4em"><b>From Top-Rated Users</b></h1>
+      </div>
+      <div *ngFor="let offer of userActivityOffers">
+        <div class="offer-container">
+          <div class="img-container">
+            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+          </div>
+          <div class="offer-info">
+            <h1 (click)="goToOfferPage({id: offer.id, category: 'activities'})">{{offer.title}}</h1>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+          </div>
+          <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'activities');
+                    then showColoredHeart else showEmptyHeart"></div>
+          <ng-template #showColoredHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="removeOfferFromFavourites(offer.id, 'activities')">
+              favorite
+            </mat-icon>
+          </ng-template>
+          <ng-template #showEmptyHeart>
+            <mat-icon class="favourite-btn"
+                      (click)="addOfferToFavourites(offer.id, 'activities')">
+              favorite_border
+            </mat-icon>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="noBusinessActivityOffers && noUserActivityOffers" class="offer-container" role="alert">
+      <h4 class="alert-heading">NO OFFERS TO RECOMMEND!</h4>
+    </div>
+  </div>
 </div>

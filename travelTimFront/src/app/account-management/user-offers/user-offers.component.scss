@@ -1,5 +1,4 @@
-#filter-btn {
-  margin-left: auto;
+.top-btn {
   align-self: flex-end;
   margin-bottom: 0;
   font-size: 1.1em;
@@ -9,13 +8,13 @@
   font-family: Bahnschrift, serif;
 }
 
-#filter-btn:hover {
+.top-btn:hover {
   cursor: pointer;
   text-decoration: underline;
 }
 
-#filter-btn .mat-icon {
-  vertical-align: middle;
+.top-btn .mat-icon {
+  vertical-align: text-bottom;
   margin-left: 5px;
 }
 

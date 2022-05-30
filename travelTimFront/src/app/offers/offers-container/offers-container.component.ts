@@ -154,8 +154,13 @@ export class OffersContainerComponent implements OnInit {
     this.page = 1;
   }
 
-  public changePage(pageNumber: number): number {
-    return pageNumber;
+  public changePage(page: number): void {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+    this.page = page;
   }
 
   public changeCurrency(currency: string): void {
@@ -199,7 +204,7 @@ export class OffersContainerComponent implements OnInit {
           }, (error: HttpErrorResponse) => {
             alert(error.message);
           }
-        )
+        );
       } else {
         this.addOfferToFavourites(id, 'lodging');
       }
@@ -529,6 +534,19 @@ export class OffersContainerComponent implements OnInit {
     this.router.navigate(['offer'], {
       queryParams: queryParams
     });
+  }
+
+  public getPageTitle(): string {
+    if (this.category === 'lodging'){
+      return 'Lodging Offers';
+    } else if (this.category === 'food'){
+      return 'Food Offers';
+    } else if (this.category === 'attractions'){
+      return 'Attraction Offers';
+    } else if (this.category === 'activities'){
+      return 'Activity Offers';
+    }
+    return 'Offers';
   }
 
   ngOnInit(): void {

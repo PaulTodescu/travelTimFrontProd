@@ -1,4 +1,42 @@
 <div class="account-management-right-container">
   <h1>My Reviews</h1>
   <div class="separator"></div>
+  <div id="reviews-container">
+    <div *ngIf="reviews.length > 0; then showReviews else showNoReviewsMessage"></div>
+    <ng-template #showReviews>
+      <h4 class="nr-results">showing {{reviews.length}} result<span *ngIf="reviews.length > 1">s</span></h4>
+      <div class="review" *ngFor="let review of reviews | paginate: { id: 'reviewsPageId',
+                                                        itemsPerPage: nrItemsOnPage,
+                                                        currentPage: page,
+                                                        totalItems: reviews.length }" >
+        <div class="review-row">
+          <h2 class="review-target-name">{{review.targetName}}</h2>
+          <h3 class="rating">
+            <mat-icon *ngFor="let i of counter(review.rating)">star</mat-icon>
+            <mat-icon *ngFor="let i of counter(5 - review.rating)">star_border</mat-icon>
+          </h3>
+          <h3 class="review-date"><span style="color: #919191">- {{review.createdAt}} -</span></h3>
+        </div>
+        <div class="review-row">
+          <h3 class="review-content">
+            <i>
+              "{{review.review}}"
+            </i>
+          </h3>
+          <button mat-raised-button id="delete-button" (click)="openDeleteReviewDialog(review.id, review.targetName)">
+            Delete<mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <pagination-controls
+        id="reviewsPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+      </pagination-controls>
+    </ng-template>
+    <ng-template #showNoReviewsMessage>
+      <div *ngIf="showNoReviewsMessage" id="no-reviews-wrapper" role="alert">
+        <h4 class="alert-heading">NO REVIEWS FOUND!</h4>
+      </div>
+    </ng-template>
+    <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
+  </div>
 </div>

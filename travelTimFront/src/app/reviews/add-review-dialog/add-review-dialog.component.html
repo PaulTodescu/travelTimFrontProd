@@ -5,11 +5,25 @@
     </button>
     <h2>Add Review</h2>
   </div>
-  <div style="overflow: hidden">
-    <textarea [rows]="8" maxlength="600"></textarea>
-    <p style="float: right">23/600</p>
-  </div>
-  <div style="text-align: center;">
-    <button mat-raised-button class="submit-button" data-dismiss="modal">Add</button>
+  <div style="display: flex; flex-direction: column; flex-wrap: wrap;">
+    <h3 class="rating">
+      <span style="font-size: 1.4em; opacity: 0.8; font-weight: 500">select: </span>
+      <mat-icon *ngFor='let index of counter(5) ;let i = index'
+                (mouseover)="hoverRatingStar(i)"
+                (mouseout)="resetRatingStars(i)"
+                (click)="selectRatingStars(i)">
+        {{getRatingStar(i)}}
+      </mat-icon>
+    </h3>
+    <div style="overflow: hidden">
+      <textarea [rows]="8" maxlength="600" [(ngModel)]="reviewToAdd"></textarea>
+      <p style="float: right">{{reviewToAdd?.length || 0}}/600</p>
+    </div>
+    <div style="text-align: center;">
+      <button mat-raised-button class="submit-button"
+              data-dismiss="modal" (click)="sendReview()">
+        Submit
+      </button>
+    </div>
   </div>
 </div>

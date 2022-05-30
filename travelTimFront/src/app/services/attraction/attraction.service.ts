@@ -57,7 +57,8 @@ export class AttractionService {
         'Content-Type':  'application/json'
       })
     };
-    return this.http.put<void>(`${this.apiUrl}/attraction/${offerId}/status/change`, JSON.stringify(status), httpOptions);
+    return this.http.put<void>(`${this.apiUrl}/attraction/${offerId}/status/change`,
+      JSON.stringify(status), httpOptions);
   }
 
 }

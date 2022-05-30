@@ -13,6 +13,8 @@ import {ActivityOfferForBusinessPageDTO} from "../entities/activityOfferForBusin
 import {Ticket} from "../entities/ticket";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {OfferTicketsComponent} from "../offer/offer-tickets/offer-tickets.component";
+import {ReviewRatingDTO} from "../entities/reviewRatingDTO";
+import {ReviewService} from "../services/review/review.service";
 
 @Component({
   selector: 'app-user-provider-offers',
@@ -33,6 +35,8 @@ export class UserProviderOffersComponent implements OnInit {
   user: UserDTO | undefined;
   profileImage: string | undefined;
 
+  userRating: ReviewRatingDTO | undefined;
+
   selectedOfferCategory: string = 'lodging';
   page: number = 1;
   nrItemsOnPage: number = 5;
@@ -44,6 +48,7 @@ export class UserProviderOffersComponent implements OnInit {
   constructor(
     private userService: UserService,
     private imageService: ImageService,
+    private reviewService: ReviewService,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
     private router: Router,
@@ -62,6 +67,7 @@ export class UserProviderOffersComponent implements OnInit {
         this.user = response;
         this.getUserImage(response.id);
         this.getUserOffers(response.id);
+        this.getUserRating(response.id);
       }
     )
   }
@@ -123,6 +129,63 @@ export class UserProviderOffersComponent implements OnInit {
       this.dialog.open(OfferTicketsComponent, dialogConfig);
     }
   }
+
+  public counter(nr: number): Array<number> {
+    return new Array(nr);
+  }
+
+  public scroll(el: HTMLElement): void {
+    el.scrollIntoView({behavior: 'smooth'});
+  }
+
+  public getUserRating(userId: number): void {
+    this.reviewService.getRatingForUser(userId).subscribe(
+      (response: ReviewRatingDTO) => {
+        this.userRating = response;
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public addedReviewEvent(reviewType: string): void {
+    if (reviewType === 'user' && this.user) {
+      this.getUserRating(this.user.id);
+    }
+  }
+
+  public getNrFullStars(rating: number | undefined): number {
+    if (rating !== undefined) {
+      return Math.trunc(this.getRoundedRating(rating));
+    }
+    return 0;
+  }
+
+  public getHalfStar(rating: number  | undefined): number {
+    if (rating !== undefined) {
+      return Math.round(this.getRoundedRating(rating) % 1);
+    }
+    return 0;
+  }
+
+  public getNrEmptyStars(rating: number  | undefined): number {
+    if (rating !== undefined) {
+      return 5 - this.getNrFullStars(rating) - this.getHalfStar(rating);
+    }
+    return 0;
+  }
+
+  public getRoundedRating(rating: number): number {
+    return Math.round(rating / 0.5) * 0.5;
+  }
+
+  public getNrReviews(): number {
+    if (this.userRating) {
+      return this.userRating.nrReviews
+    }
+    return 0;
+  }
+
 
   public goToLodgingOfferPage(offer: LegalPersonLodgingOfferDTO): void {
     this.router.navigate(['offer'], {

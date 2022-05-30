@@ -1,4 +1,3 @@
-import {BusinessDetailsDTO} from "./businessDetailsDTO";
 import {OfferContact} from "./offerContact";
 import {Business} from "./business";
 
@@ -7,4 +6,5 @@ export interface LegalPersonLodgingOfferBaseDetailsDTO {
   description: string;
   offerContact: OfferContact;
   business: Business;
+  nrViews: number;
 }

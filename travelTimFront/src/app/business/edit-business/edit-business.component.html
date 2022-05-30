@@ -101,8 +101,14 @@
             schedule added
           </h4>
           <div id="schedule-buttons">
-            <mat-icon class="see-icon" (click)="seeSchedule()">remove_red_eye</mat-icon>
-            <mat-icon class="delete-icon" (click)="deleteSchedule()">delete</mat-icon>
+            <mat-icon class="see-icon"
+                      matTooltip="see schedule"
+                      matTooltipPosition="below"
+                      (click)="seeSchedule()">remove_red_eye</mat-icon>
+            <mat-icon class="delete-icon"
+                      matTooltip="delete schedule"
+                      matTooltipPosition="below"
+                      (click)="deleteSchedule()">delete</mat-icon>
           </div>
         </div>
       </ng-template>

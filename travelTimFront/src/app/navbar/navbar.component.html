@@ -7,27 +7,32 @@
     </ul>
     <ul class="nav-left">
       <li class="nav-item" >
-        <a class="nav-link active" mat-button (click)="goToOffers('lodging')">Lodging</a>
+        <a class="nav-link active" mat-button (click)="goToOffersPage('lodging')">Lodging</a>
       </li>
     </ul>
     <ul class="nav-left">
       <li class="nav-item" >
-        <a class="nav-link active" mat-button (click)="goToOffers('food')">Food & Beverage</a>
+        <a class="nav-link active" mat-button (click)="goToOffersPage('food')">Food & Beverage</a>
       </li>
     </ul>
     <ul class="nav-left">
       <li class="nav-item" >
-        <a class="nav-link active" mat-button (click)="goToOffers('attractions')">Tourist Attractions</a>
+        <a class="nav-link active" mat-button (click)="goToOffersPage('attractions')">Attractions</a>
       </li>
     </ul>
     <ul class="nav-left">
-    <li class="nav-item" >
-      <a class="nav-link active" mat-button (click)="goToOffers('activities')">Recreational Activities</a>
-    </li>
+      <li class="nav-item">
+        <a class="nav-link active" mat-button (click)="goToOffersPage('activities')">Activities</a>
+      </li>
+    </ul>
+    <ul class="nav-left">
+      <li class="nav-item">
+        <button class="recommendations-btn" mat-raised-button (click)="goToRecommendedOffersPage()">Recommendations</button>
+      </li>
     </ul>
     <ul class="nav-right">
       <li class="nav-item">
-        <button class="add-offer-btn" mat-raised-button (click)="goToAddOffer()">Add Offer</button>
+        <button class="add-offer-btn" mat-raised-button (click)="goToAddOfferPage()">Add Offer</button>
       </li>
     </ul>
     <ul class="nav-right">

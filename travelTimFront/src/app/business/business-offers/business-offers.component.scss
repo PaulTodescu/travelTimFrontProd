@@ -186,6 +186,10 @@ ng-image-fullscreen-view {
   min-width: 100px;
 }
 
+.img-container img:hover {
+  cursor: pointer;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -246,5 +250,27 @@ img {
 .see-offer-tickets:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+
+#rating {
+  color: #7c795d;
+  font-size: 15px;
+  margin-left: 10px;
+}
+
+#rating #nr-reviews {
+  margin-left: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#schedule {
+  margin: 5px 0 5px 15px;
+  color: #7c795d;
+}
+
+#schedule:hover {
+  text-decoration: underline;
+  cursor: pointer
 }
 

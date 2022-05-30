@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import {
+  Component, Injector, OnInit, ViewChild
+} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MapComponent} from "../../map/map.component";
 import {LodgingService} from "../../services/lodging/lodging.service";
@@ -18,14 +20,18 @@ import {ActivityOfferDetails} from "../../entities/activityOfferDetails";
 import {DomSanitizer} from "@angular/platform-browser";
 import {CurrencyService} from "../../services/currency/currency.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {
-  BusinessScheduleComponent
-} from "../../business/business-schedule/business-schedule.component";
+import {BusinessScheduleComponent} from "../../business/business-schedule/business-schedule.component";
 import {DaySchedule} from "../../entities/daySchedule";
 import {PhysicalPersonLodgingOfferDetails} from "../../entities/physicalPersonLodgingOfferDetails";
 import {OfferContact} from "../../entities/offerContact";
 import {BusinessSocials} from "../../entities/businessSocials";
 import {DisabledOfferDialogComponent} from "../disabled-offer-dialog/disabled-offer-dialog.component";
+import {ReviewService} from "../../services/review/review.service";
+import {ReviewRatingDTO} from "../../entities/reviewRatingDTO";
+import {FavouriteOfferCategoryId} from "../../entities/favouriteOfferCategoryId";
+import {FavouritesService} from "../../services/favourites/favourites.service";
+import {UserService} from "../../services/user/user.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-offer-container',
@@ -35,6 +41,7 @@ import {DisabledOfferDialogComponent} from "../disabled-offer-dialog/disabled-of
 export class OfferContainerComponent implements OnInit {
 
   @ViewChild(MapComponent) mapComponent: any;
+
   offerId: number | undefined
   businessId: number | undefined;
   userId: number | undefined;
@@ -47,6 +54,7 @@ export class OfferContainerComponent implements OnInit {
   offerAddress: string | undefined;
   offerCity: string | undefined;
   offerDescription: string | undefined;
+  nrViews: number = 0;
 
   hasOfferBusiness: boolean = false;
 
@@ -66,6 +74,10 @@ export class OfferContainerComponent implements OnInit {
 
   tickets: Ticket[] | undefined;
 
+  providerRating: ReviewRatingDTO | undefined;
+
+  isOfferInFavourites: boolean | undefined;
+
   constructor(
     private lodgingService: LodgingService,
     private foodService: FoodService,
@@ -73,10 +85,14 @@ export class OfferContainerComponent implements OnInit {
     private activityService: ActivityService,
     private businessService: BusinessService,
     private imageService: ImageService,
+    private favouritesService: FavouritesService,
+    private userService: UserService,
     private dialog: MatDialog,
     private currencyService: CurrencyService,
     private sanitizer: DomSanitizer,
     private router: Router,
+    private injector: Injector,
+    private reviewService: ReviewService,
     private activatedRout: ActivatedRoute) {
     this.activatedRout.queryParams.subscribe(
     data => {
@@ -97,7 +113,6 @@ export class OfferContainerComponent implements OnInit {
 
   public getOffer(): void{
     if (this.offerId !== undefined) {
-      this.getOfferImages(this.offerId);
       if (this.offerCategory === 'lodging') {
         if (this.offerType === 'legal'){
           this.getLegalPersonLodgingOffer(this.offerId);
@@ -128,14 +143,17 @@ export class OfferContainerComponent implements OnInit {
         this.offerDescription = response.description;
         this.offerProviderName = response.business.name;
         this.offerContact = new OfferContact(response.business.email, response.business.phoneNumber);
+        this.nrViews = response.nrViews;
         this.businessSocials = new BusinessSocials(
           response.business.websiteLink,
           response.business.facebookLink,
           response.business.twitterLink);
+        this.getBusinessRating(response.business.id);
         this.getOfferImages(response.business.id);
         if (response.business?.id !== undefined) {
           this.getProviderImage(response.business.id);
         }
+
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
@@ -164,18 +182,23 @@ export class OfferContainerComponent implements OnInit {
         this.offerCity = response.city;
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
+        this.nrViews = response.nrViews;
         if (response.user !== undefined) {
           this.userId = response.user.id;
           this.offerProviderName = response.user.firstName + ' ' + response.user.lastName;
           this.offerContact =
             new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
           this.getProviderImage(response.user?.id);
+          this.getUserRating(response.user?.id);
         }
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
     )
+    if (this.offerId) {
+      this.getOfferImages(this.offerId);
+    }
   }
 
   public getFoodOffer(offerId: number) {
@@ -191,6 +214,7 @@ export class OfferContainerComponent implements OnInit {
         this.offerDescription = response.description;
         this.offerProviderName = response.business.name;
         this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
+        this.nrViews = response.nrViews;
         this.businessId = response.business.id;
         this.businessSchedule = response.business.schedule;
         this.businessSocials = new BusinessSocials(
@@ -198,12 +222,16 @@ export class OfferContainerComponent implements OnInit {
           response.business.facebookLink,
           response.business.twitterLink
         )
+        this.getBusinessRating(response.business.id);
         this.getProviderImage(response.business.id);
         this.foodOfferMenu = response.foodMenuCategories;
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
     )
+    if (this.offerId) {
+      this.getOfferImages(this.offerId);
+    }
   }
 
   public getAttractionOffer(offerId: number): void {
@@ -219,10 +247,12 @@ export class OfferContainerComponent implements OnInit {
             response.business.facebookLink,
             response.business.twitterLink
           )
+          this.getBusinessRating(response.business.id);
           this.getProviderImage(response.business.id);
         } else {
           this.userId = response.user?.id;
           this.offerProviderName = response.user?.firstName + ' ' + response.user?.lastName;
+          this.getUserRating(response.user?.id);
           this.getProviderImage(response.user.id);
         }
         this.offerTitle = response.title;
@@ -233,10 +263,14 @@ export class OfferContainerComponent implements OnInit {
         }
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
+        this.nrViews = response.nrViews;
         this.offerContact = new OfferContact(response.offerContact.email, response.offerContact.phoneNumber);
         this.tickets = response.tickets;
       }
     )
+    if (this.offerId) {
+      this.getOfferImages(this.offerId);
+    }
   }
 
   public getActivityOffer(offerId: number): void {
@@ -252,10 +286,12 @@ export class OfferContainerComponent implements OnInit {
             response.business.facebookLink,
             response.business.twitterLink
           )
+          this.getBusinessRating(response.business.id);
           this.getProviderImage(response.business.id);
         } else {
           this.userId = response.user?.id;
           this.offerProviderName = response.user?.firstName + ' ' + response.user?.lastName;
+          this.getUserRating(response.user?.id);
           this.getProviderImage(response.user.id);
         }
         this.offerTitle = response.title;
@@ -263,6 +299,7 @@ export class OfferContainerComponent implements OnInit {
         this.offerCity = response.city;
         this.setLocationMarkerOnMap();
         this.offerDescription = response.description;
+        this.nrViews = response.nrViews;
         if (response.status !== 'active') {
           this.showDisabledOfferDialog();
         }
@@ -270,9 +307,12 @@ export class OfferContainerComponent implements OnInit {
         this.tickets = response.tickets;
       }
     )
+    if (this.offerId) {
+      this.getOfferImages(this.offerId);
+    }
   }
 
-  public getProviderImage(id: number) {
+  public getProviderImage(id: number): void {
     if (this.hasOfferBusiness){
       this.imageService.getBusinessFrontImage(id).subscribe(
         (response: string) => {
@@ -287,12 +327,83 @@ export class OfferContainerComponent implements OnInit {
       this.imageService.getUserImage(id).subscribe(
         (response: string) => {
           this.offerProviderImage = response;
-        },
-        (error: HttpErrorResponse) => {
+        }, (error: HttpErrorResponse) => {
           alert(error.message);
         }
       )
     }
+  }
+
+  public getUserRating(userId: number): void {
+    this.reviewService.getRatingForUser(userId).subscribe(
+      (response: ReviewRatingDTO) => {
+        this.providerRating = response;
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public getBusinessRating(businessId: number): void {
+    this.reviewService.getRatingForBusiness(businessId).subscribe(
+      (response: ReviewRatingDTO) => {
+        this.providerRating = response;
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public addedReviewEvent(reviewType: string) {
+    if (reviewType === 'user') {
+      if (this.userId) {
+        this.getUserRating(this.userId);
+      }
+    } else if (reviewType === 'business') {
+      if (this.businessId) {
+        this.getBusinessRating(this.businessId);
+      }
+    }
+  }
+
+  public getNrFullStars(rating: number | undefined): number {
+    if (rating !== undefined) {
+      return Math.trunc(this.getRoundedRating(rating));
+    }
+    return 0;
+  }
+
+  public getHalfStar(rating: number  | undefined): number {
+    if (rating !== undefined) {
+      return Math.round(this.getRoundedRating(rating) % 1);
+    }
+    return 0;
+  }
+
+  public getNrEmptyStars(rating: number  | undefined): number {
+    if (rating !== undefined) {
+      return 5 - this.getNrFullStars(rating) - this.getHalfStar(rating);
+    }
+    return 0;
+  }
+
+  public getRoundedRating(rating: number): number {
+    return Math.round(rating / 0.5) * 0.5;
+  }
+
+  public getNrReviews(): number {
+    if (this.providerRating) {
+      return this.providerRating.nrReviews;
+    }
+    return 0;
+  }
+
+  public counter(nr: number): Array<number> {
+    return new Array(nr);
+  }
+
+  public scroll(el: HTMLElement): void {
+    el.scrollIntoView({behavior: 'smooth'});
   }
 
   public setLocationMarkerOnMap(): void {
@@ -412,16 +523,57 @@ export class OfferContainerComponent implements OnInit {
     if (this.businessId) {
       this.router.navigate(['offers/business'], {
         queryParams: {
-          id: this.businessId
+          id: this.businessId,
+          offerCategory: 'lodging'
         }
       });
     } else if (this.userId){
       this.router.navigate(['offers/user'], {
         queryParams: {
-          id: this.userId
+          id: this.userId,
+          offerCategory: 'lodging'
         }
       });
     }
+  }
+
+  public openPriceRequestDialog(): void {
+    Swal.fire({
+      inputPlaceholder: 'Enter suggested price (RON)',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      focusConfirm: false,
+      focusCancel: false,
+      confirmButtonColor: '#034953',
+      cancelButtonColor: '#696969',
+    }).then((result) => {
+      if (result.isConfirmed && result.value.length !== 0) {
+        if (!isNaN(result.value)) {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: "Thank You!\n We'll let the provider know about your suggestion",
+            showConfirmButton: false,
+            timer: 3000
+          });
+        } else {
+          let offerContainer: OfferContainerComponent = this.injector.get(OfferContainerComponent);
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Invalid number added",
+            showConfirmButton: false,
+            timer: 2000
+          }).then(function(){
+            offerContainer.openPriceRequestDialog();
+          });
+        }
+      }
+    })
   }
 
   public showDisabledOfferDialog(): void {
@@ -432,8 +584,119 @@ export class OfferContainerComponent implements OnInit {
     this.dialog.open(DisabledOfferDialogComponent, dialogConfig);
   }
 
+  public checkIfOfferIsInFavourites() {
+    if (this.userService.checkIfUserIsLoggedIn()) {
+      this.userService.getLoggedInUserId().subscribe(
+        (response: number) => {
+          this.favouritesService.getFavouriteOffersCategoryIdForUser(response).subscribe(
+            (response: FavouriteOfferCategoryId[]) => {
+              this.isOfferInFavourites = !!response.find(
+                (offer) => offer.id === Number(this.offerId) && offer.category === this.offerCategory
+              );
+            }, (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          );
+        }, (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+  }
+
+  public addOfferToFavourites(): void {
+    if (this.userService.checkIfUserIsLoggedIn()) {
+        this.userService.getLoggedInUserId().subscribe(
+          (response: number) => {
+              if (this.offerCategory === 'lodging' && this.offerType === 'legal' && this.businessId) {
+                  this.businessService.getLodgingOffersIDs(this.businessId).subscribe(
+                    (offerIDs: number[]) => {
+                      for (let offerId of offerIDs) {
+                        this.favouritesService.addOfferToFavourites(response, offerId, 'lodging').subscribe(
+                          () => {
+                            this.isOfferInFavourites = true;
+                          },
+                          (error: HttpErrorResponse) => {
+                            alert(error.message);
+                          }
+                          );
+                        }
+                      this.showSuccessfulToastMessage('Offer added to favourites');
+                    }, (error: HttpErrorResponse) => {
+                      alert(error.message);
+                    }
+                  );
+              }
+              else {
+                if (this.offerId && this.offerCategory) {
+                  this.favouritesService.addOfferToFavourites(response, this.offerId, this.offerCategory).subscribe(
+                    () => {
+                      this.isOfferInFavourites = true;
+                      this.showSuccessfulToastMessage('Offer added to favourites');
+                    },
+                    (error: HttpErrorResponse) => {
+                      alert(error.message);
+                    }
+                  );
+                }
+              }
+            }
+          );
+
+    } else {
+      this.showErrorToastMessage("You must log in to your account");
+    }
+  }
+
+  public removeOfferFromFavourites() {
+    if (this.userService.checkIfUserIsLoggedIn()) {
+      this.userService.getLoggedInUserId().subscribe(
+        (response: number) => {
+          if (this.offerId && this.offerCategory) {
+            this.favouritesService.removeOfferFromFavourites(response, this.offerId, this.offerCategory).subscribe(
+              () => {
+                this.isOfferInFavourites = false;
+                this.showSuccessfulToastMessage('Offer removed from favourites');
+              },
+              (error: HttpErrorResponse) => {
+                alert(error.message);
+              }
+            );
+          }
+        }
+      );
+    } else {
+      this.showErrorToastMessage("You must log in to your account");
+    }
+  }
+
+  public showSuccessfulToastMessage(message: string) {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    }).then(function(){})
+  }
+
+  public showErrorToastMessage(message: string) {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-left',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    }).then(function(){})
+  }
+
   ngOnInit(): void {
     this.getOffer();
+    this.checkIfOfferIsInFavourites();
   }
 
 }

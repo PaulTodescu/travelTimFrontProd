@@ -60,6 +60,10 @@ html, body {
   border-color: #d3d3d3  !important;
 }
 
+.swal2-loader {
+  border-color: #034953 transparent #034953 transparent !important;
+}
+
 .mat-select-panel {
   //margin-top: 45px;
   //pointer-events: auto;
@@ -118,9 +122,12 @@ html, body {
 .dark-background {
   background:
     linear-gradient(
-        rgba(0, 0, 0, 0.8),
-        rgba(0, 0, 0, 0.8)
+        rgba(0, 0, 0, 0.9),
+        rgba(0, 0, 0, 0.9)
     )
 }
 
+.mat-tooltip {
+  font-size: 1.1em !important;
+}
 

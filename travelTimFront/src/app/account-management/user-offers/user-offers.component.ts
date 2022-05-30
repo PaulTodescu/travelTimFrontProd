@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {UserService} from "../../services/user/user.service";
 import {LodgingOfferBaseDetailsDTO} from "../../entities/LodgingOfferBaseDetailsDTO";
@@ -16,6 +16,7 @@ import {AttractionService} from "../../services/attraction/attraction.service";
 import {ActivityService} from "../../services/activity/activity.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-user-offers',
@@ -73,18 +74,37 @@ export class UserOffersComponent implements OnInit {
     private foodService: FoodService,
     private attractionService: AttractionService,
     private activityService: ActivityService,
+    private location: Location,
     private sanitizer: DomSanitizer,
     private activatedRout: ActivatedRoute) {
     this.activatedRout.queryParams.subscribe(
       data => {
-        this.selectedCategory = data.category;
-        this.getOffers();
+        if (data.section === 'offers') {
+          if (!data.category) {
+            this.selectedCategory = 'lodging';
+            this.router.navigate(
+              [],
+              {
+                relativeTo: this.activatedRout,
+                queryParams: { category: 'lodging' },
+                queryParamsHandling: 'merge'
+              });
+          } else {
+            this.selectedCategory = data.category;
+          }
+          this.getOffers();
+        }
       });
   }
 
   public switchSelectedCategory(category: string): void {
-    this.router.navigate([],
-      {queryParams: {category: category}, queryParamsHandling: 'merge'});
+    this.selectedCategory = category;
+    let params = new HttpParams().appendAll({
+      section: 'offers',
+      category: this.selectedCategory
+    });
+    this.location.replaceState(location.pathname, params.toString());
+    this.getOffers();
     this.page = 1;
     this.resetFilterOptions();
   }
@@ -771,6 +791,15 @@ export class UserOffersComponent implements OnInit {
     )
   }
 
+  public changePage(page: number): void {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+    this.page = page;
+  }
+
   public onSuccessToast(message: string): void {
     Swal.fire({
       toast: true,
@@ -784,6 +813,5 @@ export class UserOffersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOffers();
   }
 }

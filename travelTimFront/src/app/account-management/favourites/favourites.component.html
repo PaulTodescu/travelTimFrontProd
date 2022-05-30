@@ -44,10 +44,10 @@
         </div>
       </div>
       <pagination-controls
-        id="favouriteOffersPageId" (pageChange)="page = $event" [maxSize]="5" [directionLinks]="true" [responsive]="true">
+        id="favouriteOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
       </pagination-controls>
     </div>
-    <div *ngIf="showNoOffersMessage" id="no-offers-wrapper" role="alert">
+    <div *ngIf="showNoOffersMessage" role="alert">
       <h4 class="alert-heading">NO OFFERS FOUND!</h4>
     </div>
     <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>

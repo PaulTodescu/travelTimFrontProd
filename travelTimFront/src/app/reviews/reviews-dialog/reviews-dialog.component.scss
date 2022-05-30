@@ -1,0 +1,80 @@
+.card-body {
+  overflow: hidden !important;
+  position: relative;
+  padding: 0 !important;
+
+}
+
+.close-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  background-color: #f7f7f7;
+  border: 1px solid #999999;
+  margin: 0 0 20px 0;
+}
+
+.close-icon {
+  color: #000000 !important;
+}
+
+#reviews-container {
+  width: 100%;
+  margin: 0;
+}
+
+.review {
+  color: #7c795d;
+  font-family: Bahnschrift, serif;
+  background-color: #f7f7f7;
+  border-radius: 7px;
+  margin-top: 15px;
+  padding: 15px;
+}
+
+.user-img-name {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.user-img {
+  border: 1px solid #ededed;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 5px 15px 5px 0;
+}
+
+.review-author-name {
+  font-family: "Trebuchet MS", sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 5px 15px 5px 0;
+}
+
+.rating {
+  margin: 10px 15px 5px 0;
+}
+
+.review-date {
+  font-family: Bahnschrift, serif;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 5px 15px 5px auto;
+}
+
+.review-content {
+  padding: 10px 15px 0 15px;
+  font-family: Bahnschrift, serif;
+}
+
+.mat-icon {
+  transform: scale(1.2);
+}

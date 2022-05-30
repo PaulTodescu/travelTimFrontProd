@@ -1,4 +1,4 @@
-<div class="card-body" style="overflow: hidden !important; position: relative; padding: 0 !important;">
+<div class="card-body">
   <div id="title">
     <button mat-icon-button class="close-button" [mat-dialog-close]="true">
       <mat-icon class="close-icon">close</mat-icon>
@@ -17,7 +17,7 @@
                [matDatepicker]="$any(arrivalDatePicker)"
                [matDatepickerFilter]="closedBusinessDaysFilter"
                (dateChange)="arrivalDateChangeEvent($event)">
-        <mat-error *ngIf="ReservationForm.get('arrivalDate')?.invalid">{{getFormArrivalDateErrorMessage()}}</mat-error>
+<!--        <mat-error *ngIf="ReservationForm.get('arrivalDate')?.invalid">{{getFormArrivalDateErrorMessage()}}</mat-error>-->
         <mat-icon matSuffix class="calendar-icon" (click)="arrivalDatePicker.open()">calendar_month</mat-icon>
         <mat-datepicker #arrivalDatePicker></mat-datepicker>
       </mat-form-field>
@@ -48,7 +48,7 @@
                [max]="maxDepartureDate"
                [matDatepicker]="$any(departureDatePicker)"
                (dateChange)="departureDateChangeEvent($event)">
-        <mat-error *ngIf="ReservationForm.get('departureDate')?.invalid">{{getFormDepartureDateErrorMessage()}}</mat-error>
+<!--        <mat-error *ngIf="ReservationForm.get('departureDate')?.invalid">{{getFormDepartureDateErrorMessage()}}</mat-error>-->
         <mat-icon matSuffix class="calendar-icon" (click)="departureDatePicker.open()">calendar_month</mat-icon>
         <mat-datepicker #departureDatePicker [disabled]="false"></mat-datepicker>
       </mat-form-field>
@@ -124,7 +124,7 @@
       </div>
       <div class="offer-details-row">
         <h3 class="field">
-          <span class="bold-txt">Address: </span>{{offer?.address}}
+          <span class="bold-txt">Address: </span>{{offer?.address}}, {{offer?.city}}
         </h3>
       </div>
       <div class="offer-details-row" *ngIf="getNrUtilities() > 0">

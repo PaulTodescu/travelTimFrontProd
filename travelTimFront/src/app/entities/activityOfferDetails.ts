@@ -10,6 +10,7 @@ export interface ActivityOfferDetails {
   city: string;
   description: string;
   status: string;
+  nrViews: number;
   business: Business;
   tickets: Ticket[];
   offerContact: OfferContact;

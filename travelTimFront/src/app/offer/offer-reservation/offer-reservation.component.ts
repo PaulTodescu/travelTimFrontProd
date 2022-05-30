@@ -1,11 +1,10 @@
-import {Component, Inject, Injector, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormControl, FormGroupDirective, NgForm, Validators} from "@angular/forms";
+import {Component, Inject, Injector, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, Validators} from "@angular/forms";
 import {UserService} from "../../services/user/user.service";
 import {UserDTO} from "../../entities/userDTO";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {LodgingService} from "../../services/lodging/lodging.service";
-import {LodgingOfferDetailsDTO} from "../../entities/lodgingOfferDetailsDTO";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {DaySchedule} from "../../entities/daySchedule";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -77,9 +76,9 @@ export class OfferReservationComponent implements OnInit {
   }
 
   ReservationForm = this.formBuilder.group({
-    arrivalDate:['', [Validators.required]],
+    arrivalDate:[''],
     arrivalTime:[''],
-    departureDate:['', [Validators.required]],
+    departureDate:[''],
     firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
     lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
     email: ['', [Validators.required, Validators.email]],
@@ -272,6 +271,7 @@ export class OfferReservationComponent implements OnInit {
           showConfirmButton: true,
           showCancelButton: true,
           focusConfirm: true,
+          iconColor: '#034953',
           confirmButtonColor: '#034953',
           cancelButtonColor: '#696969',
           confirmButtonText: 'Confirm'

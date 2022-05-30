@@ -1,8 +1,5 @@
 #recommendations-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 7px;
+  display: block;
   width: 80%;
   margin: 50px auto;
   overflow: hidden;
@@ -10,6 +7,169 @@
   background-color: #f7f7f7;
 }
 
-h1 {
-  margin: 10px auto;
+.header {
+  width: 100%;
+  text-align: center;
+  background-color: #bbbcbd;
+  padding: 10px 20px;
+  margin-bottom: 30px;
+  border-radius: 7px;
 }
+
+.header-title {
+  font-family: "Trebuchet MS", sans-serif;
+  background-color: white;
+  color: #034953;
+  width: fit-content;
+  border-radius: 7px;
+  padding: 15px 50px;
+  margin: 0;
+}
+
+#offer-types {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#offer-types p {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: 0 25px;
+}
+
+.selected-category {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  color: #999999;
+}
+
+.option-txt{
+  display: inline;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  font-weight: bold;
+  white-space: nowrap;
+  margin: 0 10px 0 0;
+}
+
+.currency-field {
+  width: 60px;
+  margin: -1em 0;
+}
+
+.offer-container {
+  display: flex;
+  flex-direction: row;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+  overflow: auto;
+}
+
+.img-container {
+  max-width: 225px;
+  min-width: 100px;
+  min-height: 150px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: fill;
+  border-radius: 7px;
+}
+
+.offer-info {
+  margin: 10px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-info h1 {
+  width: fit-content;
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.6em;
+  display: inline-block;
+  position: relative;
+}
+
+.offer-info h1:hover {
+  cursor: pointer;
+}
+
+.offer-info h1:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.offer-info h1:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.offer-info h4 {
+  margin-top: 10px;
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+  white-space: nowrap;
+}
+
+.offer-info h4 #nr-offers {
+  font-size: 1.3em;
+}
+
+.favourite-btn {
+  transform: scale(1.4);
+  margin-left: auto;
+  margin-bottom: 10px;
+  color: #7c795d;
+}
+
+.right-side {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.right-side .favourite-btn {
+  margin-left: auto;
+}
+
+.right-side h2 {
+  margin-top: auto;
+  font-family: Bahnschrift, serif;
+  white-space: nowrap;
+  color: #7c795d;
+}
+
+.favourite-btn:hover {
+  cursor: pointer;
+}
+
+.mat-icon {
+  vertical-align: middle;
+  transform: scale(1.2);
+}
+
+.alert-heading {
+  margin: 15px;
+}
+

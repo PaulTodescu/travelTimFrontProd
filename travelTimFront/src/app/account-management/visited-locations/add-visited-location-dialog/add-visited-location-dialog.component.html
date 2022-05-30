@@ -1,0 +1,37 @@
+<div class="card-body">
+  <div id="title">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <h2>Add Location</h2>
+  </div>
+  <form name="AddVisitedLocationForm" [formGroup]="AddVisitedLocationForm">
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+      <!--Address-->
+      <mat-form-field appearance="outline" style="flex: 3 1 0; margin-right: 15px">
+        <mat-label> Address <span style="color: red;"> *</span></mat-label>
+        <input formControlName="address" matInput type="text" autocomplete="off"/>
+        <mat-error *ngIf="AddVisitedLocationForm.controls['address'].invalid">{{getFormAddressErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <!--City-->
+      <mat-form-field  appearance="outline" style="flex: 1 1 0">
+        <mat-label>City <span style="color: red;">*</span></mat-label>
+        <mat-select formControlName="city">
+          <div *ngFor="let city of cities">
+            <mat-option [value]="city"> {{city}} </mat-option>
+          </div>
+        </mat-select>
+        <mat-error *ngIf="AddVisitedLocationForm.controls['city'].invalid">you must select a value</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+  <div style="text-align: center;">
+    <button mat-raised-button class="submit-button"
+            [disabled]="!AddVisitedLocationForm.valid"
+            data-dismiss="modal"
+            (click)="addVisitedLocation()">
+      Submit
+    </button>
+  </div>
+</div>

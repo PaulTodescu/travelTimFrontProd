@@ -1,3 +1,23 @@
+#header {
+  width: 100%;
+  text-align: center;
+  background-color: #bbbcbd;
+  padding: 10px 0;
+  margin-bottom: 30px;
+  border-radius: 7px;
+}
+
+#header-title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 1.7em;
+  background-color: white;
+  color: #034953;
+  margin: 0 auto;
+  width: fit-content;
+  border-radius: 7px;
+  padding: 15px 50px;
+}
+
 #offers-container {
   display: block;
   width: 80%;
@@ -40,7 +60,7 @@ img {
 .offer-info h1 {
   width: fit-content;
   font-family: "Trebuchet MS", sans-serif;
-  font-size: 1.8em;
+  font-size: 1.6em;
   display: inline-block;
   position: relative;
 }

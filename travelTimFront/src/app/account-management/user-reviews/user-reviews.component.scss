@@ -9,3 +9,83 @@ h1 {
   font-family: "Trebuchet MS", sans-serif;
   font-size: 1.8em;
 }
+
+#reviews-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  overflow: hidden;
+  padding: 20px;
+  background-color: #f7f7f7;
+}
+
+.nr-results {
+  font-family: Bahnschrift, serif;
+  color: #7c795d;
+}
+
+.review {
+  color: #7c795d;
+  font-family: Bahnschrift, serif;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+  word-break: break-word;
+}
+
+.review-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.rating {
+  margin: 10px 15px 5px 0;
+}
+
+.review-target-name {
+  font-family: "Trebuchet MS", sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 5px 15px 5px 0;
+}
+
+.review-date {
+  font-family: Bahnschrift, serif;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 5px 0 5px auto;
+}
+
+.review-content {
+  padding: 10px 15px 0 15px;
+  font-family: Bahnschrift, serif;
+}
+
+#delete-button {
+  align-self: flex-start;
+  background-color: #c73c3c;
+  color: #ffffff;
+  font-size: 1.1em;
+  margin: 5px 0 5px auto;
+}
+
+#delete-button .mat-icon {
+  margin-left: 5px;
+}
+
+#no-reviews-wrapper {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  background-color: #f7f7f7;
+}
+
+.alert-heading {
+  margin: 15px;
+}
+

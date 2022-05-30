@@ -17,7 +17,7 @@ header{
   background-color: #393939;
 }
 .content{
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -100,11 +100,24 @@ button {
 
 .add-offer-btn {
   background-color: #949494;
-  color: white;
+  color: #ffffff;
   margin: 4px;
   font-size: 1.2em !important;
 }
 
 .add-offer-btn:hover {
   text-decoration: underline;
+}
+
+.recommendations-btn {
+  border: 2px solid #949494;
+  background-color: #393939;
+  color: #ffffff;
+  margin: 4px;
+  font-size: 1.2em !important;
+}
+
+.recommendations-btn:hover {
+  text-decoration: underline;
+  color: rgb(197, 197, 197);
 }

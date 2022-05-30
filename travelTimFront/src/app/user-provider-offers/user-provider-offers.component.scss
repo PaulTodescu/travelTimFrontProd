@@ -123,6 +123,10 @@
   min-width: 100px;
 }
 
+.img-container img:hover {
+  cursor: pointer;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -181,3 +185,13 @@ img {
   text-decoration: underline;
 }
 
+#rating {
+  font-size: 15px;
+  margin-left: 10px;
+}
+
+#rating #nr-reviews {
+  margin-left: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+}

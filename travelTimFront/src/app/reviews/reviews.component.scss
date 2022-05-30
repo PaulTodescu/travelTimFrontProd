@@ -28,6 +28,13 @@
   padding: 15px;
 }
 
+.review-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
 .user-img {
   border: 1px solid #ededed;
   width: 50px;
@@ -60,5 +67,22 @@
 .review-content {
   padding: 10px 15px 0 15px;
   font-family: Bahnschrift, serif;
+}
+
+.all-reviews-btn {
+  text-decoration: underline;
+  text-align: center;
+  margin-top: 15px;
+  color: #7c795d;
+  font-family: Bahnschrift, serif;
+}
+
+.all-reviews-btn:hover {
+  cursor: pointer;
+}
+
+.alert-heading {
+  margin: 15px 0 0 85px;
+  color: #7c795d;
 }
 

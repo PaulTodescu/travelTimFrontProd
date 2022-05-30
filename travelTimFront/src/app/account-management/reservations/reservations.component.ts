@@ -3,7 +3,7 @@ import {UserService} from "../../services/user/user.service";
 import {ReservationService} from "../../services/reservation/reservation.service";
 import {ReservationDTO} from "../../entities/reservationDTO";
 import {HttpErrorResponse} from "@angular/common/http";
-import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import Swal from "sweetalert2";
 import {ReservationDetailsComponent} from "./reservation-details/reservation-details.component";
 
@@ -67,14 +67,12 @@ export class ReservationsComponent implements OnInit {
     dialogConfig.panelClass = 'reservation-dialog-class' // in styles.css
     dialogConfig.data = {reservationId: reservationId};
     this.dialog.open(ReservationDetailsComponent, dialogConfig);
-    this.dialog._getAfterAllClosed().subscribe(() => {});
   }
 
   public deleteReservation(reservationId: number): void {
     this.reservationService.deleteReservation(reservationId).subscribe(
       () => {
         this.onSuccess('Reservation Deleted');
-        let reservation = this.reservations.find(reservation => reservation.id === reservationId);
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }

@@ -3,7 +3,7 @@ import {BusinessService} from "../../services/business/business.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Business} from "../../entities/business";
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {ImageService} from "../../services/image/image.service";
 import {LegalPersonLodgingOfferDTO} from "../../entities/LegalPersonLodgingOfferDTO";
 import {FoodOfferIdMenuImageDTO} from "../../entities/foodOfferIdMenuImageDTO";
@@ -14,6 +14,11 @@ import {Ticket} from "../../entities/ticket";
 import {OfferTicketsComponent} from "../../offer/offer-tickets/offer-tickets.component";
 import {ActivityOfferForBusinessPageDTO} from "../../entities/activityOfferForBusinessPageDTO";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {ReviewRatingDTO} from "../../entities/reviewRatingDTO";
+import {ReviewService} from "../../services/review/review.service";
+import {DaySchedule} from "../../entities/daySchedule";
+import {BusinessScheduleComponent} from "../business-schedule/business-schedule.component";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-business-offers',
@@ -32,8 +37,12 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 export class BusinessOffersComponent implements OnInit {
 
   business: Business | undefined;
+  businessId: number | undefined;
   images: string[] | undefined;
   imageObjects: Array<object> = new Array<object>();
+
+  businessRating: ReviewRatingDTO | undefined;
+  businessSchedule: DaySchedule[] | undefined;
 
   showImageModalFlag: boolean = false;
   carouselImageIndex: number = -1;
@@ -49,20 +58,44 @@ export class BusinessOffersComponent implements OnInit {
 
   selectedOfferCategory: string = 'lodging';
 
-
   constructor(
     private businessService: BusinessService,
     private imageService: ImageService,
+    private reviewService: ReviewService,
     private sanitizer: DomSanitizer,
     private router: Router,
     private dialog: MatDialog,
+    private location: Location,
     private activatedRout: ActivatedRoute) {
     this.activatedRout.queryParams.subscribe(
       data => {
         if (data.id) {
-          this.getBusinessById(data.id);
+          this.businessId = data.id;
+        }
+        if (!data.offerCategory) {
+          this.selectedOfferCategory = 'lodging';
+          this.router.navigate(
+            [],
+            {
+              relativeTo: this.activatedRout,
+              queryParams: { category: 'lodging' },
+              queryParamsHandling: 'merge'
+            });
+        } else {
+          this.selectedOfferCategory = data.offerCategory;
         }
       });
+  }
+
+  public switchSelectedOfferCategory(category: string): void {
+    if (this.businessId) {
+      this.selectedOfferCategory = category;
+      let params = new HttpParams().appendAll({
+        id: this.businessId,
+        offerCategory: this.selectedOfferCategory
+      });
+      this.location.replaceState(location.pathname, params.toString());
+    }
   }
 
   public getBusinessById(id: number){
@@ -72,6 +105,8 @@ export class BusinessOffersComponent implements OnInit {
           this.business = response;
           this.getBusinessImages(response.id);
           this.getBusinessOffers(response.id);
+          this.getBusinessRating(response.id);
+          this.businessSchedule = response.schedule;
           this.checkIfBusinessHasContactInformation(response);
         }, (error: HttpErrorResponse) => {
           alert(error.message);
@@ -123,8 +158,16 @@ export class BusinessOffersComponent implements OnInit {
     this.carouselImageIndex = -1;
   }
 
-  public switchSelectedOfferCategory(category: string): void {
-    this.selectedOfferCategory = category;
+  public seeBusinessSchedule(): void {
+    if (this.businessSchedule !== undefined) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'dialog-class' // in styles.css
+      dialogConfig.data = {
+        schedule: this.businessSchedule
+      }
+      this.dialog.open(BusinessScheduleComponent, dialogConfig);
+    }
   }
 
   public getBusinessOffers(businessId: number): void {
@@ -196,6 +239,62 @@ export class BusinessOffersComponent implements OnInit {
       business.facebookLink || business.twitterLink);
   }
 
+  public counter(nr: number): Array<number> {
+    return new Array(nr);
+  }
+
+  public scroll(el: HTMLElement): void {
+    el.scrollIntoView({behavior: 'smooth'});
+  }
+
+  public getBusinessRating(businessId: number): void {
+    this.reviewService.getRatingForBusiness(businessId).subscribe(
+      (response: ReviewRatingDTO) => {
+        this.businessRating = response;
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  public addedReviewEvent(reviewType: string): void {
+    if (reviewType === 'business' && this.business) {
+      this.getBusinessRating(this.business.id);
+    }
+  }
+
+  public getNrFullStars(rating: number | undefined): number {
+    if (rating !== undefined) {
+      return Math.trunc(this.getRoundedRating(rating));
+    }
+    return 0;
+  }
+
+  public getHalfStar(rating: number  | undefined): number {
+    if (rating !== undefined) {
+      return Math.round(this.getRoundedRating(rating) % 1);
+    }
+    return 0;
+  }
+
+  public getNrEmptyStars(rating: number  | undefined): number {
+    if (rating !== undefined) {
+      return 5 - this.getNrFullStars(rating) - this.getHalfStar(rating);
+    }
+    return 0;
+  }
+
+  public getRoundedRating(rating: number): number {
+    return Math.round(rating / 0.5) * 0.5;
+  }
+
+  public getNrReviews(): number {
+    if (this.businessRating) {
+      return this.businessRating.nrReviews
+    }
+    return 0;
+  }
+
   public goToLodgingOfferPage(offer: LegalPersonLodgingOfferDTO): void {
     this.router.navigate(['offer'], {
       queryParams: {
@@ -236,6 +335,9 @@ export class BusinessOffersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.businessId) {
+      this.getBusinessById(this.businessId);
+    }
   }
 
 }

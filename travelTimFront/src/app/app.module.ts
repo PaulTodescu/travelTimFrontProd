@@ -86,6 +86,10 @@ import { ReservationDetailsComponent } from './account-management/reservations/r
 import { DisabledOfferDialogComponent } from './offer/disabled-offer-dialog/disabled-offer-dialog.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { AddReviewDialogComponent } from './reviews/add-review-dialog/add-review-dialog.component';
+import { ReviewsDialogComponent } from './reviews/reviews-dialog/reviews-dialog.component';
+import { PriceRequestDialogComponent } from './offer/price-request-dialog/price-request-dialog.component';
+import { VisitedLocationsComponent } from './account-management/visited-locations/visited-locations.component';
+import { AddVisitedLocationDialogComponent } from './account-management/visited-locations/add-visited-location-dialog/add-visited-location-dialog.component';
 
 @NgModule({
   declarations: [
@@ -142,6 +146,10 @@ import { AddReviewDialogComponent } from './reviews/add-review-dialog/add-review
     DisabledOfferDialogComponent,
     ReviewsComponent,
     AddReviewDialogComponent,
+    ReviewsDialogComponent,
+    PriceRequestDialogComponent,
+    VisitedLocationsComponent,
+    AddVisitedLocationDialogComponent,
   ],
     imports: [
       BrowserModule,

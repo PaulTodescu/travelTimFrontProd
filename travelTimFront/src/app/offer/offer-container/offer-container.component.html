@@ -30,9 +30,18 @@
               <mat-icon>email</mat-icon>{{offerContact?.email}}</h3>
             <h3 *ngIf="offerContact?.phoneNumber">
               <mat-icon>phone</mat-icon>{{offerContact?.phoneNumber}}</h3>
-            <mat-icon class="favourite-btn">
-              favorite
-            </mat-icon>
+            <div *ngIf="isOfferInFavourites;
+                    then showColoredHeart else showEmptyHeart"></div>
+            <ng-template #showColoredHeart>
+              <mat-icon class="favourite-btn" (click)="removeOfferFromFavourites()">
+                favorite
+              </mat-icon>
+            </ng-template>
+            <ng-template #showEmptyHeart>
+              <mat-icon class="favourite-btn" (click)="addOfferToFavourites()">
+                favorite_border
+              </mat-icon>
+            </ng-template>
           </div>
           <div id="socials" *ngIf="businessSocials">
             <div class="social" *ngIf="businessSocials?.websiteLink">
@@ -57,11 +66,10 @@
           </div>
         <div id="offer-details">
           <h3 id="rating">
-            <mat-icon>star</mat-icon>
-            <mat-icon>star</mat-icon>
-            <mat-icon>star</mat-icon>
-            <mat-icon>star_half</mat-icon>
-            <mat-icon>star_border</mat-icon><span style="margin-left: 10px"></span>(5 reviews)
+            <mat-icon *ngFor="let star of counter(getNrFullStars(providerRating?.rating))">star</mat-icon>
+            <mat-icon *ngFor="let star of counter(getHalfStar(providerRating?.rating))">star_half</mat-icon>
+            <mat-icon *ngFor="let star of counter(getNrEmptyStars(providerRating?.rating))">star_border</mat-icon>
+            <span id="nr-reviews" (click)="scroll(reviews)">({{getNrReviews()}} review<span *ngIf="getNrReviews() !== 1">s</span>)</span>
           </h3>
           <h3><mat-icon style="margin-right: 10px">location_on</mat-icon>{{offerAddress}}, {{offerCity}}</h3>
           <h3 id="schedule" (click)="seeBusinessSchedule()"
@@ -102,6 +110,10 @@
             </ng-template>
           </div>
           <app-legal-lodging-offers [offers]="legalPersonLodgingOffers"></app-legal-lodging-offers>
+          <div class="price-request" *ngIf="legalPersonLodgingOffers.length > 0">
+            <h3 (click)="openPriceRequestDialog()">Looking for a different price?</h3>
+            <mat-icon matTooltip="propose a different price" matTooltipPosition="below">info</mat-icon>
+          </div>
         </ng-template>
         <ng-template #showPhysicalOffer>
           <div style="display: flex; flex-direction: row;">
@@ -138,12 +150,15 @@
       <app-offer-tickets [tickets]="tickets"></app-offer-tickets>
     </div>
 
-    <div class="section">
+    <div class="section" #reviews>
       <app-reviews
         [offerProviderName]="offerProviderName"
-        [offerId]="offerId"
-        [offerCategory]="offerCategory">
+        [reviewType]="hasOfferBusiness === true ? 'business' : 'user'"
+        [offerUserId]="userId"
+        [offerBusinessId]="businessId"
+        (reviewAddedEvent)="addedReviewEvent($event)">
       </app-reviews>
     </div>
+    <h3 id="nr-views">Views: <span>{{nrViews}}</span></h3>
   </div>
 </div>

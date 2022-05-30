@@ -25,16 +25,6 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
-  ngAfterViewInit(): void {
-    this.map = new google.maps.Map(this.mapElement.nativeElement, {
-      center: this.coordinates,
-      zoom: 12,
-      mapTypeId: 'roadmap'
-    });
-
-    this.directionsRenderer.setMap(this.map);
-
-  }
 
   public getRoute(originLocation: string, selectedTravelMode: string): void{
     let travelMode: string = '';
@@ -104,9 +94,19 @@ export class MapComponent implements OnInit, AfterViewInit {
     })
   }
 
-
   ngOnInit(): void {
   }
+
+  ngAfterViewInit(): void {
+    this.map = new google.maps.Map(this.mapElement.nativeElement, {
+      center: this.coordinates,
+      zoom: 12,
+      mapTypeId: 'roadmap'
+    });
+
+    this.directionsRenderer.setMap(this.map);
+  }
+
 
 
 }

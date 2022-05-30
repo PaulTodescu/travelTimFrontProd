@@ -10,6 +10,7 @@ export interface AttractionOfferDetails {
   city: string;
   description: string;
   status: string;
+  nrViews: number,
   business: Business;
   tickets: Ticket[];
   offerContact: OfferContact;

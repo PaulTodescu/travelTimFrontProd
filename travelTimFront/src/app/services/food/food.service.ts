@@ -69,5 +69,4 @@ export class FoodService {
     return this.http.put<void>(`${this.apiUrl}/food/${offerId}/status/change`, JSON.stringify(status), httpOptions);
   }
 
-
 }

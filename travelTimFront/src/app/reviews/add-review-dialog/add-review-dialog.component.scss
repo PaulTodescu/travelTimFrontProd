@@ -10,6 +10,7 @@
   right: 0;
   padding: 5px;
   line-height: 14px;
+  border: 1px solid #999999;
   background-color: #f7f7f7;
   margin: 10px;
 }
@@ -21,6 +22,7 @@
 #title{
   background-color: #034953;
   border-radius: 7px;
+  margin-bottom: 25px;
 }
 
 #title h2 {
@@ -47,4 +49,22 @@ textarea {
   width: 100%;
   border:solid 2px #a3acad;
   outline-color: #a3acad;
+  color: #7c795d;
+}
+
+.rating {
+  color: #7c795d;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.rating .mat-icon {
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  vertical-align: text-bottom;
+  outline-color: #FF0000;
+}
+
+.rating .mat-icon:hover {
+  cursor: pointer;
 }
