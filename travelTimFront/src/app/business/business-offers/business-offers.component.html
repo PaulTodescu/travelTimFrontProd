@@ -16,7 +16,7 @@
         </h3>
       </div>
     </div>
-    <div *ngIf="showBusinessContact" id="business-contact">
+    <div id="business-contact">
       <h3 id="rating">
         <mat-icon *ngFor="let star of counter(getNrFullStars(businessRating?.rating))">star</mat-icon>
         <mat-icon *ngFor="let star of counter(getHalfStar(businessRating?.rating))">star_half</mat-icon>

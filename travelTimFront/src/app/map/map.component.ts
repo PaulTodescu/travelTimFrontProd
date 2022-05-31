@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import Swal from "sweetalert2";
+import {OfferDistance} from "../entities/offerDistance";
 declare const google: any;
 
 @Component({
@@ -22,6 +23,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   @Output() originLocationEvent:EventEmitter<string> = new EventEmitter();
   @Output() travelDistanceEvent:EventEmitter<string>= new EventEmitter();
   @Output() travelTimeEvent:EventEmitter<string>= new EventEmitter();
+
+  @Output() offerDistanceEvent:EventEmitter<OfferDistance>= new EventEmitter();
 
   constructor() { }
 
@@ -69,9 +72,10 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   public resetMap(): void {
+    alert('called')
     this.directionsRenderer.setDirections({routes: []});
     this.map.setCenter(this.coordinates);
-    this.map.setZoom(11);
+    this.map.setZoom(12);
   }
 
   public setMarker(address: string): void {
@@ -94,10 +98,21 @@ export class MapComponent implements OnInit, AfterViewInit {
     })
   }
 
-  ngOnInit(): void {
+  public getDistance(offerId: number, originLocation: string, destinationLocation: string): void{
+    let request = {
+      origin: originLocation,
+      destination: destinationLocation,
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC
+    }
+    this.directionsService.route(request, (result: any, status: any) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        this.offerDistanceEvent.emit(new OfferDistance(offerId, result.routes[0].legs[0].distance.text));
+      }
+    });
   }
 
-  ngAfterViewInit(): void {
+  public setInitialMap() {
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       center: this.coordinates,
       zoom: 12,
@@ -105,6 +120,13 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
 
     this.directionsRenderer.setMap(this.map);
+  }
+
+  ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.setInitialMap();
   }
 
 

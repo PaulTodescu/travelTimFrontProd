@@ -5,7 +5,10 @@
   </div>
   <div *ngIf="showFilterOptions === true" id="filter-options">
     <div *ngIf="showSorting" style="margin-bottom: -1em; flex: 1 0 0;">
-      <h4 class="option-txt">Sort by: </h4>
+      <h4 class="option-txt"
+          matTooltip="jkhxjkh"
+          [matTooltipDisabled]="true"
+          matTooltipPosition="above">Sort by: </h4>
       <mat-form-field class="sort-field" appearance="legacy">
         <mat-select [value]="sortingMethod"
                     (selectionChange)="sortOffers($event.value)">
@@ -15,14 +18,23 @@
           <mat-option *ngIf="category === 'lodging'" style="color: black;" value="priceDesc"> Price Desc. </mat-option>
           <mat-option style="color: black;" value="nameAsc"> Name Asc. </mat-option>
           <mat-option style="color: black;" value="nameDesc"> Name Desc. </mat-option>
+          <mat-option [disabled]="!showSortingByDistance" style="color: black;" value="distance"> Distance </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
-    <div id="search-container" style="flex: 0 1 450px; margin: auto">
-      <input type="text" placeholder="Search" id="search-bar" autocomplete="off"
-             #searchInput (keyup)="getFilteredOffers(searchInput.value)">
-      <mat-icon>search</mat-icon>
+    <div class="search-container">
+      <div class="search-input-container">
+        <input matInput type="text" placeholder="Search" class="search-bar" autocomplete="off"
+               #searchInput (keyup)="getFilteredOffers(searchInput.value)">
+        <mat-icon>search</mat-icon>
+      </div>
+      <div class="search-input-container">
+        <input matInput type="text" placeholder="Location" class="search-bar" autocomplete="off"
+               ngx-google-places-autocomplete [(ngModel)]="locationInput"
+               (onAddressChange)="setOffersDistance($event)"/>
+        <mat-icon>location_on</mat-icon>
+      </div>
     </div>
 
     <div *ngIf="category === 'lodging'; then showCurrencyField else showNrItemsField" ></div>
@@ -74,7 +86,9 @@
               <div *ngIf="offer.business !== undefined; then showLegalPersonOffer else showPhysicalPersonOffer"></div>
               <ng-template #showLegalPersonOffer>
                 <h1 (click)="goToOfferPage({id: offer.id, category: 'lodging', type: 'legal'})">{{offer.business?.name}}</h1>
-                <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.business?.address}}, {{offer.business?.city}}</h4>
+                <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>
+                  {{offer.business?.address}}, {{offer.business?.city}}
+                  <span *ngIf="offer.distance" class="offer-distance">{{offer.distance}} away</span></h4>
                 <h4><mat-icon style="margin-right: 10px"> local_offer</mat-icon>
                   <span id="nr-offers">
                     <b>{{offer.nrLodgingOffers}}</b>
@@ -85,7 +99,10 @@
                 <h1 (click)="goToOfferPage({id: offer.id, category: 'lodging', type: 'physical'})">
                   {{offer.title}}
                 </h1>
-                <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer?.address}}, {{offer?.city}}</h4>
+                <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>
+                  {{offer?.address}}, {{offer?.city}}
+                  <span *ngIf="offer.distance" class="offer-distance">{{offer.distance}} away</span>
+                </h4>
               </ng-template>
             </div>
             <div class="right-side">
@@ -126,7 +143,10 @@
           </div>
           <div class="offer-info">
             <h1 (click)="goToOfferPage({id: offer.id, category: 'food'})">{{offer.business?.name}}</h1>
-            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.business?.address}}, {{offer.business?.city}}</h4>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>
+              {{offer.business?.address}}, {{offer.business?.city}}
+              <span *ngIf="offer.distance" class="offer-distance">{{offer.distance}} away</span>
+            </h4>
           </div>
           <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'food');
                     then showColoredHeart else showEmptyHeart"></div>
@@ -162,7 +182,10 @@
           </div>
           <div class="offer-info">
             <h1 (click)="goToOfferPage({id: offer.id, category: 'attractions'})">{{offer.title}}</h1>
-            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>
+              {{offer.address}}, {{offer.city}}
+              <span *ngIf="offer.distance" class="offer-distance">{{offer.distance}} away</span>
+            </h4>
           </div>
           <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'attractions');
                     then showColoredHeart else showEmptyHeart"></div>
@@ -198,7 +221,10 @@
           </div>
           <div class="offer-info">
             <h1 (click)="goToOfferPage({id: offer.id, category: 'activities'})">{{offer.title}}</h1>
-            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>{{offer.address}}, {{offer.city}}</h4>
+            <h4><mat-icon style="margin-right: 10px"> location_on</mat-icon>
+              {{offer.address}}, {{offer.city}}
+              <span *ngIf="offer.distance" class="offer-distance">{{offer.distance}} away</span>
+            </h4>
           </div>
           <div *ngIf="checkIfOfferIsInFavourites(offer.id, 'activities');
                     then showColoredHeart else showEmptyHeart"></div>
@@ -240,4 +266,5 @@
 </div>
 
 <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
+<app-map (offerDistanceEvent)="getOfferDistance($event)" style="display: none"></app-map>
 

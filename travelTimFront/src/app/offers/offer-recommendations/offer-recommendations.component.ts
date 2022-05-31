@@ -58,6 +58,8 @@ export class OfferRecommendationsComponent implements OnInit {
   userId: number | undefined;
   favouriteOffers: FavouriteOfferCategoryId[] | undefined;
 
+  showLoadingSpinner: boolean = true;
+
   constructor(
     private recommendationsService: RecommendationsService,
     private router: Router,
@@ -103,6 +105,7 @@ export class OfferRecommendationsComponent implements OnInit {
             if (response.length === 0) {
               this.noBusinessLodgingOffers = true;
             }
+            this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
             alert(error.message);
           }
@@ -113,6 +116,7 @@ export class OfferRecommendationsComponent implements OnInit {
             if(response.length === 0) {
               this.noUserLodgingOffers = true;
             }
+            this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
             alert(error.message);
           }
@@ -124,6 +128,7 @@ export class OfferRecommendationsComponent implements OnInit {
             if (response.length === 0) {
               this.noFoodOffers = true;
             }
+            this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
             alert(error.message);
           }
@@ -135,6 +140,7 @@ export class OfferRecommendationsComponent implements OnInit {
             if (response.length === 0) {
               this.noBusinessAttractionOffers = true;
             }
+            this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
             alert(error.message);
           }
@@ -145,6 +151,7 @@ export class OfferRecommendationsComponent implements OnInit {
             if(response.length === 0) {
               this.noUserAttractionOffers = true;
             }
+            this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
             alert(error.message);
           }
@@ -156,6 +163,7 @@ export class OfferRecommendationsComponent implements OnInit {
             if (response.length === 0) {
               this.noBusinessActivityOffers = true;
             }
+            this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
             alert(error.message);
           }
@@ -166,6 +174,7 @@ export class OfferRecommendationsComponent implements OnInit {
             if(response.length === 0) {
               this.noUserActivityOffers = true;
             }
+            this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
             alert(error.message);
           }

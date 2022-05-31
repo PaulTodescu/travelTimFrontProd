@@ -76,6 +76,11 @@
   overflow: auto;
 }
 
+.highlighted-offer {
+  box-shadow: 0 0 15px #333333 !important;
+  border-radius: 15px;
+}
+
 .img-container {
   max-width: 225px;
   min-width: 100px;

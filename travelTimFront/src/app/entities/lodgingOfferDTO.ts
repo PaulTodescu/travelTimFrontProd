@@ -15,4 +15,5 @@ export interface LodgingOfferDTO {
   price: number;
   currency: string;
   image: string;
+  distance: string;
 }

@@ -1,5 +1,12 @@
-.full-width {
-  width: 100%;
+.form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 10px;
+}
+
+.mat-form-field {
+  max-width: 100%;
 }
 
 ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {

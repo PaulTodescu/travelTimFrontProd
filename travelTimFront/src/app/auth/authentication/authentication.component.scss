@@ -10,7 +10,6 @@
   margin: auto;
   max-width: 100%;
   max-height: 100%;
-  overflow: hidden;
 }
 .logo-png{
   float: left;
@@ -39,8 +38,13 @@
   box-shadow: none !important;
 }
 
+#btn-row {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
 .btn {
-  width: 45%;
-  color: white;
-  margin: 0 3px;
+  flex: 1 1 0;
+  color: #ffffff;
 }

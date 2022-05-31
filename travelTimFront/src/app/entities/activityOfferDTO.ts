@@ -6,4 +6,5 @@ export interface ActivityOfferDTO{
   city: string;
   createdAt: string;
   image: string;
+  distance: string;
 }

@@ -20,6 +20,7 @@ export class VisitedLocationsComponent implements OnInit {
 
   noVisitedLocations: boolean = false;
   showLoadingSpinner: boolean = true;
+  setLocationOnMap: Location | undefined;
 
   constructor(
     private locationService: LocationService,
@@ -59,14 +60,35 @@ export class VisitedLocationsComponent implements OnInit {
       });
   }
 
-  public removeVisitedLocation(locationIndex: number): void {
-    let locationId = this.visitedLocations[locationIndex].id;
-    if (locationId) {
-      this.locationService.removeVisitedLocationForUser(locationId).subscribe(
+  public openRemoveVisitedLocationDialog(locationIndex: number): void {
+    let location = this.visitedLocations[locationIndex];
+    let locationStr = location.address + ', ' + location.city;
+    Swal.fire({
+      title: 'Are you sure?',
+      html: 'You are about to delete: <br><b>'+ locationStr +'</b>',
+      icon: 'warning',
+      showCancelButton: true,
+      focusConfirm: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#696969',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.removeVisitedLocation(location);
+      }
+    })
+  }
+
+  public removeVisitedLocation(location: Location): void {
+    if (location.id) {
+      this.locationService.removeVisitedLocationForUser(location.id).subscribe(
         () => {
-          this.visitedLocations.splice(locationIndex, 1);
+          this.visitedLocations.splice(this.visitedLocations.indexOf(location), 1);
           if (this.visitedLocations.length === 0) {
             this.noVisitedLocations = true;
+          }
+          if (location === this.setLocationOnMap) {
+            this.mapComponent.setInitialMap();
           }
           this.onSuccess('Location removed');
         }
@@ -77,6 +99,7 @@ export class VisitedLocationsComponent implements OnInit {
   public setMarkerOnMap(locationIndex: number): void {
     let location = this.visitedLocations[locationIndex]
     this.mapComponent.setMarker(location.address + ', ' + location.city);
+    this.setLocationOnMap = location;
   }
 
   public onSuccess(message: string): void{

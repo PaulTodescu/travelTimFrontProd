@@ -5,4 +5,5 @@ export interface FoodOfferDTO {
   business: Business;
   createdAt: string;
   image: string;
+  distance: string;
 }

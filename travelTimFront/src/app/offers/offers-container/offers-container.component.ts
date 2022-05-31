@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../../services/category/category.service";
 import {LodgingOfferDTO} from "../../entities/lodgingOfferDTO";
@@ -14,6 +14,9 @@ import {UserService} from "../../services/user/user.service";
 import Swal from "sweetalert2";
 import {FavouriteOfferCategoryId} from "../../entities/favouriteOfferCategoryId";
 import {BusinessService} from "../../services/business/business.service";
+import {Address} from "ngx-google-places-autocomplete/objects/address";
+import {OfferDistance} from "../../entities/offerDistance";
+import {MapComponent} from "../../map/map.component";
 
 @Component({
   selector: 'app-offers-container',
@@ -46,6 +49,7 @@ export class OffersContainerComponent implements OnInit {
 
   showCurrency: boolean = true;
   showSorting: boolean = true;
+  showSortingByDistance: boolean = false;
   showNrItems: boolean = true;
 
   page: number = 1;
@@ -53,6 +57,10 @@ export class OffersContainerComponent implements OnInit {
   sortingMethod: string = 'latest';
 
   showLoadingSpinner: boolean = true;
+
+  locationInput: string | undefined;
+
+  @ViewChild(MapComponent) mapComponent: any;
 
   constructor(
     private router: Router,
@@ -389,6 +397,10 @@ export class OffersContainerComponent implements OnInit {
         }
         return 0;
       });
+    } else if (sortingMethod === 'distance'){
+      this.lodgingOffers = this.lodgingOffers.sort((o1, o2) => {
+        return o1.distance > o2.distance ? 1 : -1
+      })
     }
   }
 
@@ -409,6 +421,10 @@ export class OffersContainerComponent implements OnInit {
     } else if (sortingMethod === 'nameDesc') {
       this.foodOffers = this.foodOffers.sort((o1, o2) => {
           return o1.business.name.toLocaleLowerCase() < o2.business.name.toLocaleLowerCase() ? 1 : -1;
+      })
+    } else if (sortingMethod === 'distance'){
+      this.foodOffers = this.foodOffers.sort((o1, o2) => {
+        return o1.distance > o2.distance ? 1 : -1
       })
     }
   }
@@ -432,6 +448,10 @@ export class OffersContainerComponent implements OnInit {
       this.attractionOffers = this.attractionOffers.sort((o1, o2) => {
         return o1.title.toLocaleLowerCase() < o2.title.toLocaleLowerCase() ? 1 : -1;
       })
+    } else if (sortingMethod === 'distance'){
+      this.attractionOffers = this.attractionOffers.sort((o1, o2) => {
+        return o1.distance > o2.distance ? 1 : -1
+      })
     }
   }
 
@@ -453,7 +473,77 @@ export class OffersContainerComponent implements OnInit {
       this.activityOffers = this.activityOffers.sort((o1, o2) => {
         return o1.title.toLocaleLowerCase() < o2.title.toLocaleLowerCase() ? 1 : -1;
       })
+    } else if (sortingMethod === 'distance'){
+      this.activityOffers = this.activityOffers.sort((o1, o2) => {
+        return o1.distance > o2.distance ? 1 : -1
+      })
     }
+  }
+
+  offersDistance: OfferDistance[] = [];
+
+  public setOffersDistance(address: Address): void {
+    let destinationLocation: string;
+    if (address.formatted_address === undefined && this.locationInput){
+      // if user types location manually without auto-complete
+      destinationLocation = this.locationInput;
+    } else {
+      destinationLocation = address.formatted_address;
+    }
+    if (destinationLocation) {
+      this.showSortingByDistance = true;
+      if (this.category === 'lodging') {
+        for (let offer of this.lodgingOffers) {
+          let originLocation: string;
+          if (offer.business) {
+            originLocation = offer.business.address + ', ' + offer.business.city;
+          } else {
+            originLocation = offer.address + ', ' + offer.city;
+          }
+          this.mapComponent.getDistance(offer.id, originLocation, destinationLocation);
+        }
+      } else if (this.category === 'food') {
+        for (let offer of this.foodOffers) {
+          let originLocation = offer.business.address + ', ' + offer.business.city;
+          this.mapComponent.getDistance(offer.id, originLocation, destinationLocation);
+        }
+      } else if (this.category === 'attractions') {
+        for (let offer of this.attractionOffers) {
+          let originLocation = offer.address + ', ' + offer.city;
+          this.mapComponent.getDistance(offer.id, originLocation, destinationLocation);
+        }
+      } else if (this.category === 'activities') {
+        for (let offer of this.activityOffers) {
+          let originLocation = offer.address + ', ' + offer.city;
+          this.mapComponent.getDistance(offer.id, originLocation, destinationLocation);
+        }
+      }
+    }
+  }
+
+  public getOfferDistance(receivedOfferDistance: OfferDistance): void { // received from map component
+    if (this.category === 'lodging'){
+      let offer = this.lodgingOffers.find(offer => offer.id === receivedOfferDistance.offerId);
+      if (offer) {
+        offer.distance = receivedOfferDistance.distance;
+      }
+    } else if (this.category === 'food'){
+      let offer = this.foodOffers.find(offer => offer.id === receivedOfferDistance.offerId);
+      if (offer) {
+        offer.distance = receivedOfferDistance.distance;
+      }
+    } else if (this.category === 'attractions'){
+      let offer = this.attractionOffers.find(offer => offer.id === receivedOfferDistance.offerId);
+      if (offer) {
+        offer.distance = receivedOfferDistance.distance;
+      }
+    } else if (this.category === 'activities'){
+      let offer = this.activityOffers.find(offer => offer.id === receivedOfferDistance.offerId);
+      if (offer) {
+        offer.distance = receivedOfferDistance.distance;
+      }
+    }
+    this.page = 1;
   }
 
   public checkIfLodgingOffersPresent(): void {
@@ -553,4 +643,5 @@ export class OffersContainerComponent implements OnInit {
     this.getOffers();
     this.getLoggedInUserId();
   }
+
 }

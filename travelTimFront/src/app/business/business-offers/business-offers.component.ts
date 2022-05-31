@@ -107,7 +107,6 @@ export class BusinessOffersComponent implements OnInit {
           this.getBusinessOffers(response.id);
           this.getBusinessRating(response.id);
           this.businessSchedule = response.schedule;
-          this.checkIfBusinessHasContactInformation(response);
         }, (error: HttpErrorResponse) => {
           alert(error.message);
         }
@@ -234,11 +233,6 @@ export class BusinessOffersComponent implements OnInit {
     }
   }
 
-  public checkIfBusinessHasContactInformation(business: Business): void {
-    this.showBusinessContact = !!(business.email || business.phoneNumber || business.websiteLink ||
-      business.facebookLink || business.twitterLink);
-  }
-
   public counter(nr: number): Array<number> {
     return new Array(nr);
   }
@@ -339,5 +333,7 @@ export class BusinessOffersComponent implements OnInit {
       this.getBusinessById(this.businessId);
     }
   }
+
+
 
 }

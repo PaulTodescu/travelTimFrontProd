@@ -6,4 +6,5 @@ export interface AttractionOfferDTO{
   city: string;
   createdAt: string;
   image: string;
+  distance: string;
 }

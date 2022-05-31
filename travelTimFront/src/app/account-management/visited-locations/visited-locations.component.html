@@ -10,7 +10,7 @@
   <div id="locations-container" *ngIf="visitedLocations.length > 0">
     <div class="location" *ngFor="let location of visitedLocations; let i=index">
       <h3 (click)="setMarkerOnMap(i)">{{location.address}}, {{location.city}}</h3>
-      <mat-icon (click)="removeVisitedLocation(i)">close</mat-icon>
+      <mat-icon (click)="openRemoveVisitedLocationDialog(i)">close</mat-icon>
     </div>
   </div>
   <div *ngIf="noVisitedLocations" id="no-locations-wrapper" role="alert">
