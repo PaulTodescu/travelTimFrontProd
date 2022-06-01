@@ -5,6 +5,7 @@ import {AttractionOffer} from "../../entities/attractionOffer";
 import {AttractionOfferDetails} from "../../entities/attractionOfferDetails";
 import {AttractionOfferEditDTO} from "../../entities/attractionOfferEditDTO";
 import {OfferContact} from "../../entities/offerContact";
+import {AttractionOffersStatistics} from "../../entities/attractionOffersStatistics";
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,10 @@ export class AttractionService {
     };
     return this.http.put<void>(`${this.apiUrl}/attraction/${offerId}/status/change`,
       JSON.stringify(status), httpOptions);
+  }
+
+  public getAttractionOffersStatistics(): Observable<AttractionOffersStatistics>{
+    return this.http.get<AttractionOffersStatistics>(`${this.apiUrl}/attraction/statistics`);
   }
 
 }

@@ -90,6 +90,7 @@ import { ReviewsDialogComponent } from './reviews/reviews-dialog/reviews-dialog.
 import { PriceRequestDialogComponent } from './offer/price-request-dialog/price-request-dialog.component';
 import { VisitedLocationsComponent } from './account-management/visited-locations/visited-locations.component';
 import { AddVisitedLocationDialogComponent } from './account-management/visited-locations/add-visited-location-dialog/add-visited-location-dialog.component';
+import { OffersStatisticsComponent } from './account-management/user-offers/offers-statistics/offers-statistics.component';
 
 @NgModule({
   declarations: [
@@ -150,6 +151,7 @@ import { AddVisitedLocationDialogComponent } from './account-management/visited-
     PriceRequestDialogComponent,
     VisitedLocationsComponent,
     AddVisitedLocationDialogComponent,
+    OffersStatisticsComponent,
   ],
     imports: [
       BrowserModule,

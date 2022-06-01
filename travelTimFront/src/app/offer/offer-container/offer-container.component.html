@@ -130,7 +130,12 @@
             </div>
           </div>
           <app-physical-lodging-offer-details
-            [offer]="physicalPersonLodgingOffer"></app-physical-lodging-offer-details>
+            [offer]="physicalPersonLodgingOffer">
+          </app-physical-lodging-offer-details>
+          <div class="price-request" style="margin-top: 20px">
+            <h3 (click)="openPriceRequestDialog()">Looking for a different price?</h3>
+            <mat-icon matTooltip="propose a different price" matTooltipPosition="below">info</mat-icon>
+          </div>
         </ng-template>
       </div>
     </div>

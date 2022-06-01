@@ -11,6 +11,8 @@ import {OfferContact} from "../../entities/offerContact";
 import {PhysicalPersonLodgingOfferDetails} from "../../entities/physicalPersonLodgingOfferDetails";
 import {LodgingOfferDetailsDTO} from "../../entities/lodgingOfferDetailsDTO";
 import {DaySchedule} from "../../entities/daySchedule";
+import {LodgingOffersStatistics} from "../../entities/lodgingOffersStatistics";
+import {LodgingOfferRequestedPrice} from "../../entities/lodgingOfferRequestedPrice";
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +90,14 @@ export class LodgingService {
       })
     };
     return this.http.put<void>(`${this.apiUrl}/lodging/${offerId}/status/change`, JSON.stringify(status), httpOptions);
+  }
+
+  public getLodgingOffersStatistics(): Observable<LodgingOffersStatistics>{
+    return this.http.get<LodgingOffersStatistics>(`${this.apiUrl}/lodging/statistics`);
+  }
+
+  public addRequestedLodgingOfferPrice(lodgingOfferRequestedPrice: LodgingOfferRequestedPrice): Observable<void>{
+    return this.http.post<void>(`${this.apiUrl}/lodging/price/request`, lodgingOfferRequestedPrice);
   }
 
 }

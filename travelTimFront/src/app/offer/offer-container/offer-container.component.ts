@@ -32,6 +32,7 @@ import {FavouriteOfferCategoryId} from "../../entities/favouriteOfferCategoryId"
 import {FavouritesService} from "../../services/favourites/favourites.service";
 import {UserService} from "../../services/user/user.service";
 import Swal from "sweetalert2";
+import {LodgingOfferRequestedPrice} from "../../entities/lodgingOfferRequestedPrice";
 
 @Component({
   selector: 'app-offer-container',
@@ -553,13 +554,20 @@ export class OfferContainerComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed && result.value.length !== 0) {
         if (!isNaN(result.value)) {
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: "Thank You!\n We'll let the provider know about your suggestion",
-            showConfirmButton: false,
-            timer: 3000
-          });
+          this.lodgingService.addRequestedLodgingOfferPrice(
+            new LodgingOfferRequestedPrice(parseFloat(result.value))).subscribe(
+            () => {
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: "Thank You!\n We'll let the provider know about your suggestion",
+                showConfirmButton: false,
+                timer: 3000
+              });
+            }, (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          );
         } else {
           let offerContainer: OfferContainerComponent = this.injector.get(OfferContainerComponent);
           Swal.fire({

@@ -17,6 +17,7 @@ import {ActivityService} from "../../services/activity/activity.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Location} from "@angular/common";
+import {OffersStatisticsComponent} from "./offers-statistics/offers-statistics.component";
 
 @Component({
   selector: 'app-user-offers',
@@ -110,6 +111,7 @@ export class UserOffersComponent implements OnInit {
   }
 
   public getOffers(): void {
+    this.showLoadingSpinner = true;
     if (this.selectedCategory === 'lodging') {
       this.userService.getLodgingOffers().subscribe(
         (response: LodgingOfferBaseDetailsDTO[]) => {
@@ -253,7 +255,6 @@ export class UserOffersComponent implements OnInit {
 
   public openFilterOptionsModal(): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
     dialogConfig.autoFocus = false;
     dialogConfig.data = {
       offerCategory: this.selectedCategory,
@@ -301,8 +302,18 @@ export class UserOffersComponent implements OnInit {
         this.filterOffersByStatus();
         this.sortOffers();
       }
-    })
+    });
   }
+
+  public openStatisticsModal(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {
+      offerCategory: this.selectedCategory,
+    };
+    this.dialog.open(OffersStatisticsComponent, dialogConfig);
+  }
+
 
   public setConvertedLodgingOfferPrices(fromCode: string, toCode: string): void {
     this.currencyService.getCurrencyConversionRate(fromCode, toCode).subscribe(

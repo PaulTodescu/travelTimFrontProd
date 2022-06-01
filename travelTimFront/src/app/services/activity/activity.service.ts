@@ -5,6 +5,7 @@ import {ActivityOffer} from "../../entities/activityOffer";
 import {ActivityOfferDetails} from "../../entities/activityOfferDetails";
 import {ActivityOfferEditDTO} from "../../entities/activityOfferEditDTO";
 import {OfferContact} from "../../entities/offerContact";
+import {ActivityOffersStatistics} from "../../entities/activityOffersStatistics";
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,10 @@ export class ActivityService {
       })
     };
     return this.http.put<void>(`${this.apiUrl}/activity/${offerId}/status/change`, JSON.stringify(status), httpOptions);
+  }
+
+  public getActivityOffersStatistics(): Observable<ActivityOffersStatistics>{
+    return this.http.get<ActivityOffersStatistics>(`${this.apiUrl}/activity/statistics`);
   }
 
 }

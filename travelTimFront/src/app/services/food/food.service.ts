@@ -6,6 +6,7 @@ import {FoodMenuItem} from "../../entities/foodMenuItem";
 import {FoodOfferDetails} from "../../entities/foodOfferDetails";
 import {FoodOfferEditDTO} from "../../entities/foodOfferEditDTO";
 import {OfferContact} from "../../entities/offerContact";
+import {FoodOffersStatistics} from "../../entities/foodOffersStatistics";
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +68,10 @@ export class FoodService {
       })
     };
     return this.http.put<void>(`${this.apiUrl}/food/${offerId}/status/change`, JSON.stringify(status), httpOptions);
+  }
+
+  public getFoodOffersStatistics(): Observable<FoodOffersStatistics>{
+    return this.http.get<FoodOffersStatistics>(`${this.apiUrl}/food/statistics`);
   }
 
 }
