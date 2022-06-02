@@ -13,7 +13,7 @@ import {ImageService} from "../../../services/image/image.service";
 export class AccountContainerComponent implements OnInit {
 
   profileImage: File | undefined;
-  profileImagePath: any;
+  profileImageLink: string | undefined;
 
   constructor(
     private userService: UserService,
@@ -24,7 +24,7 @@ export class AccountContainerComponent implements OnInit {
   public getProfileImage(): void {
     this.imageService.getProfileImageForLoggedInUser().subscribe(
       (response: string) => {
-        this.profileImagePath = response;
+        this.profileImageLink = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -67,6 +67,14 @@ export class AccountContainerComponent implements OnInit {
   }
 
   public deleteUser(): void {
+    Swal.fire({
+      title: 'Please Wait...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
     this.userService.deleteLoggedInUser().subscribe(
       () => {
         let router: Router = this.injector.get(Router);
@@ -79,6 +87,7 @@ export class AccountContainerComponent implements OnInit {
           timer: 2500
         }).then(function(){
           localStorage.removeItem('token');
+          localStorage.removeItem('profile-image');
           router.navigateByUrl('home');
         })
 

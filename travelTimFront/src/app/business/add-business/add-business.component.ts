@@ -89,7 +89,6 @@ export class AddBusinessComponent implements OnInit {
       (businessId: number) => {
         this.uploadImages(this.imageFiles, businessId);
         this.addSchedule(businessId);
-        this.onSuccess("Business added successfully");
       },
       () => {
         this.onFail("Something went wrong. Try again later.")
@@ -272,8 +271,18 @@ export class AddBusinessComponent implements OnInit {
   }
 
   public uploadImages(images: File[], businessId: number): void {
+    Swal.fire({
+      title: 'Please Wait...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
     this.imageService.uploadBusinessImages(images, businessId).subscribe(
-      () => {},
+      () => {
+        this.onSuccess("Business added successfully");
+      },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }

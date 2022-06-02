@@ -5,10 +5,7 @@
   </div>
   <div *ngIf="showFilterOptions === true" id="filter-options">
     <div *ngIf="showSorting" style="margin-bottom: -1em; flex: 1 0 0;">
-      <h4 class="option-txt"
-          matTooltip="jkhxjkh"
-          [matTooltipDisabled]="true"
-          matTooltipPosition="above">Sort by: </h4>
+      <h4 class="option-txt">Sort by: </h4>
       <mat-form-field class="sort-field" appearance="legacy">
         <mat-select [value]="sortingMethod"
                     (selectionChange)="sortOffers($event.value)">
@@ -80,7 +77,7 @@
                                                         totalItems: lodgingOffers.length }">
           <div class="offer-container">
             <div class="img-container">
-              <img [src]="getSanitizerUrl(offer.image)" alt="...">
+              <img [src]="offer.image" alt="...">
             </div>
             <div class="offer-info">
               <div *ngIf="offer.business !== undefined; then showLegalPersonOffer else showPhysicalPersonOffer"></div>
@@ -139,7 +136,7 @@
                                                         totalItems: foodOffers.length }">
         <div class="offer-container">
           <div class="img-container">
-            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+            <img [src]="offer.image" alt="...">
           </div>
           <div class="offer-info">
             <h1 (click)="goToOfferPage({id: offer.id, category: 'food'})">{{offer.business?.name}}</h1>
@@ -178,7 +175,7 @@
                                                         totalItems: attractionOffers.length }">
         <div class="offer-container">
           <div class="img-container">
-            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+            <img [src]="offer.image" alt="...">
           </div>
           <div class="offer-info">
             <h1 (click)="goToOfferPage({id: offer.id, category: 'attractions'})">{{offer.title}}</h1>
@@ -217,7 +214,7 @@
                                                         totalItems: activityOffers.length }">
         <div class="offer-container">
           <div class="img-container">
-            <img [src]="getSanitizerUrl(offer.image)" alt="...">
+            <img [src]="offer.image" alt="...">
           </div>
           <div class="offer-info">
             <h1 (click)="goToOfferPage({id: offer.id, category: 'activities'})">{{offer.title}}</h1>
@@ -263,8 +260,7 @@
   <div *ngIf="showNoOffersMessage === true" class="offer-container" role="alert">
     <h4 class="alert-heading">NO OFFERS FOUND!</h4>
   </div>
+  <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
 </div>
-
-<mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
 <app-map (offerDistanceEvent)="getOfferDistance($event)" style="display: none"></app-map>
 

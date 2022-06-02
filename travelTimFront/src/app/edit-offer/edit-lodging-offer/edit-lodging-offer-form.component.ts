@@ -176,7 +176,6 @@ export class EditLodgingOfferFormComponent implements OnInit {
         () => {
           this.sendImages();
           this.editLodgingOfferContactDetails();
-          this.onSuccess();
         }, (error: HttpErrorResponse) => {
           alert(error.message);
         }
@@ -191,7 +190,6 @@ export class EditLodgingOfferFormComponent implements OnInit {
         () => {
           this.sendImages();
           this.editLodgingOfferContactDetails();
-          this.onSuccess();
         }, (error: HttpErrorResponse) => {
           alert(error.message);
         }
@@ -293,8 +291,18 @@ export class EditLodgingOfferFormComponent implements OnInit {
 
   public sendImages(): void {
     if (this.id !== undefined){
+      Swal.fire({
+        title: 'Please Wait...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading()
+        }
+      });
       this.imageService.uploadOfferImages(this.id, 'lodging', this.images).subscribe(
-        () => {},
+        () => {
+          this.onSuccess();
+        },
         (error: HttpErrorResponse) => {
           alert(error.message);
         }

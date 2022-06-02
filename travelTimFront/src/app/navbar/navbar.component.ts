@@ -39,14 +39,19 @@ export class NavbarComponent implements OnInit {
   }
 
   public getProfileImage() {
-    this.imageService.getProfileImageForLoggedInUser().subscribe(
-      (response: string) => {
-        this.profileImage = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    )
+    if (!localStorage.getItem('profile-image')) {
+      this.imageService.getProfileImageForLoggedInUser().subscribe(
+        (response: string) => {
+          this.profileImage = response;
+          localStorage.setItem('profile-image', response);
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    } else {
+      this.profileImage = localStorage.getItem('profile-image');
+    }
   }
 
   public getSanitizerUrl(url : string) {
@@ -84,6 +89,7 @@ export class NavbarComponent implements OnInit {
 
   public logout(): void{
     localStorage.removeItem('token');
+    localStorage.removeItem('profile-image');
     if (
       this.router.url.includes('/account') ||
       this.router.url === '/offer/add'){

@@ -14,7 +14,6 @@ import {LodgingService} from "../../services/lodging/lodging.service";
 import {FoodService} from "../../services/food/food.service";
 import {AttractionService} from "../../services/attraction/attraction.service";
 import {ActivityService} from "../../services/activity/activity.service";
-import {DomSanitizer} from "@angular/platform-browser";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Location} from "@angular/common";
 import {OffersStatisticsComponent} from "./offers-statistics/offers-statistics.component";
@@ -52,7 +51,7 @@ export class UserOffersComponent implements OnInit {
   page: number = 1;
   nrItemsOnPage: number = 5;
   showLoadingSpinner: boolean = true;
-  showOffers: boolean = false;
+  showNoOffersMessage: boolean = false;
 
   // filter options
   offeredByBusiness: boolean = false;
@@ -76,7 +75,6 @@ export class UserOffersComponent implements OnInit {
     private attractionService: AttractionService,
     private activityService: ActivityService,
     private location: Location,
-    private sanitizer: DomSanitizer,
     private activatedRout: ActivatedRoute) {
     this.activatedRout.queryParams.subscribe(
       data => {
@@ -105,6 +103,7 @@ export class UserOffersComponent implements OnInit {
       category: this.selectedCategory
     });
     this.location.replaceState(location.pathname, params.toString());
+    this.showNoOffersMessage = false;
     this.getOffers();
     this.page = 1;
     this.resetFilterOptions();
@@ -115,45 +114,58 @@ export class UserOffersComponent implements OnInit {
     if (this.selectedCategory === 'lodging') {
       this.userService.getLodgingOffers().subscribe(
         (response: LodgingOfferBaseDetailsDTO[]) => {
+          this.showLoadingSpinner = false;
           this.lodgingOffers = response;
           this.filteredLodgingOffers = response;
-          this.showOffers = true;
-          this.showLoadingSpinner = false;
+          if (response.length === 0) {
+            this.showNoOffersMessage = true;
+          }
           },
         (error: HttpErrorResponse) => {
-            alert(error.message);
+          this.showLoadingSpinner = false;
+          alert(error.message);
           }
         )
       } else if (this.selectedCategory === 'food & beverage') {
       this.userService.getFoodOffers().subscribe(
         (response: FoodOfferBaseDetailsDTO[]) => {
+          this.showLoadingSpinner = false;
           this.foodOffers = response;
           this.filteredFoodOffers = response;
-          this.showOffers = true;
-          this.showLoadingSpinner = false;
+          if (response.length === 0) {
+            this.showNoOffersMessage = true;
+          }
         }, (error: HttpErrorResponse) => {
+          this.showLoadingSpinner = false;
           alert(error.message);
         }
       )
     } else if (this.selectedCategory === 'attractions') {
       this.userService.getAttractionOffers().subscribe(
         (response: AttractionOfferBaseDetailsDTO[]) => {
+          this.showLoadingSpinner = false;
           this.attractionOffers = response;
           this.filteredAttractionOffers = response;
-          this.showOffers = true;
-          this.showLoadingSpinner = false;
+          if (response.length === 0) {
+            this.showNoOffersMessage = true;
+          }
         }, (error: HttpErrorResponse) => {
+          this.showLoadingSpinner = false;
           alert(error.message);
         }
       )
     } else if (this.selectedCategory === 'activities') {
       this.userService.getActivityOffers().subscribe(
         (response: ActivityOfferBaseDetailsDTO[]) => {
+          this.showLoadingSpinner = false;
           this.activityOffers = response;
           this.filteredActivityOffers = response;
-          this.showOffers = true;
+          if (response.length === 0) {
+            this.showNoOffersMessage = true;
+          }
           this.showLoadingSpinner = false;
         }, (error: HttpErrorResponse) => {
+          this.showLoadingSpinner = false;
           alert(error.message);
         }
       )
@@ -247,10 +259,6 @@ export class UserOffersComponent implements OnInit {
         id: offer.id,
       }
     });
-  }
-
-  public getSanitizerUrl(url : string) {
-    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   public openFilterOptionsModal(): void {
@@ -374,12 +382,14 @@ export class UserOffersComponent implements OnInit {
     } else if (this.offeredByPerson){
       this.filteredLodgingOffers = this.filteredLodgingOffers.filter(offer => offer.business === undefined);
     }
+    this.checkIfOffersArePresent();
   }
 
   public filterFoodOffersByBusiness(businessName: string | undefined): void{
     if (businessName !== undefined){
       this.filteredFoodOffers = this.filteredFoodOffers.filter(offer => offer.business.name === businessName);
     }
+    this.checkIfOffersArePresent();
   }
 
   public filterAttractionOffersByBusiness(businessName: string | undefined): void{
@@ -392,6 +402,7 @@ export class UserOffersComponent implements OnInit {
     } else if (this.offeredByPerson){
       this.filteredAttractionOffers = this.filteredAttractionOffers.filter(offer => offer.business === null);
     }
+    this.checkIfOffersArePresent();
   }
 
   public filterActivityOffersByBusiness(businessName: string | undefined): void{
@@ -404,6 +415,7 @@ export class UserOffersComponent implements OnInit {
     } else if (this.offeredByPerson){
       this.filteredActivityOffers = this.filteredActivityOffers.filter(offer => offer.business === null);
     }
+    this.checkIfOffersArePresent();
   }
 
   public resetFilterOptions(): void {
@@ -416,6 +428,10 @@ export class UserOffersComponent implements OnInit {
     this.nrRooms = undefined;
     this.nrSingleBeds = undefined;
     this.nrDoubleBeds = undefined;
+    this.filteredLodgingOffers = [];
+    this.filteredFoodOffers = [];
+    this.filteredAttractionOffers = [];
+    this.filteredActivityOffers = [];
   }
 
   public filterByLodgingOptions(): void {
@@ -429,13 +445,14 @@ export class UserOffersComponent implements OnInit {
       this.filterLodgingOffersByNrDoubleBeds();
     }
     this.page = 1;
+    this.checkIfOffersArePresent();
   }
 
   public filterLodgingOffersByNrRooms(): LodgingOfferBaseDetailsDTO[] {
     let nrRooms = this.nrRooms;
     this.filteredLodgingOffers = this.filteredLodgingOffers.filter(function (offer){
       return offer["nrRooms"] === nrRooms;
-    })
+    });
     return this.filteredLodgingOffers;
   }
 
@@ -443,7 +460,7 @@ export class UserOffersComponent implements OnInit {
     let nrSingleBeds = this.nrSingleBeds;
     this.filteredLodgingOffers = this.filteredLodgingOffers.filter(function (offer){
       return offer["nrSingleBeds"] === nrSingleBeds;
-    })
+    });
     return this.filteredLodgingOffers;
   }
 
@@ -451,7 +468,7 @@ export class UserOffersComponent implements OnInit {
     let nrDoubleBeds = this.nrDoubleBeds;
     this.filteredLodgingOffers = this.filteredLodgingOffers.filter(function (offer){
       return offer["nrDoubleBeds"] === nrDoubleBeds;
-    })
+    });
     return this.filteredLodgingOffers;
   }
 
@@ -467,6 +484,7 @@ export class UserOffersComponent implements OnInit {
         this.filterActivityOffersByStatus(this.status);
       }
     }
+    this.checkIfOffersArePresent();
   }
 
   public filterLodgingOffersByStatus(status: string): LodgingOfferBaseDetailsDTO[] {
@@ -515,6 +533,14 @@ export class UserOffersComponent implements OnInit {
   }
 
   public deleteOffer(offerId: number): void {
+    Swal.fire({
+      title: 'Please Wait...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
     if (this.selectedCategory === 'lodging') {
       this.deleteLodgingOffer(offerId);
     } else if (this.selectedCategory === 'food & beverage') {
@@ -533,10 +559,19 @@ export class UserOffersComponent implements OnInit {
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    )
+    );
+    this.checkIfOffersArePresent();
   }
 
   public deleteFoodOffer(offerId: number): void {
+    Swal.fire({
+      title: 'Please Wait...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
     this.foodService.deleteFoodOffer(offerId).subscribe(
       () => {
         this.onDeleteOfferSuccess();
@@ -544,6 +579,7 @@ export class UserOffersComponent implements OnInit {
         alert(error.message);
       }
     )
+    this.checkIfOffersArePresent();
   }
 
   public deleteAttractionOffer(offerId: number): void {
@@ -553,7 +589,8 @@ export class UserOffersComponent implements OnInit {
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    )
+    );
+    this.checkIfOffersArePresent();
   }
 
   public deleteActivityOffer(offerId: number): void {
@@ -563,7 +600,8 @@ export class UserOffersComponent implements OnInit {
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    )
+    );
+    this.checkIfOffersArePresent();
   }
 
   public onDeleteOfferSuccess(): void {
@@ -800,6 +838,27 @@ export class UserOffersComponent implements OnInit {
         alert(error.message);
       }
     )
+  }
+
+  public checkIfOffersArePresent(): void { // extract business names from offers
+    this.showNoOffersMessage = false;
+    if (this.selectedCategory === 'lodging'){
+      if (this.filteredLodgingOffers.length === 0) {
+        this.showNoOffersMessage = true;
+      }
+    } else if (this.selectedCategory === 'food & beverage') {
+      if (this.filteredFoodOffers.length === 0) {
+        this.showNoOffersMessage = true;
+      }
+    } else if (this.selectedCategory === 'attractions') {
+      if (this.filteredAttractionOffers.length === 0) {
+        this.showNoOffersMessage = true;
+      }
+    } else if (this.selectedCategory === 'activities') {
+      if (this.filteredActivityOffers.length === 0) {
+        this.showNoOffersMessage = true;
+      }
+    }
   }
 
   public changePage(page: number): void {

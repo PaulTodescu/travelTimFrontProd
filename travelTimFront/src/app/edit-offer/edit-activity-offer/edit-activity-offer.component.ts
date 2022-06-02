@@ -130,7 +130,6 @@ export class EditActivityOfferComponent implements OnInit {
         () => {
           this.sendImages();
           this.editActivityOfferContactDetails();
-          this.onSuccess();
         }, (error: HttpErrorResponse) => {
           alert(error.message);
         }
@@ -203,8 +202,18 @@ export class EditActivityOfferComponent implements OnInit {
 
   public sendImages(): void {
     if (this.id !== undefined){
+      Swal.fire({
+        title: 'Please Wait...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading()
+        }
+      });
       this.imageService.uploadOfferImages(this.id, 'activities', this.images).subscribe(
-        () => {},
+        () => {
+          this.onSuccess();
+        },
         (error: HttpErrorResponse) => {
           alert(error.message);
         }

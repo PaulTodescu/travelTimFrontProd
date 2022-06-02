@@ -279,7 +279,7 @@ export class OfferReservationComponent implements OnInit {
           if (result.isConfirmed) {
             if (this.userId && this.offer) {
               Swal.fire({
-                title: 'Sending Reservation...',
+                title: 'Please Wait...',
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 didOpen: () => {

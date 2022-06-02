@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import { UserService } from 'src/app/services/user/user.service';
 import {AuthenticationResponse} from "../../entities/AuthenticationResponse";
 import {Location} from "@angular/common";
+import {ImageService} from "../../services/image/image.service";
 
 @Component({
   selector: 'app-login',
@@ -19,16 +20,10 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private imageService: ImageService,
     private injector: Injector) { }
 
-  ngOnInit(): void {
-    this.loginForm = this.fb.group({
-      email:[''],
-      password:['']
-    })
-  }
-
-  login(loginForm: FormGroup): void{
+  public login(loginForm: FormGroup): void{
     this.userService.loginUser(loginForm.value).subscribe(
       (authenticationResponse: AuthenticationResponse) => {
         localStorage.setItem('token',authenticationResponse.jwt);
@@ -56,6 +51,13 @@ export class LoginComponent implements OnInit {
       timer: 2000
     }).then(function(){
       location.back();
+    })
+  }
+
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email:[''],
+      password:['']
     })
   }
 

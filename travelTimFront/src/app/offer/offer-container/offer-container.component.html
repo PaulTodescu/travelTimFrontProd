@@ -6,14 +6,14 @@
       <div id="left-container">
         <div id="images-section">
           <div id="image-container">
-            <img id="selected-image" [src]="getSanitizerUrl(selectedImage)" alt="..."
+            <img id="selected-image" [src]="selectedImage" alt="..."
                  (click)="showImageModal(selectedImage)">
           </div>
           <p id="fullscreen-img" (click)="showImageModal(selectedImage)">fullscreen</p>
           <div id="carousel-background">
             <carousel [height]="150">
               <div *ngFor="let image of images" class="carousel-cell">
-                <img [src]="getSanitizerUrl(image)" alt="..." (click)="setImage(image)">
+                <img [src]="image" alt="..." (click)="setImage(image)">
               </div>
             </carousel>
           </div>
@@ -61,7 +61,7 @@
       </div>
       <div id="right-container">
           <div class="provider-details">
-            <img [src]="getSanitizerUrl(offerProviderImage)" alt="provider-img" class="provider-img">
+            <img [src]="offerProviderImage" alt="provider-img" class="provider-img">
             <h1 class="provider-name" (click)="goToProviderPage()">{{offerProviderName}}</h1>
           </div>
         <div id="offer-details">

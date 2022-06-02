@@ -87,6 +87,14 @@ export class UserBusinessesComponent implements OnInit {
   }
 
   public deleteBusiness(businessId: number): void {
+    Swal.fire({
+      title: 'Please Wait...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
     this.businessService.deleteBusiness(businessId).subscribe(
       () => {
         this.onDeleteBusinessSuccess();

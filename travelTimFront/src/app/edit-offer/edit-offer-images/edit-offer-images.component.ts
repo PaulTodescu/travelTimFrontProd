@@ -14,7 +14,8 @@ export class EditOfferImagesComponent implements OnInit {
   @Input() offerId: number | undefined;
   @Input() offerCategory: string | undefined;
 
-  images : string[] = [];
+  images: string[] = [];
+  imagesBase64 : string[] = [];
   imageFiles: File[] = [];
   imageFilesNames: string[] = [];
 
@@ -24,16 +25,28 @@ export class EditOfferImagesComponent implements OnInit {
 
   @Output() imagesEvent: EventEmitter<File[]> = new EventEmitter<File[]>();
 
-  public getOfferImages(): void {
+  public getOfferImagesLinks(): void {
     if (this.offerId !== undefined && this.offerCategory !== undefined)
-    this.imageService.getOfferImages(this.offerId, this.offerCategory).subscribe(
+      this.imageService.getOfferImages(this.offerId, this.offerCategory).subscribe(
+        (response: string[]) => {
+          this.images = response;
+          this.getImageFiles();
+        }, (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+  }
+
+  public getOfferImagesBase64(): void {
+    if (this.offerId !== undefined && this.offerCategory !== undefined)
+    this.imageService.getOfferImagesBase64(this.offerId, this.offerCategory).subscribe(
       (response: string[]) => {
-        this.images = response;
+        this.imagesBase64 = response;
         this.getImageFiles();
       }, (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    )
+    );
   }
 
   public convertBase64ImageUrlToFile(url: string, name: string, mimeType: string): any{
@@ -44,9 +57,9 @@ export class EditOfferImagesComponent implements OnInit {
   }
 
   public getImageFiles(): void {
-    for (let i=0; i < this.images.length; i++){
-      let mimeType = this.images[i].substring(0, this.images[i].indexOf(';'))
-      this.convertBase64ImageUrlToFile(this.images[i], this.imageFilesNames[i], mimeType)
+    for (let i=0; i < this.imagesBase64.length; i++){
+      let mimeType = this.imagesBase64[i].substring(0, this.imagesBase64[i].indexOf(';'))
+      this.convertBase64ImageUrlToFile(this.imagesBase64[i], this.imageFilesNames[i], mimeType)
         .then((file: File) => {
           this.imageFiles.push(file);
           this.imagesEvent.emit(this.imageFiles);
@@ -72,7 +85,7 @@ export class EditOfferImagesComponent implements OnInit {
 
   public uploadImages(event: any): void {
     if (event.target.files && event.target.files[0]) {
-      let numberImages = event.target.files.length + this.images.length;
+      let numberImages = event.target.files.length + this.imagesBase64.length;
       if (numberImages > 10){
         this.onFail("Cannot add more than 10 images");
         return;
@@ -81,16 +94,20 @@ export class EditOfferImagesComponent implements OnInit {
         let reader = new FileReader();
         reader.onload = (event: any) => {
           this.images.push(event.target.result);
+          this.imagesBase64.push(event.target.result);
         }
-        reader.readAsDataURL(event.target.files[i]);
-        this.imageFiles.push(event.target.files[i]);
+        if (event.target.files[i]) {
+          reader.readAsDataURL(event.target.files[i]);
+          this.imageFiles.push(event.target.files[i]);
+        }
         this.imagesEvent.emit(this.imageFiles);
       }
     }
   }
 
   public deleteImage(imageIndex: number): void {
-    this.images.splice(imageIndex,1);
+    this.images.splice(imageIndex, 1);
+    this.imagesBase64.splice(imageIndex,1);
     this.imageFiles.splice(imageIndex, 1);
     this.imagesEvent.emit(this.imageFiles);
   }
@@ -106,8 +123,9 @@ export class EditOfferImagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getOfferImagesLinks();
     this.getOfferImagesNames();
-    this.getOfferImages();
+    this.getOfferImagesBase64();
   }
 
 }

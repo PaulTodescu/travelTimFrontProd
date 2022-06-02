@@ -27,8 +27,9 @@
       activities
     </p>
   </div>
-  <div class="offers-container" *ngIf="showOffers" [ngSwitch]="selectedCategory">
+  <div class="offers-container" [ngSwitch]="selectedCategory">
     <div *ngSwitchCase="'lodging'" @fadeIn>
+      <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
       <div *ngIf="filteredLodgingOffers.length !== 0">
         <h4 class="nr-results">
           showing {{filteredLodgingOffers.length}}
@@ -42,7 +43,7 @@
             <div class="top-container">
               <div class="offer-fields">
                 <div class="img-container">
-                  <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToLodgingOfferPage(offer)">
+                  <img [src]="offer.image" alt="..." (click)="goToLodgingOfferPage(offer)">
                 </div>
                 <div class="offer-info">
                   <div *ngIf="offer.business !== undefined; then showLegalPersonOffer else showPhysicalPersonOffer"></div>
@@ -113,11 +114,12 @@
           id="lodgingOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="filteredLodgingOffers.length === 0" role="alert">
+      <div *ngIf="showNoOffersMessage" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
     <div *ngSwitchCase="'food & beverage'" @fadeIn>
+      <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
       <div *ngIf="filteredFoodOffers.length !== 0">
         <h4 class="nr-results">
           showing {{filteredFoodOffers.length}}
@@ -131,7 +133,7 @@
             <div class="top-container">
               <div class="offer-fields">
                 <div class="img-container">
-                  <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToFoodOfferPage(offer)">
+                  <img [src]="offer.image" alt="..." (click)="goToFoodOfferPage(offer)">
                 </div>
                 <div class="offer-info">
                   <h4 class="offer-title" (click)="goToFoodOfferPage(offer)">
@@ -185,11 +187,12 @@
           id="foodOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="filteredFoodOffers.length === 0" role="alert">
+      <div *ngIf="showNoOffersMessage" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
     <div *ngSwitchCase="'attractions'" @fadeIn>
+      <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
       <div *ngIf="filteredAttractionOffers.length !== 0">
         <h4 class="nr-results">
           showing {{filteredAttractionOffers.length}}
@@ -203,7 +206,7 @@
             <div class="top-container">
               <div class="offer-fields">
                 <div class="img-container">
-                  <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToAttractionOfferPage(offer)">
+                  <img [src]="offer.image" alt="..." (click)="goToAttractionOfferPage(offer)">
                 </div>
                 <div class="offer-info">
                     <h4 class="offer-title" (click)="goToAttractionOfferPage(offer)">
@@ -255,11 +258,12 @@
           id="attractionOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="filteredAttractionOffers.length === 0" role="alert">
+      <div *ngIf="showNoOffersMessage" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
     <div *ngSwitchCase="'activities'" @fadeIn>
+      <mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
       <div *ngIf="filteredActivityOffers.length !== 0">
         <h4 class="nr-results">
           showing {{filteredActivityOffers.length}}
@@ -273,7 +277,7 @@
             <div class="top-container">
               <div class="offer-fields">
                 <div class="img-container">
-                  <img [src]="getSanitizerUrl(offer.image)" alt="..." (click)="goToActivityOfferPage(offer)">
+                  <img [src]="offer.image" alt="..." (click)="goToActivityOfferPage(offer)">
                 </div>
                 <div class="offer-info">
                   <h4 class="offer-title" (click)="goToActivityOfferPage(offer)">
@@ -325,11 +329,9 @@
           id="activityOffersPageId" (pageChange)="changePage($event)" [maxSize]="5" [directionLinks]="true" [responsive]="true">
         </pagination-controls>
       </div>
-      <div *ngIf="filteredActivityOffers.length === 0" role="alert">
+      <div *ngIf="showNoOffersMessage" role="alert">
         <h4 class="alert-heading">NO OFFERS FOUND!</h4>
       </div>
     </div>
   </div>
 </div>
-<mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
-

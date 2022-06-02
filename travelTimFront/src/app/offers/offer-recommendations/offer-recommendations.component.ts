@@ -94,6 +94,7 @@ export class OfferRecommendationsComponent implements OnInit {
         category: this.selectedCategory
       });
       this.location.replaceState(location.pathname, params.toString());
+      this.resetOffers();
       this.getOffers();
   }
 
@@ -107,6 +108,7 @@ export class OfferRecommendationsComponent implements OnInit {
             }
             this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
+            this.showLoadingSpinner = false;
             alert(error.message);
           }
         )
@@ -118,6 +120,7 @@ export class OfferRecommendationsComponent implements OnInit {
             }
             this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
+            this.showLoadingSpinner = false;
             alert(error.message);
           }
         )
@@ -130,6 +133,7 @@ export class OfferRecommendationsComponent implements OnInit {
             }
             this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
+            this.showLoadingSpinner = false;
             alert(error.message);
           }
         )
@@ -142,6 +146,7 @@ export class OfferRecommendationsComponent implements OnInit {
             }
             this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
+            this.showLoadingSpinner = false;
             alert(error.message);
           }
         )
@@ -153,6 +158,7 @@ export class OfferRecommendationsComponent implements OnInit {
             }
             this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
+            this.showLoadingSpinner = false;
             alert(error.message);
           }
         )
@@ -165,6 +171,7 @@ export class OfferRecommendationsComponent implements OnInit {
             }
             this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
+            this.showLoadingSpinner = false;
             alert(error.message);
           }
         )
@@ -176,6 +183,7 @@ export class OfferRecommendationsComponent implements OnInit {
             }
             this.showLoadingSpinner = false;
           }, (error: HttpErrorResponse) => {
+            this.showLoadingSpinner = false;
             alert(error.message);
           }
         )
@@ -303,6 +311,17 @@ export class OfferRecommendationsComponent implements OnInit {
     } else if (!this.userService.checkIfUserIsLoggedIn()){
       this.showErrorToastMessage("You must log in to your account");
     }
+  }
+
+  public resetOffers() {
+    this.showLoadingSpinner = true;
+    this.businessLodgingOffers = [];
+    this.userLodgingOffers = [];
+    this.foodOffers = [];
+    this.businessAttractionOffers = [];
+    this.userAttractionOffers = [];
+    this.businessActivityOffers = [];
+    this.userActivityOffers = [];
   }
 
   public showSuccessfulToastMessage(message: string) {

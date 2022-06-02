@@ -141,7 +141,6 @@ export class EditFoodOfferComponent implements OnInit {
           }
           this.sendImages();
           this.editFoodOfferContactDetails();
-          this.onSuccess();
         }, (error: HttpErrorResponse) => {
           alert(error.message);
         }
@@ -196,8 +195,18 @@ export class EditFoodOfferComponent implements OnInit {
 
   public sendImages(): void {
     if (this.id !== undefined){
+      Swal.fire({
+        title: 'Please Wait...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading()
+        }
+      });
       this.imageService.uploadOfferImages(this.id, 'food', this.images).subscribe(
-        () => {},
+        () => {
+          this.onSuccess();
+        },
         (error: HttpErrorResponse) => {
           alert(error.message);
         }

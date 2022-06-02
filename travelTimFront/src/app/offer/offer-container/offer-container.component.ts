@@ -17,7 +17,6 @@ import {ActivityService} from "../../services/activity/activity.service";
 import {AttractionOfferDetails} from "../../entities/attractionOfferDetails";
 import {Ticket} from "../../entities/ticket";
 import {ActivityOfferDetails} from "../../entities/activityOfferDetails";
-import {DomSanitizer} from "@angular/platform-browser";
 import {CurrencyService} from "../../services/currency/currency.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {BusinessScheduleComponent} from "../../business/business-schedule/business-schedule.component";
@@ -90,7 +89,6 @@ export class OfferContainerComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private currencyService: CurrencyService,
-    private sanitizer: DomSanitizer,
     private router: Router,
     private injector: Injector,
     private reviewService: ReviewService,
@@ -409,13 +407,6 @@ export class OfferContainerComponent implements OnInit {
 
   public setLocationMarkerOnMap(): void {
    this.setMarker(this.offerAddress + ' ' + this.offerCity);
-  }
-
-  public getSanitizerUrl(url : string | undefined) {
-    if (url !== undefined) {
-      return this.sanitizer.bypassSecurityTrustUrl(url);
-    }
-    return null;
   }
 
   public setImage(image: string): void {

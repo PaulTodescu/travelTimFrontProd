@@ -18,23 +18,19 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService) { }
 
-  ngOnInit(): void {
-    this.registerForm = this.formBuilder.group({
-      firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
-      lastName:['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
-      gender:['', [Validators.required]],
-      email:['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.minLength(5), Validators.pattern("^[0-9]*$")]],
-      password: ['', [Validators.required, Validators.minLength(5)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(5)]],
-    })
-  }
-
   public register(registerForm: FormGroup): void{
     if (!this.checkPasswordsMatch()){
       this.onFail('Passwords are not the same');
       return;
     }
+    Swal.fire({
+      title: 'Please Wait...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
     this.userService.registerUser(registerForm.value).subscribe(
       (response: void) => {
         console.log(response);
@@ -71,7 +67,7 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  getFormFirstNameErrorMessage() {
+  public getFormFirstNameErrorMessage() {
     if (this.registerForm.get('firstName')?.hasError('required')){
       return 'you must enter a value';
     }
@@ -84,7 +80,7 @@ export class RegisterComponent implements OnInit {
     return;
   }
 
-  getFormLastNameErrorMessage() {
+  public getFormLastNameErrorMessage() {
     if (this.registerForm.get('lastName')?.hasError('required')){
       return 'you must enter a value';
     }
@@ -97,14 +93,14 @@ export class RegisterComponent implements OnInit {
     return;
   }
 
-  getFormGenderErrorMessage() {
+  public getFormGenderErrorMessage() {
     if (this.registerForm.get('gender')?.hasError('required')){
       return 'you must select a value';
     }
     return;
   }
 
-  getFormEmailErrorMessage() {
+  public getFormEmailErrorMessage() {
     if (this.registerForm.get('email')?.hasError('required')){
       return 'you must enter a value';
     }
@@ -114,7 +110,7 @@ export class RegisterComponent implements OnInit {
     return;
   }
 
-  getFormPhoneNumberErrorMessage() {
+  public getFormPhoneNumberErrorMessage() {
     if (this.registerForm.get('phoneNumber')?.hasError('minlength')){
       return 'enter at least 5 digits';
     }
@@ -124,7 +120,7 @@ export class RegisterComponent implements OnInit {
     return;
   }
 
-  getFormPasswordErrorMessage() {
+  public getFormPasswordErrorMessage() {
     if (this.registerForm.get('password')?.hasError('required')){
       return 'you must enter a value';
     }
@@ -134,7 +130,7 @@ export class RegisterComponent implements OnInit {
     return;
   }
 
-  getFormConfirmPasswordErrorMessage() {
+  public getFormConfirmPasswordErrorMessage() {
     if (this.registerForm.get('password')?.hasError('required')){
       return 'you must enter a value';
     }
@@ -144,10 +140,22 @@ export class RegisterComponent implements OnInit {
     return;
   }
 
-  checkPasswordsMatch(): boolean {
+  public checkPasswordsMatch(): boolean {
     let password = this.registerForm.get('password')?.value;
     let confirmPassword = this.registerForm.get('confirmPassword')?.value;
     return password === confirmPassword;
+  }
+
+  ngOnInit(): void {
+    this.registerForm = this.formBuilder.group({
+      firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
+      lastName:['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(?:[a-zA-Z\s]+)?$/)]],
+      gender:['', [Validators.required]],
+      email:['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [Validators.minLength(5), Validators.pattern("^[0-9]*$")]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(5)]],
+    })
   }
 
 }

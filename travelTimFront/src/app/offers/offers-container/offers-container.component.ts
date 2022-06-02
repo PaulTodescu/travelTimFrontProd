@@ -7,7 +7,6 @@ import {ImageService} from "../../services/image/image.service";
 import {FoodOfferDTO} from "../../entities/foodOfferDTO";
 import {AttractionOfferDTO} from "../../entities/attractionOfferDTO";
 import {ActivityOfferDTO} from "../../entities/activityOfferDTO";
-import {DomSanitizer} from "@angular/platform-browser";
 import {CurrencyService} from "../../services/currency/currency.service";
 import {FavouritesService} from "../../services/favourites/favourites.service";
 import {UserService} from "../../services/user/user.service";
@@ -70,8 +69,7 @@ export class OffersContainerComponent implements OnInit {
     private userService: UserService,
     private businessService: BusinessService,
     private activatedRout: ActivatedRoute,
-    private favouritesService: FavouritesService,
-    private sanitizer: DomSanitizer) {
+    private favouritesService: FavouritesService) {
     this.activatedRout.queryParams.subscribe(
     data => {
       this.category = data.category;
@@ -147,10 +145,6 @@ export class OffersContainerComponent implements OnInit {
         )
       }
     }
-  }
-
-  public getSanitizerUrl(url : string) {
-    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   public counter(nr: number): Array<number> {
