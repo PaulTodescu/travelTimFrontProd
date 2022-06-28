@@ -18,7 +18,7 @@ import {LodgingOfferRequestedPrice} from "../../entities/lodgingOfferRequestedPr
 })
 export class LodgingService {
 
-  private apiUrl = 'https://traveltimback.herokuapp.com/';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 

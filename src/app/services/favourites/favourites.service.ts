@@ -9,7 +9,7 @@ import {FavouriteOfferCategoryId} from "../../entities/favouriteOfferCategoryId"
 })
 export class FavouritesService {
 
-  private apiUrl = 'https://traveltimback.herokuapp.com/';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 

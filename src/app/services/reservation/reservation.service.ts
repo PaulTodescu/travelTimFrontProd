@@ -11,7 +11,7 @@ import {LodgingOfferDetailsForReservationDTO} from "../../entities/lodgingOfferD
 })
 export class ReservationService {
 
-  private apiUrl = 'https://traveltimback.herokuapp.com/';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 

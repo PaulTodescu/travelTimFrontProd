@@ -13,7 +13,7 @@ import {FoodOffersStatistics} from "../../entities/foodOffersStatistics";
 })
 export class FoodService {
 
-  private apiUrl = 'https://traveltimback.herokuapp.com/';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 

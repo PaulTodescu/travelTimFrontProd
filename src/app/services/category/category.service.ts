@@ -13,7 +13,7 @@ import {ActivityOfferDTO} from "../../entities/activityOfferDTO";
 })
 export class CategoryService {
 
-  private apiUrl = 'https://traveltimback.herokuapp.com/';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 

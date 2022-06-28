@@ -8,7 +8,7 @@ import {Location} from "../../entities/Location";
 })
 export class LocationService {
 
-  private apiUrl = 'https://traveltimback.herokuapp.com/';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 

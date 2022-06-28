@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 })
 export class ContactService {
 
-  private apiUrl = 'https://traveltimback.herokuapp.com/';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 

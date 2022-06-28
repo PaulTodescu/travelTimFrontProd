@@ -14,7 +14,7 @@ import {ActivityOfferForBusinessPageDTO} from "../../entities/activityOfferForBu
 })
 export class BusinessService {
 
-  private apiUrl = 'https://traveltimback.herokuapp.com/';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 
