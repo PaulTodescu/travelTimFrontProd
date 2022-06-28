@@ -1,0 +1,40 @@
+<div id="reviews-container">
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: flex-start;">
+    <h1 class="section-title" style="margin: 0">Reviews for <span style="opacity: 0.7">{{offerProviderName}}</span></h1>
+    <button id="add-review-btn" mat-raised-button (click)="openAddReviewDialog()">
+      Add a review
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="reviews.length !== 0; then showReviews else showNoReviewsMessage"></div>
+  <ng-template #showReviews>
+    <div *ngFor="let review of getFirstNReviews(3)" class="review">
+      <div class="review-row">
+        <img
+          [src]="getSanitizerUrl(review.image)"
+          alt="..."
+          class="user-img"
+        />
+        <h2 class="review-author-name">{{review.authorName}}</h2>
+        <h3 *ngIf="review.rating > 0" class="rating">
+          <mat-icon *ngFor="let i of counter(review.rating)">star</mat-icon>
+          <mat-icon *ngFor="let i of counter(5 - review.rating)">star_border</mat-icon>
+        </h3>
+        <h3 class="review-date"><span style="color: #919191">- {{getFormattedReviewDate(review.createdAt)}} -</span></h3>
+      </div>
+      <h3 class="review-content">
+        <i>
+          "{{review.review}}"
+        </i>
+      </h3>
+    </div>
+    <h3 class="all-reviews-btn" *ngIf="reviews.length > 3" (click)="openAllReviewsModal()">see all reviews</h3>
+  </ng-template>
+  <ng-template #showNoReviewsMessage>
+    <div role="alert">
+      <h4 class="alert-heading">NO REVIEWS FOUND!</h4>
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,18 @@
+<div id="weather-container">
+  <div style="margin: 25px 25px 25px 0; display: flex; flex-direction: row; align-items: center; justify-content: center">
+    <fa-icon *ngIf="weatherData?.condition === 'Clear'" [icon]="faSun" size="3x"></fa-icon>
+    <fa-icon *ngIf="weatherData?.condition === 'Clouds'" [icon]="faCloud" size="3x"></fa-icon>
+    <fa-icon *ngIf="weatherData?.condition === 'Rain' ||
+                    weatherData?.condition === 'Drizzle' ||
+                    weatherData?.condition === 'Thunderstorm'"
+             [icon]="faCloudRain" size="3x">
+    </fa-icon>
+    <fa-icon *ngIf="weatherData?.condition === 'Snow'" [icon]="faSnowflake" size="3x"></fa-icon>
+    <span style="font-size: 25px; margin-left: 10px">{{weatherData?.weather[0].main}}</span>
+  </div>
+  <div style="font-size: 32px;">{{weatherData?.temp_celcius}}°C</div>
+  <div style="font-size: 12px; margin-top: 10px">Feels Like: {{weatherData?.temp_feels_like}}°C</div>
+  <div style="font-size: 25px; margin-top: 10px;">Timișoara, Timiș</div>
+  <div style="font-size: 12px; margin-top: 10px">Wind: {{weatherData?.wind.speed}} km/h</div>
+  <div style="font-size: 12px; margin-bottom: 25px">Humidity: {{weatherData?.main.humidity}}%</div>
+</div>

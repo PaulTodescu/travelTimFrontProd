@@ -1,0 +1,45 @@
+<div class="account-management-right-container">
+  <div id="top-section" style="display: flex; flex-direction: row">
+    <h1>My Reservations</h1>
+    <button mat-raised-button id="export-button" *ngIf="reservations?.length !== 0" (click)="exportReservations()">
+      Export<mat-icon>arrow_downward</mat-icon></button>
+  </div>
+  <div class="separator"></div>
+  <div id="reservations-container">
+    <table *ngIf="reservations.length !== 0;" mat-table [dataSource]="reservations" class="mat-elevation-z0">
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let reservation"> {{reservation.title}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let reservation"> {{getFormattedReservationDate(reservation.date)}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="width: fit-content;"> Actions </th>
+        <td mat-cell *matCellDef="let reservation">
+          <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+            <button mat-raised-button id="details-button" (click)="openReservationDetailsDialog(reservation.id)">
+              Details <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-raised-button id="delete-button" (click)="openDeleteReservationDialog(reservation.id)">
+              Delete<mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"
+          style="background-color: #949494; color: #ffffff !important; box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div *ngIf="showNoOffersMessage" id="no-offers-wrapper" role="alert">
+      <h4 class="alert-heading">NO RESERVATIONS FOUND!</h4>
+    </div>
+  </div>
+</div>
+<mat-spinner *ngIf="showLoadingSpinner"></mat-spinner>
+
