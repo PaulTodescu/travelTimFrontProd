@@ -7,7 +7,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class CurrencyService {
 
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'https://traveltimback.herokuapp.com/';
 
   constructor(private http: HttpClient) { }
 

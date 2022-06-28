@@ -12,7 +12,7 @@ import {AttractionOffersStatistics} from "../../entities/attractionOffersStatist
 })
 export class AttractionService {
 
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'https://traveltimback.herokuapp.com/';
 
   constructor(private http: HttpClient) { }
 

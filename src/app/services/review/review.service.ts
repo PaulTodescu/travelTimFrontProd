@@ -11,7 +11,7 @@ import {ReviewRatingDTO} from "../../entities/reviewRatingDTO";
 })
 export class ReviewService {
 
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'https://traveltimback.herokuapp.com/';
 
   constructor(private http: HttpClient) { }
 

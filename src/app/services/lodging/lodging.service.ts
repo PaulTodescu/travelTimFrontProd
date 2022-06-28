@@ -7,7 +7,6 @@ import {LodgingUtility} from "../../entities/lodgingUtility";
 import {LegalPersonLodgingOfferBaseDetailsDTO} from "../../entities/legalPersonLodgingOfferBaseDetailsDTO";
 import {PhysicalPersonLodgingOfferEditDTO} from "../../entities/physicalPersonLodgingOfferEditDTO";
 import {LegalPersonLodgingOfferEditDTO} from "../../entities/legalPersonLodgingOfferEditDTO";
-import {OfferContact} from "../../entities/offerContact";
 import {PhysicalPersonLodgingOfferDetails} from "../../entities/physicalPersonLodgingOfferDetails";
 import {LodgingOfferDetailsDTO} from "../../entities/lodgingOfferDetailsDTO";
 import {DaySchedule} from "../../entities/daySchedule";
@@ -19,7 +18,7 @@ import {LodgingOfferRequestedPrice} from "../../entities/lodgingOfferRequestedPr
 })
 export class LodgingService {
 
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'https://traveltimback.herokuapp.com/';
 
   constructor(private http: HttpClient) { }
 

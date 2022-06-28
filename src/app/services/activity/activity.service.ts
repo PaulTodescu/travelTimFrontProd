@@ -12,7 +12,7 @@ import {ActivityOffersStatistics} from "../../entities/activityOffersStatistics"
 })
 export class ActivityService {
 
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'https://traveltimback.herokuapp.com';
 
   constructor(private http: HttpClient) { }
 
